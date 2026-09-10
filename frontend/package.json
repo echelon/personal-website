@@ -1,0 +1,18 @@
+{
+  "name": "brand-frontend",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "build": "nx run site:build",
+    "check": "nx run-many -t typecheck && node --test tools/*.test.mjs",
+    "dev": "node tools/dev.mjs",
+    "preview": "node tools/serve.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "esbuild": "^0.25.0",
+    "nx": "^22.0.0",
+    "typescript": "^5.9.0"
+  }
+}

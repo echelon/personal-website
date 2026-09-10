@@ -1,1 +1,9 @@
 *~
+/build/
+/frontend/.cache/
+/frontend/.nx/
+/frontend/node_modules/
+/prompts/
+/target/
+.DS_Store
+.sitegen-*

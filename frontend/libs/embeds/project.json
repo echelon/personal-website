@@ -1,0 +1,6 @@
+{
+  "name": "embeds",
+  "sourceRoot": "libs/embeds/src",
+  "projectType": "library",
+  "targets": {}
+}

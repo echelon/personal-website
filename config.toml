@@ -1,0 +1,15 @@
+[site]
+name = "brand"
+email = "bt@brand.io"
+base_url = "https://brand.io"
+title_append = "brand"
+home_title = "brand"
+articles_title = "Articles"
+description = "Articles by Brandon Thomas."
+default_theme = "day" # day | night | forest | sunset
+
+[build]
+articles_dir = "articles"
+frontend_dir = "frontend"
+output_dir = "build"
+include_drafts = false

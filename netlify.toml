@@ -1,0 +1,18 @@
+[build]
+command = "npm ci --prefix frontend && cargo run --locked --release -- build"
+publish = "build"
+
+[build.environment]
+NODE_VERSION = "24"
+
+# Files are real HTML routes, so there is deliberately no SPA catch-all rewrite.
+[[headers]]
+for = "/*"
+[headers.values]
+X-Content-Type-Options = "nosniff"
+Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+for = "/*.wasm"
+[headers.values]
+Content-Type = "application/wasm"
