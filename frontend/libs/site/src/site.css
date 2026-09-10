@@ -167,6 +167,11 @@ h1, h2, h3 { text-wrap: balance; }
 .experiment-button { background: var(--paper); border: 1px solid var(--line); border-radius: 4px; padding: .4rem .9rem; font-size: .875rem; }
 .experiment-note { color: var(--muted); font-size: .875rem; margin: .7rem 0 0 !important; }
 .experiment-result { display: block; font-size: 2rem; letter-spacing: -.04em; margin: 1rem 0; }
+@media (min-width: 761px) {
+  .theme-control { width: 44px; min-height: 44px; padding: 6px; gap: 4px; }
+  .theme-control, .theme-control:focus-visible { border-radius: 12px; }
+  .theme-art, .theme-icon svg { width: 18px; height: 18px; }
+}
 @media (min-width: 1500px) {
   .home-main { padding-top: 21vh; }
 }
