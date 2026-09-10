@@ -12,12 +12,15 @@ const { outputFiles } = await build({
 });
 
 function themeHarness(storageThrows = false) {
-  const selectEvents = {}, windowEvents = {}, saved = {};
-  const select = { value: '', addEventListener: (event, listener) => { selectEvents[event] = listener; } };
-  const control = { hidden: true };
+  const buttonEvents = {}, windowEvents = {}, saved = {};
+  const control = {
+    hidden: true, attributes: {},
+    setAttribute(name, value) { this.attributes[name] = value; },
+    addEventListener: (event, listener) => { buttonEvents[event] = listener; },
+  };
   const document = {
     documentElement: { dataset: { theme: 'forest' } },
-    querySelector: selector => selector === '#theme-select' ? select : control,
+    querySelector: selector => selector === '#theme-cycle' ? control : null,
     querySelectorAll: () => [],
   };
   const window = {
@@ -29,30 +32,34 @@ function themeHarness(storageThrows = false) {
     saved[key] = value;
   } };
   vm.runInNewContext(outputFiles[0].text, { document, window, localStorage, console });
-  return { select, control, document, selectEvents, windowEvents, saved };
+  return { control, document, buttonEvents, windowEvents, saved };
 }
 
-test('theme selection exposes four states and persists each choice', () => {
+test('theme button cycles all four states, wraps, and persists each choice', () => {
   const harness = themeHarness();
   assert.equal(harness.control.hidden, false);
-  assert.equal(harness.select.value, 'forest');
-  for (const theme of ['day', 'night', 'forest', 'sunset']) {
-    harness.select.value = theme;
-    harness.selectEvents.change();
+  assert.match(harness.control.attributes['aria-label'], /Foggy forest theme \(3 of 4\). Switch to Evening sunset/);
+  for (const [theme, label, position] of [
+    ['sunset', 'Evening sunset', 4], ['day', 'Day', 1], ['night', 'Night', 2], ['forest', 'Foggy forest', 3],
+  ]) {
+    harness.buttonEvents.click();
     assert.equal(harness.document.documentElement.dataset.theme, theme);
     assert.equal(harness.saved['brand-theme'], theme);
+    assert.ok(harness.control.attributes['aria-label'].includes(`${label} theme (${position} of 4)`));
+    assert.equal(harness.control.attributes.title, harness.control.attributes['aria-label']);
   }
 });
 
 test('theme works when storage is unavailable, and cross-tab changes are validated', () => {
   const harness = themeHarness(true);
-  harness.select.value = 'night';
-  assert.doesNotThrow(() => harness.selectEvents.change());
-  assert.equal(harness.document.documentElement.dataset.theme, 'night');
-  harness.windowEvents.storage({ key: 'brand-theme', newValue: 'sunset' });
-  assert.equal(harness.select.value, 'sunset');
-  harness.windowEvents.storage({ key: 'brand-theme', newValue: 'invalid' });
+  assert.doesNotThrow(() => harness.buttonEvents.click());
   assert.equal(harness.document.documentElement.dataset.theme, 'sunset');
+  harness.windowEvents.storage({ key: 'brand-theme', newValue: 'day' });
+  assert.match(harness.control.attributes['aria-label'], /Day theme \(1 of 4\)/);
+  harness.windowEvents.storage({ key: 'brand-theme', newValue: 'invalid' });
+  assert.equal(harness.document.documentElement.dataset.theme, 'day');
+  harness.buttonEvents.click();
+  assert.equal(harness.document.documentElement.dataset.theme, 'night');
 });
 
 function luminance(hex) {
@@ -69,7 +76,7 @@ test('all four palettes meet text and focus contrast on both backgrounds', async
   const css = await readFile(new URL('../libs/site/src/site.css', import.meta.url), 'utf8');
   for (const theme of ['day', 'night', 'forest', 'sunset']) {
     const body = css.match(new RegExp(`\\[data-theme="${theme}"\\] \\{([^}]+)\\}`))[1];
-    const colors = Object.fromEntries([...body.matchAll(/--([a-z]+):\s*(#[a-f\d]{6})/gi)].map(m => [m[1], m[2]]));
+    const colors = Object.fromEntries([...body.matchAll(/--([a-z-]+):\s*(#[a-f\d]{6})/gi)].map(m => [m[1], m[2]]));
     for (const foreground of ['ink', 'muted', 'accent']) {
       for (const background of ['paper', 'surface']) {
         const ratio = contrast(colors[foreground], colors[background]);
@@ -77,5 +84,8 @@ test('all four palettes meet text and focus contrast on both backgrounds', async
       }
     }
     assert.ok(contrast(colors.focus, colors.paper) >= 3, `${theme} focus contrast`);
+    for (const background of ['paper', 'surface', 'selection']) {
+      assert.ok(contrast(colors['theme-icon'], colors[background]) >= 3, `${theme} icon contrast on ${background}`);
+    }
   }
 });

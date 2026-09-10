@@ -9,6 +9,7 @@
   --accent: #62452b;
   --focus: #664b2f;
   --selection: #d1b98e;
+  --theme-icon: #85530d;
 }
 [data-theme="night"] {
   color-scheme: dark;
@@ -20,6 +21,7 @@
   --accent: #e3bf8f;
   --focus: #eac493;
   --selection: #565444;
+  --theme-icon: #b7cbee;
 }
 [data-theme="forest"] {
   color-scheme: light;
@@ -31,6 +33,7 @@
   --accent: #3c5937;
   --focus: #355331;
   --selection: #bed0b0;
+  --theme-icon: #3c653d;
 }
 [data-theme="sunset"] {
   color-scheme: light;
@@ -42,6 +45,7 @@
   --accent: #893e2d;
   --focus: #853c2d;
   --selection: #e3b29b;
+  --theme-icon: #a4472c;
 }
 :root {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -70,18 +74,21 @@ button { min-height: 44px; }
 .header-articles { font-size: .9375rem; color: var(--muted); text-decoration: none; padding: .6rem 0; }
 .header-articles[aria-current] { color: var(--ink); text-decoration: underline; }
 .header-theme { margin-left: auto; }
-.theme-control { position: relative; display: flex; align-items: center; gap: .65rem; border: 1px solid var(--line); border-radius: 99px; padding-left: .85rem; }
-.theme-control select { position: relative; appearance: none; background: transparent; border: 0; padding: .6rem 2rem .6rem .1rem; min-height: 44px; font-size: .875rem; border-radius: 99px; }
-.theme-control select option { background: var(--paper); color: var(--ink); }
-.select-arrow { position: absolute; right: .8rem; pointer-events: none; top: .45rem; }
-.theme-dots { display: flex; gap: 4px; pointer-events: none; }
-.theme-dots i { width: 9px; height: 9px; border-radius: 50%; border: 1px solid #7a7469; }
-.theme-dots i:nth-child(1) { background: #eee6d8; }
-.theme-dots i:nth-child(2) { background: #292824; }
-.theme-dots i:nth-child(3) { background: #c0d1b1; }
-.theme-dots i:nth-child(4) { background: #d69575; }
-[data-theme="day"] .theme-dots i:nth-child(1), [data-theme="night"] .theme-dots i:nth-child(2),
-[data-theme="forest"] .theme-dots i:nth-child(3), [data-theme="sunset"] .theme-dots i:nth-child(4) { outline: 1px solid var(--ink); outline-offset: 2px; }
+.theme-control { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; width: 52px; min-height: 54px; padding: 8px; border: 1px solid var(--line); border-radius: 14px; background: transparent; }
+.theme-control:hover { background: var(--surface); border-color: var(--muted); }
+.theme-control:active { background: var(--selection); }
+.theme-control:focus-visible { border-radius: 14px; }
+.theme-art { display: block; width: 24px; height: 24px; color: var(--theme-icon); pointer-events: none; }
+.theme-icon { display: none; }
+.theme-icon svg { display: block; width: 24px; height: 24px; stroke-width: 1.75; }
+[data-theme="day"] [data-theme-icon="day"], [data-theme="night"] [data-theme-icon="night"],
+[data-theme="forest"] [data-theme-icon="forest"], [data-theme="sunset"] [data-theme-icon="sunset"] { display: block; }
+[data-theme-icon="day"] circle { fill: color-mix(in srgb, currentColor 18%, transparent); }
+[data-theme-icon="night"] path, [data-theme-icon="forest"] path:first-child { fill: color-mix(in srgb, currentColor 14%, transparent); }
+.theme-steps { display: flex; align-items: center; gap: 3px; height: 5px; pointer-events: none; }
+.theme-steps i { width: 4px; height: 4px; border: 1px solid var(--muted); border-radius: 50%; }
+[data-theme="day"] .theme-steps i:nth-child(1), [data-theme="night"] .theme-steps i:nth-child(2),
+[data-theme="forest"] .theme-steps i:nth-child(3), [data-theme="sunset"] .theme-steps i:nth-child(4) { width: 8px; border-radius: 3px; border-color: var(--theme-icon); background: var(--theme-icon); }
 .home-main { max-width: 1200px; margin: 0 auto; padding: clamp(6rem, 18vh, 14rem) 4rem 8rem; }
 .home-main h1 { font-size: clamp(7rem, 15vw, 12rem); font-weight: 550; line-height: .98; letter-spacing: -.085em; margin: 0 0 3rem -.065em; }
 .home-links { display: flex; align-items: center; gap: 5rem; font-size: 1.125rem; }
@@ -196,14 +203,14 @@ h1, h2, h3 { text-wrap: balance; }
   .embed-root { padding: 1rem; }
 }
 @media (max-width: 350px) {
-  .theme-dots { display: none; }
   .home-links { gap: 1.5rem; }
 }
 @media (prefers-reduced-motion: no-preference) {
   body { transition: background-color 140ms ease, color 140ms ease; }
 }
 @media (forced-colors: active) {
-  .theme-dots { display: none; }
+  .theme-art { color: ButtonText; }
+  .theme-control { --theme-icon: ButtonText; --muted: ButtonText; }
   .interactive, .theme-control { border: 1px solid CanvasText; }
 }
 @media print {

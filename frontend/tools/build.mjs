@@ -43,3 +43,4 @@ for (const entry of plan.entries) {
 }
 await mkdir(resolve(plan.out_dir, 'assets'), { recursive: true });
 await copyFile(resolve(frontend, 'libs/site/src/favicon.svg'), resolve(plan.out_dir, 'assets/favicon.svg'));
+await copyFile(resolve(frontend, 'libs/site/icons/LICENSE'), resolve(plan.out_dir, 'assets/lucide-LICENSE.txt'));

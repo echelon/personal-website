@@ -13,8 +13,33 @@ pub fn escape(value: &str) -> String {
         .replace('\'', "&#39;")
 }
 
-fn theme_control() -> &'static str {
-    r#"<div class="theme-control" hidden><span class="theme-dots" aria-hidden="true"><i></i><i></i><i></i><i></i></span><label class="sr-only" for="theme-select">Color theme (four options)</label><select id="theme-select"><option value="day">Day</option><option value="night">Night</option><option value="forest">Foggy forest</option><option value="sunset">Evening sunset</option></select><span class="select-arrow" aria-hidden="true">⌄</span></div>"#
+fn theme_control() -> String {
+    let icons = [
+        (
+            "day",
+            include_str!("../../../frontend/libs/site/icons/sun.svg"),
+        ),
+        (
+            "night",
+            include_str!("../../../frontend/libs/site/icons/moon.svg"),
+        ),
+        (
+            "forest",
+            include_str!("../../../frontend/libs/site/icons/tree-pine.svg"),
+        ),
+        (
+            "sunset",
+            include_str!("../../../frontend/libs/site/icons/sunset.svg"),
+        ),
+    ]
+    .into_iter()
+    .map(|(theme, svg)| {
+        format!(r#"<span class="theme-icon" data-theme-icon="{theme}">{svg}</span>"#)
+    })
+    .collect::<String>();
+    format!(
+        r#"<button class="theme-control" id="theme-cycle" type="button" aria-label="Change color theme" hidden><span class="theme-art" aria-hidden="true">{icons}</span><span class="theme-steps" aria-hidden="true"><i></i><i></i><i></i><i></i></span></button>"#
+    )
 }
 
 fn shell(

@@ -1,22 +1,33 @@
 import './site.css';
 import type { EmbedMount } from '@brand/embeds';
 
-const themes = ['day', 'night', 'forest', 'sunset'] as const;
-const select = document.querySelector<HTMLSelectElement>('#theme-select');
-const control = document.querySelector<HTMLElement>('.theme-control');
+const themes = [
+  { id: 'day', label: 'Day' },
+  { id: 'night', label: 'Night' },
+  { id: 'forest', label: 'Foggy forest' },
+  { id: 'sunset', label: 'Evening sunset' },
+] as const;
+const control = document.querySelector<HTMLButtonElement>('#theme-cycle');
 
 function applyTheme(value: string) {
-  if (!themes.some(theme => theme === value)) return;
+  const index = themes.findIndex(theme => theme.id === value);
+  if (index < 0) return;
   document.documentElement.dataset.theme = value;
-  if (select) select.value = value;
+  const current = themes[index];
+  const next = themes[(index + 1) % themes.length];
+  const label = `${current.label} theme (${index + 1} of ${themes.length}). Switch to ${next.label}.`;
+  control?.setAttribute('aria-label', label);
+  control?.setAttribute('title', label);
 }
 
-if (select && control) {
+if (control) {
   applyTheme(document.documentElement.dataset.theme ?? 'day');
   control.hidden = false;
-  select.addEventListener('change', () => {
-    applyTheme(select.value);
-    try { localStorage.setItem('brand-theme', select.value); } catch { /* Storage can be disabled. */ }
+  control.addEventListener('click', () => {
+    const index = themes.findIndex(theme => theme.id === document.documentElement.dataset.theme);
+    const next = themes[(index + 1) % themes.length];
+    applyTheme(next.id);
+    try { localStorage.setItem('brand-theme', next.id); } catch { /* Storage can be disabled. */ }
   });
   window.addEventListener('storage', event => {
     if (event.key === 'brand-theme' && event.newValue) applyTheme(event.newValue);

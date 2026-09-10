@@ -196,7 +196,7 @@ cargo run -- build --drafts              # Include drafts for local review
 cargo run -- --config other.toml build   # Alternate configuration
 ```
 
-The default theme is `day`; choices are `day`, `night`, `forest`, and `sunset`. The single native select near the top shows the current label and a four-dot state indicator. Preferences persist locally and synchronize across tabs when browser storage is available. Without JavaScript, all writing and navigation still work in the configured theme.
+The default theme is `day`; choices cycle through `day`, `night`, `forest`, and `sunset`. A single button near the top cycles on click, Enter, or Space. Its colored [Lucide](https://lucide.dev/) icon shows a sun, moon, tree, or sunset, with four small position markers underneath. Theme names appear only in the hover tooltip and accessible label. Four SVGs are included locally with their upstream license; no icon font or external request is needed. Preferences persist locally and synchronize across tabs when browser storage is available. Without JavaScript, all writing and navigation still work in the configured theme.
 
 The output directory must be a dedicated relative directory inside the config's project. The builder refuses source-directory overlaps, symlinks, and nonempty output it does not own. It renders into a temporary staging directory, then replaces output after compilation succeeds. Failed builds preserve the prior output; successful rebuilds remove stale generated files.
 
