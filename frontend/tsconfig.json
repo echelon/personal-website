@@ -7,8 +7,12 @@
     "strict": true,
     "noEmit": true,
     "skipLibCheck": true,
+    "types": [],
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": { "@brand/embeds": ["libs/embeds/src/index.ts"] }
   },
-  "include": ["libs/**/*.ts", "../articles/**/*.ts"]
+  "include": ["libs/**/*.ts", "libs/**/*.tsx", "../articles/**/*.ts", "../articles/**/*.tsx"]
 }

@@ -132,17 +132,22 @@ pub fn build(config_path: &Path, drafts: bool) -> Result<()> {
     let manifest = temp.path().join("frontend-plan.json");
     fs::write(&manifest, serde_json::to_vec_pretty(&plan)?)?;
     let status = Command::new("node")
-        .arg(config.build.frontend_dir.join("tools/build.mjs"))
+        .arg(config.build.frontend_dir.join("tools/build.ts"))
         .arg("--manifest")
         .arg(&manifest)
         .current_dir(&config.build.frontend_dir)
         .status()
-        .context("Cannot start Node.js. Install Node 22+ and run npm ci in frontend/")?;
+        .context("Cannot start Node.js. Install Node 22.18+ or 24+ and run npm ci in frontend/")?;
     ensure!(
         status.success(),
         "Frontend compilation failed; previous output is unchanged"
     );
-    for required in ["assets/site.js", "assets/site.css", "assets/favicon.svg"] {
+    for required in [
+        "assets/site.js",
+        "assets/theme-init.js",
+        "assets/site.css",
+        "assets/favicon.svg",
+    ] {
         ensure!(
             staging.join(required).is_file(),
             "Frontend did not emit {required}"

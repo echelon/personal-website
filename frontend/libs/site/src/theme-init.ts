@@ -1,16 +1,10 @@
-// Included inline by Rust before the stylesheet to choose the theme before paint.
-// This is also the single source for the picker order and preference resolution.
-(() => {
-  const themes = [
-    { id: 'day', label: 'Day' },
-    { id: 'sunset', label: 'Evening sunset' },
-    { id: 'forest', label: 'Foggy forest' },
-    { id: 'rain', label: 'Rain' },
-    { id: 'night', label: 'Night' },
-  ];
-  const isTheme = value => themes.some(theme => theme.id === value);
+import { themes, type ThemeId } from './theme.ts';
 
-  function readSavedTheme() {
+// Compiled to a classic script loaded before CSS to choose the theme before paint.
+(() => {
+  const isTheme = (value: unknown): value is ThemeId => themes.some(theme => theme.id === value);
+
+  function readSavedTheme(): ThemeId | undefined {
     try {
       for (const part of document.cookie.split(';')) {
         const cookie = part.trim();
@@ -22,7 +16,7 @@
     return undefined;
   }
 
-  function saveTheme(value) {
+  function saveTheme(value: ThemeId): void {
     if (!isTheme(value)) return;
     try {
       const secure = window.location.protocol === 'https:' ? '; Secure' : '';
@@ -30,7 +24,7 @@
     } catch { /* The choice still works for the current page when cookies are blocked. */ }
   }
 
-  function resolveTheme() {
+  function resolveTheme(): ThemeId {
     const saved = readSavedTheme();
     if (saved) return saved;
     try {

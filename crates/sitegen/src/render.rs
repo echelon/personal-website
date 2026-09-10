@@ -92,7 +92,7 @@ fn shell(
 <meta name="twitter:description" content="{description}">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
-<script>{theme_init}</script>
+<script src="/assets/theme-init.js"></script>
 <link rel="stylesheet" href="/assets/site.css">
 <script type="module" src="/assets/site.js"></script>
 {extra_head}
@@ -105,7 +105,6 @@ fn shell(
 </html>
 "##,
         theme = site.default_theme,
-        theme_init = include_str!("../../../frontend/libs/site/src/theme-init.js"),
         name = escape(&site.name),
         theme_control = theme_control(),
         og_type = if class == "article-page" {

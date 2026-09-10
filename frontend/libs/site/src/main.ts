@@ -1,17 +1,6 @@
 import './site.css';
 import type { EmbedMount } from '@brand/embeds';
-
-type ThemeId = 'day' | 'sunset' | 'forest' | 'rain' | 'night';
-declare global {
-  interface Window {
-    brandTheme: {
-      themes: ReadonlyArray<{ id: ThemeId; label: string }>;
-      readSavedTheme(): ThemeId | undefined;
-      saveTheme(value: ThemeId): void;
-      resolveTheme(): ThemeId;
-    };
-  }
-}
+import type {} from './theme.ts';
 const preferences = window.brandTheme;
 const themes = preferences.themes;
 const control = document.querySelector<HTMLButtonElement>('#theme-cycle');

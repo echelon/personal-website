@@ -2,12 +2,13 @@
   "name": "brand-frontend",
   "private": true,
   "type": "module",
-  "engines": { "node": ">=22" },
+  "engines": { "node": "^22.18.0 || >=24.0.0" },
   "scripts": {
     "build": "nx run site:build",
-    "check": "nx run-many -t typecheck && node --test tools/*.test.mjs",
-    "dev": "node tools/dev.mjs",
-    "preview": "node tools/serve.mjs"
+    "check": "nx run-many -t typecheck && npm test",
+    "test": "node --test tools/*.test.ts",
+    "dev": "node tools/dev.ts",
+    "preview": "node tools/serve.ts"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",

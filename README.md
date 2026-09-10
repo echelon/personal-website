@@ -4,7 +4,7 @@ A small Rust static-site generator for a personal homepage and occasional articl
 
 ## Quick start
 
-Install Rust through rustup and Node.js 22 or newer (24 is used in CI and Netlify). The Rust toolchain is pinned in `rust-toolchain.toml`.
+Install Rust through rustup and Node.js 22.18+ or 24+ (24 is used in CI and Netlify). Node runs the TypeScript tools and tests directly using native type stripping; no separate script runner is needed. The Rust toolchain is pinned in `rust-toolchain.toml`.
 
 ```sh
 npm ci --prefix frontend
@@ -18,9 +18,9 @@ Open **http://127.0.0.1:4173**. For rebuilds when articles, Rust, styles, or scr
 npm run dev --prefix frontend
 ```
 
-Refresh the page after a successful rebuild. The preview stays on the last successful build if an edit fails. `PORT=4000` changes the preview port. The dev helper uses this repository's default paths; for a custom output folder, build with your config and pass the output to `node frontend/tools/serve.mjs path/to/output`.
+Refresh the page after a successful rebuild. The preview stays on the last successful build if an edit fails. `PORT=4000` changes the preview port. The dev helper uses this repository's default paths; for a custom output folder, build with your config and pass the output to `node frontend/tools/serve.ts path/to/output`.
 
-The production build can also run through Nx:
+The production build can also run through Nx. Both commands run the TypeScript checker before bundling browser assets:
 
 ```sh
 npm run build --prefix frontend
@@ -40,6 +40,8 @@ config.toml                  Site identity and build settings
 build/                       Generated static site (ignored by Git)
 netlify.toml                 Build command, publish directory, response headers
 ```
+
+All application code, build/dev/preview tools, and Node tests are authored in TypeScript. Browser code uses `frontend/tsconfig.json`; Node tooling and tests use `frontend/tsconfig.tools.json`. Only generated browser bundles and prebuilt third-party/Wasm app artifacts use JavaScript.
 
 ## Writing an article
 
@@ -158,7 +160,7 @@ export default mount;
 
 The default export may be async. It receives an isolated root element and a live reduced-motion `MediaQueryList`. The example library provides a labeled slider. Entries are bundled by [esbuild](https://esbuild.github.io/api/), with ESM splitting and local npm imports. Imported CSS is emitted and linked only on the owning article. A missing default export or compilation error fails the build. Runtime errors restore the textual fallback and leave the article readable.
 
-Embeds may use `.ts`, `.tsx`, `.js`, `.jsx`, or `.mjs`. Add any framework dependencies to `frontend/package.json` if you choose to use them; React is not required by the site. The alias `@brand/embeds` points to the shared Nx library. `npm run check --prefix frontend` type-checks the repository's TypeScript articles; esbuild itself transpiles without type-checking.
+Author embeds in `.ts` or `.tsx`. Add any framework dependencies to `frontend/package.json` if you choose to use them; React is not required by the site. The alias `@brand/embeds` points to the shared Nx library. Every build type-checks browser code, tools, tests, and TypeScript embed entries, including those from an alternate article directory, before esbuild emits JavaScript. `npm run check --prefix frontend` runs type checking and the Node test suite independently of a site build.
 
 ### Standalone apps and future Rust/Wasm
 
@@ -198,7 +200,7 @@ cargo run -- --config other.toml build   # Alternate configuration
 
 The picker cycles **Day → Sunset → Forest → Rain → Night** (Light → R → G → B → Dark). A single button cycles on click, Enter, or Space. Its colored [Lucide](https://lucide.dev/) icon shows a sun, flower (`flower-2`), tree, windblown rain cloud, or moon, with five small position markers underneath. Rain is a subdued light blue-gray palette. Theme names appear only in the hover tooltip and accessible label. Five SVGs are included locally with their upstream license; no icon font or external request is needed.
 
-Before the first paint, the site chooses the visitor's theme in this order:
+The build compiles `theme-init.ts` into a self-contained classic script at `/assets/theme-init.js`. HTML loads it synchronously before the stylesheet, so it chooses the visitor's theme before the first paint, in this order:
 
 1. A valid `brand-theme` cookie saved by a previous picker click.
 2. Night if the browser explicitly reports a dark preference.
@@ -235,6 +237,6 @@ npm run check --prefix frontend
 npm run build --prefix frontend
 ```
 
-Rust tests cover metadata, title inference, date ordering, URLs, media, Markdown features, drafts, output safety, and real esbuild compilation with failure recovery. Node tests cover theme ordering, cookie/browser/time precedence, all five palettes' contrast, clean preview routes, HTTP video ranges, and Wasm MIME types. CI runs these checks and the production build.
+Rust tests cover metadata, title inference, date ordering, URLs, media, Markdown features, drafts, output safety, theme script loading order, and real compilation with syntax/type error recovery. TypeScript tests cover the compiler manifest, executable production bundles, the absence of bare JavaScript source, theme ordering, cookie/browser/time precedence, all five palettes' contrast, clean preview routes, HTTP video ranges, and Wasm MIME types. Run just these tests with `npm test --prefix frontend`. CI runs all checks and the production build.
 
 Tests generate temporary content outside the article directory and remove it afterward. No demo articles or media are included in the repository or production output.

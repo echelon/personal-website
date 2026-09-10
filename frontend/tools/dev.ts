@@ -1,11 +1,15 @@
-import { spawn } from 'node:child_process';
+import { spawn, type ChildProcess } from 'node:child_process';
+import type { Server } from 'node:http';
 import { watch } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { createStaticServer } from './serve.mjs';
+import { createStaticServer } from './serve.ts';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
-let running = false, pending = false, timer, child, server;
+let running = false, pending = false;
+let timer: ReturnType<typeof setTimeout> | undefined;
+let child: ChildProcess | undefined;
+let server: Server | undefined;
 let stopping = false;
 function rebuild() {
   if (stopping) return;
@@ -25,11 +29,11 @@ function rebuild() {
     if (pending) { pending = false; rebuild(); }
   });
 }
-const watchers = ['articles', 'crates', 'frontend/libs', 'frontend/tools', 'config.toml', 'Cargo.toml', 'frontend/tsconfig.json']
+const watchers = ['articles', 'crates', 'frontend/libs', 'frontend/tools', 'config.toml', 'Cargo.toml', 'frontend/tsconfig.json', 'frontend/tsconfig.tools.json']
   .map(path => watch(resolve(root, path), { recursive: true }, () => {
     clearTimeout(timer); timer = setTimeout(rebuild, 180);
   }));
-for (const signal of ['SIGINT', 'SIGTERM']) {
+for (const signal of ['SIGINT', 'SIGTERM'] as const) {
   process.on(signal, () => {
     stopping = true; clearTimeout(timer);
     watchers.forEach(watcher => watcher.close());

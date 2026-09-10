@@ -6,29 +6,45 @@ import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
 
 const source = fileURLToPath(new URL('../libs/site/src/main.ts', import.meta.url));
-const initSource = await readFile(new URL('../libs/site/src/theme-init.js', import.meta.url), 'utf8');
+const initializer = await build({
+  entryPoints: [fileURLToPath(new URL('../libs/site/src/theme-init.ts', import.meta.url))],
+  bundle: true, write: false, format: 'iife', logLevel: 'silent',
+});
+const initSource = initializer.outputFiles[0].text;
 const { outputFiles } = await build({
   entryPoints: [source], bundle: true, write: false, format: 'iife',
   loader: { '.css': 'empty' }, logLevel: 'silent',
 });
 
-function themeHarness({ cookie = '', preference, hour = 12, cookiesBlocked = false, mediaUnavailable = false, clockUnavailable = false, protocol = 'https:' } = {}) {
-  const buttonEvents = {}, windowEvents = {}, writes = [];
+interface ThemeHarnessOptions {
+  cookie?: string;
+  preference?: 'light' | 'dark';
+  hour?: number;
+  cookiesBlocked?: boolean;
+  mediaUnavailable?: boolean;
+  clockUnavailable?: boolean;
+  protocol?: string;
+}
+
+function themeHarness({ cookie = '', preference, hour = 12, cookiesBlocked = false, mediaUnavailable = false, clockUnavailable = false, protocol = 'https:' }: ThemeHarnessOptions = {}) {
+  const buttonEvents: Record<string, () => void> = {};
+  const windowEvents: Record<string, () => void> = {};
+  const writes: string[] = [];
   let cookieJar = cookie;
   const control = {
-    hidden: true, attributes: {},
-    setAttribute(name, value) { this.attributes[name] = value; },
-    addEventListener: (event, listener) => { buttonEvents[event] = listener; },
+    hidden: true, attributes: {} as Record<string, string>,
+    setAttribute(name: string, value: string) { this.attributes[name] = value; },
+    addEventListener: (event: string, listener: () => void) => { buttonEvents[event] = listener; },
   };
   const document = {
     documentElement: { dataset: { theme: 'day' } },
-    querySelector: selector => selector === '#theme-cycle' ? control : null,
+    querySelector: (selector: string) => selector === '#theme-cycle' ? control : null,
     querySelectorAll: () => [],
     get cookie() {
       if (cookiesBlocked) throw new Error('Cookies blocked');
       return cookieJar;
     },
-    set cookie(value) {
+    set cookie(value: string) {
       if (cookiesBlocked) throw new Error('Cookies blocked');
       writes.push(value);
       cookieJar = value.split(';')[0];
@@ -36,22 +52,22 @@ function themeHarness({ cookie = '', preference, hour = 12, cookiesBlocked = fal
   };
   const window = {
     location: { protocol },
-    matchMedia: query => {
+    matchMedia: (query: string) => {
       if (mediaUnavailable && query.includes('color-scheme')) throw new Error('Unavailable');
       return { matches: query === `(prefers-color-scheme: ${preference})` };
     },
-    addEventListener: (event, listener) => { windowEvents[event] = listener; },
+    addEventListener: (event: string, listener: () => void) => { windowEvents[event] = listener; },
   };
   class LocalDate extends Date {
     getHours() { if (clockUnavailable) throw new Error('Clock unavailable'); return hour; }
-    getUTCHours() { throw new Error('Theme must use the local timezone, not UTC'); }
+    getUTCHours(): number { throw new Error('Theme must use the local timezone, not UTC'); }
   }
   const context = vm.createContext({ document, window, Date: LocalDate, console });
   vm.runInContext(initSource, context);
   const initialTheme = document.documentElement.dataset.theme;
   vm.runInContext(outputFiles[0].text, context);
   return { control, document, window, buttonEvents, windowEvents, writes, initialTheme,
-    setCookie(value) { cookieJar = value; } };
+    setCookie(value: string) { cookieJar = value; } };
 }
 
 test('theme button cycles Light → R → G → B → Dark, wraps, and writes a preference cookie', () => {
@@ -86,7 +102,7 @@ test('explicit dark wins over the clock, but reported light falls through to the
 });
 
 test('local clock chooses Day from 07:00 to 19:00 and Night otherwise', () => {
-  for (const [hour, theme] of [[0, 'night'], [6, 'night'], [7, 'day'], [12, 'day'], [18, 'day'], [19, 'night'], [23, 'night']]) {
+  for (const [hour, theme] of [[0, 'night'], [6, 'night'], [7, 'day'], [12, 'day'], [18, 'day'], [19, 'night'], [23, 'night']] as const) {
     const harness = themeHarness({ hour });
     assert.equal(harness.initialTheme, theme, `At local hour ${hour}`);
     assert.deepEqual(harness.writes, [], 'Automatic defaults must not become explicit preferences');
@@ -123,12 +139,14 @@ test('localhost HTTP previews save a cookie without the HTTPS-only flag', () => 
   assert.equal(harness.writes[0], 'brand-theme=sunset; Path=/; Max-Age=31536000; SameSite=Lax');
 });
 
-function luminance(hex) {
-  const components = hex.match(/[a-f\d]{2}/gi).map(v => parseInt(v, 16) / 255)
+function luminance(hex: string): number {
+  const parts = hex.match(/[a-f\d]{2}/gi);
+  assert.ok(parts && parts.length === 3, `Invalid color: ${hex}`);
+  const components = parts.map(v => parseInt(v, 16) / 255)
     .map(v => v <= .04045 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4);
   return components[0] * .2126 + components[1] * .7152 + components[2] * .0722;
 }
-function contrast(a, b) {
+function contrast(a: string, b: string): number {
   const values = [luminance(a), luminance(b)].sort((x, y) => y - x);
   return (values[0] + .05) / (values[1] + .05);
 }
@@ -136,7 +154,9 @@ function contrast(a, b) {
 test('all five palettes meet text, icon, and focus contrast', async () => {
   const css = await readFile(new URL('../libs/site/src/site.css', import.meta.url), 'utf8');
   for (const theme of ['day', 'sunset', 'forest', 'rain', 'night']) {
-    const body = css.match(new RegExp(`\\[data-theme="${theme}"\\] \\{([^}]+)\\}`))[1];
+    const palette = css.match(new RegExp(`\\[data-theme="${theme}"\\] \\{([^}]+)\\}`));
+    assert.ok(palette, `Missing palette ${theme}`);
+    const body = palette[1];
     const colors = Object.fromEntries([...body.matchAll(/--([a-z-]+):\s*(#[a-f\d]{6})/gi)].map(m => [m[1], m[2]]));
     for (const foreground of ['ink', 'muted', 'accent']) {
       for (const background of ['paper', 'surface']) {

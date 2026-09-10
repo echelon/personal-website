@@ -11,7 +11,7 @@
     },
     "typecheck": {
       "executor": "nx:run-commands",
-      "options": { "command": "tsc --project tsconfig.json" }
+      "options": { "command": "tsc --project tsconfig.json && tsc --project tsconfig.tools.json" }
     }
   }
 }

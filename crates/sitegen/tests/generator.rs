@@ -307,6 +307,19 @@ fn real_build_compiles_embeds_copies_media_and_preserves_previous_output_on_fail
     sitegen::build(&config, false).unwrap();
     let page_path = f.root().join("public/article/demo/index.html");
     let first_page = fs::read_to_string(&page_path).unwrap();
+    let theme_script = "<script src=\"/assets/theme-init.js\"></script>";
+    for page in [
+        "index.html",
+        "articles/index.html",
+        "404.html",
+        "article/demo/index.html",
+    ] {
+        let html = fs::read_to_string(f.root().join("public").join(page)).unwrap();
+        assert!(html.find(theme_script).unwrap() < html.find("<link rel=\"stylesheet\"").unwrap());
+        assert!(!html.contains("<script>"));
+        assert!(!html.contains("src=\"/assets/theme-init.ts\""));
+    }
+    assert!(f.root().join("public/assets/theme-init.js").is_file());
     assert!(first_page.contains("/article/demo/_embeds/1.css"));
     assert!(f.root().join("public/article/demo/_embeds/1.js").is_file());
     assert!(
@@ -317,6 +330,15 @@ fn real_build_compiles_embeds_copies_media_and_preserves_previous_output_on_fail
     assert!(!f.root().join("public/article/draft").exists());
     f.put("public/stale.html", "old generated file");
     f.put("articles/demo/app.ts", "this is not valid TypeScript !!!");
+    assert!(sitegen::build(&config, false).is_err());
+    assert_eq!(fs::read_to_string(&page_path).unwrap(), first_page);
+    assert!(f.root().join("public/stale.html").exists());
+    // esbuild would silently transpile this valid syntax. The Rust build must
+    // run the type checker, including entries outside the default articles root.
+    f.put(
+        "articles/demo/app.ts",
+        "const message: number = 'wrong type'; export default () => message;",
+    );
     assert!(sitegen::build(&config, false).is_err());
     assert_eq!(fs::read_to_string(&page_path).unwrap(), first_page);
     assert!(f.root().join("public/stale.html").exists());

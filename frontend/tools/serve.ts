@@ -4,7 +4,7 @@ import { readFile, stat, realpath } from 'node:fs/promises';
 import { dirname, extname, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const types = {
+const types: Readonly<Record<string, string>> = {
   '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8',
   '.js': 'text/javascript; charset=utf-8', '.mjs': 'text/javascript; charset=utf-8',
   '.json': 'application/json', '.svg': 'image/svg+xml', '.jpg': 'image/jpeg',
@@ -15,15 +15,15 @@ const types = {
 };
 
 /** Serve clean static routes, correct MIME types, and video byte ranges. */
-export function createStaticServer(directory) {
+export function createStaticServer(directory: string) {
   const root = resolve(directory);
   return createServer(async (request, response) => {
     try {
-      if (!['GET', 'HEAD'].includes(request.method)) {
+      if (!['GET', 'HEAD'].includes(request.method ?? '')) {
         response.writeHead(405, { Allow: 'GET, HEAD' }).end(); return;
       }
       let pathname;
-      try { pathname = decodeURIComponent(new URL(request.url, 'http://localhost').pathname); }
+      try { pathname = decodeURIComponent(new URL(request.url ?? '/', 'http://localhost').pathname); }
       catch { response.writeHead(400).end('Bad request'); return; }
       let file = resolve(root, '.' + pathname);
       if (!file.startsWith(root + sep) && file !== root || pathname.includes('\0')) {
@@ -45,7 +45,7 @@ export function createStaticServer(directory) {
         response.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8' });
         response.end(request.method === 'HEAD' ? undefined : body); return;
       }
-      const headers = {
+      const headers: Record<string, string> = {
         'Content-Type': types[extname(file)] ?? 'application/octet-stream',
         'Cache-Control': 'no-cache', 'Accept-Ranges': 'bytes',
         'X-Content-Type-Options': 'nosniff',

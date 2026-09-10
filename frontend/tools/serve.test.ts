@@ -4,7 +4,7 @@ import { mkdtemp, mkdir, writeFile, rm, symlink } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { once } from 'node:events';
-import { createStaticServer } from './serve.mjs';
+import { createStaticServer } from './serve.ts';
 
 test('preview serves clean routes, media ranges, Wasm, and real 404s', async t => {
   const temp = await mkdtemp(join(tmpdir(), 'brand-preview-'));
@@ -19,10 +19,12 @@ test('preview serves clean routes, media ranges, Wasm, and real 404s', async t =
   await writeFile(join(temp, 'outside.txt'), 'outside');
   await symlink(join(temp, 'outside.txt'), join(root, 'escape.txt'));
   const server = createStaticServer(root);
-  t.after(async () => { server.closeAllConnections(); await new Promise(resolve => server.close(resolve)); await rm(temp, { recursive: true, force: true }); });
+  t.after(async () => { server.closeAllConnections(); await new Promise<void>(resolve => server.close(() => resolve())); await rm(temp, { recursive: true, force: true }); });
   server.listen(0, '127.0.0.1');
   await once(server, 'listening');
-  const url = `http://127.0.0.1:${server.address().port}`;
+  const address = server.address();
+  assert.ok(address && typeof address !== 'string');
+  const url = `http://127.0.0.1:${address.port}`;
   for (const path of ['/article/demo', '/article/demo/']) {
     const response = await fetch(url + path);
     assert.equal(response.status, 200);
