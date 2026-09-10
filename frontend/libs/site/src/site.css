@@ -1,4 +1,4 @@
-/* All four palettes use luminance and labels, never hue alone, for meaning. */
+/* Palettes use luminance, icon shapes, and labels, never hue alone, for meaning. */
 :root, [data-theme="day"] {
   color-scheme: light;
   --paper: #eee6d8;
@@ -47,6 +47,18 @@
   --selection: #e3b29b;
   --theme-icon: #a4472c;
 }
+[data-theme="rain"] {
+  color-scheme: light;
+  --paper: #ccd4d9;
+  --ink: #2b3842;
+  --muted: #445460;
+  --line: #a1b0bb;
+  --surface: #bdc8d0;
+  --accent: #345568;
+  --focus: #345568;
+  --selection: #afc0cb;
+  --theme-icon: #3e6075;
+}
 :root {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-synthesis: none;
@@ -82,13 +94,15 @@ button { min-height: 44px; }
 .theme-icon { display: none; }
 .theme-icon svg { display: block; width: 24px; height: 24px; stroke-width: 1.75; }
 [data-theme="day"] [data-theme-icon="day"], [data-theme="night"] [data-theme-icon="night"],
-[data-theme="forest"] [data-theme-icon="forest"], [data-theme="sunset"] [data-theme-icon="sunset"] { display: block; }
+[data-theme="forest"] [data-theme-icon="forest"], [data-theme="sunset"] [data-theme-icon="sunset"],
+[data-theme="rain"] [data-theme-icon="rain"] { display: block; }
 [data-theme-icon="day"] circle { fill: color-mix(in srgb, currentColor 18%, transparent); }
 [data-theme-icon="night"] path, [data-theme-icon="forest"] path:first-child { fill: color-mix(in srgb, currentColor 14%, transparent); }
-.theme-steps { display: flex; align-items: center; gap: 3px; height: 5px; pointer-events: none; }
+.theme-steps { display: flex; align-items: center; gap: 2px; height: 5px; pointer-events: none; }
 .theme-steps i { width: 4px; height: 4px; border: 1px solid var(--muted); border-radius: 50%; }
-[data-theme="day"] .theme-steps i:nth-child(1), [data-theme="night"] .theme-steps i:nth-child(2),
-[data-theme="forest"] .theme-steps i:nth-child(3), [data-theme="sunset"] .theme-steps i:nth-child(4) { width: 8px; border-radius: 3px; border-color: var(--theme-icon); background: var(--theme-icon); }
+[data-theme="day"] .theme-steps i:nth-child(1), [data-theme="sunset"] .theme-steps i:nth-child(2),
+[data-theme="forest"] .theme-steps i:nth-child(3), [data-theme="rain"] .theme-steps i:nth-child(4),
+[data-theme="night"] .theme-steps i:nth-child(5) { width: 7px; border-radius: 3px; border-color: var(--theme-icon); background: var(--theme-icon); }
 .home-main { max-width: 1200px; margin: 0 auto; padding: clamp(6rem, 18vh, 14rem) 4rem 8rem; }
 .home-main h1 { font-size: clamp(7rem, 15vw, 12rem); font-weight: 550; line-height: .98; letter-spacing: -.085em; margin: 0 0 3rem -.065em; }
 .home-links { display: flex; align-items: center; gap: 5rem; font-size: 1.125rem; }

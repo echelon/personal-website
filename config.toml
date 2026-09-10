@@ -6,7 +6,7 @@ title_append = "brand"
 home_title = "brand"
 articles_title = "Articles"
 description = "Articles by Brandon Thomas."
-default_theme = "day" # day | night | forest | sunset
+default_theme = "day" # No-JS fallback: day | sunset | forest | rain | night
 
 [build]
 articles_dir = "articles"

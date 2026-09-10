@@ -57,8 +57,9 @@ impl Config {
         );
         config.site.base_url = config.site.base_url.trim_end_matches('/').to_owned();
         ensure!(
-            ["day", "night", "forest", "sunset"].contains(&config.site.default_theme.as_str()),
-            "default_theme must be day, night, forest, or sunset"
+            ["day", "sunset", "forest", "rain", "night"]
+                .contains(&config.site.default_theme.as_str()),
+            "default_theme must be day, sunset, forest, rain, or night"
         );
         for (label, value) in [
             ("name", &config.site.name),

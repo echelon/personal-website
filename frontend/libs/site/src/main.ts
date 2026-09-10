@@ -1,12 +1,19 @@
 import './site.css';
 import type { EmbedMount } from '@brand/embeds';
 
-const themes = [
-  { id: 'day', label: 'Day' },
-  { id: 'night', label: 'Night' },
-  { id: 'forest', label: 'Foggy forest' },
-  { id: 'sunset', label: 'Evening sunset' },
-] as const;
+type ThemeId = 'day' | 'sunset' | 'forest' | 'rain' | 'night';
+declare global {
+  interface Window {
+    brandTheme: {
+      themes: ReadonlyArray<{ id: ThemeId; label: string }>;
+      readSavedTheme(): ThemeId | undefined;
+      saveTheme(value: ThemeId): void;
+      resolveTheme(): ThemeId;
+    };
+  }
+}
+const preferences = window.brandTheme;
+const themes = preferences.themes;
 const control = document.querySelector<HTMLButtonElement>('#theme-cycle');
 
 function applyTheme(value: string) {
@@ -27,10 +34,12 @@ if (control) {
     const index = themes.findIndex(theme => theme.id === document.documentElement.dataset.theme);
     const next = themes[(index + 1) % themes.length];
     applyTheme(next.id);
-    try { localStorage.setItem('brand-theme', next.id); } catch { /* Storage can be disabled. */ }
+    preferences.saveTheme(next.id);
   });
-  window.addEventListener('storage', event => {
-    if (event.key === 'brand-theme' && event.newValue) applyTheme(event.newValue);
+  // Cookies are shared between tabs. Refresh the label and palette on return.
+  window.addEventListener('focus', () => {
+    const saved = preferences.readSavedTheme();
+    if (saved) applyTheme(saved);
   });
 }
 

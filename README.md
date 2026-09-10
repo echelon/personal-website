@@ -1,6 +1,6 @@
 # brand.io
 
-A small Rust static-site generator for a personal homepage and occasional articles. All pages are rendered to HTML at build time. There is no application server, React runtime, or hydration requirement. TypeScript adds a four-theme selector and loads interactive figures only when they approach the viewport.
+A small Rust static-site generator for a personal homepage and occasional articles. All pages are rendered to HTML at build time. There is no application server, React runtime, or hydration requirement. TypeScript adds a five-theme selector and loads interactive figures only when they approach the viewport.
 
 ## Quick start
 
@@ -196,7 +196,18 @@ cargo run -- build --drafts              # Include drafts for local review
 cargo run -- --config other.toml build   # Alternate configuration
 ```
 
-The default theme is `day`; choices cycle through `day`, `night`, `forest`, and `sunset`. A single button near the top cycles on click, Enter, or Space. Its colored [Lucide](https://lucide.dev/) icon shows a sun, moon, tree, or sunset, with four small position markers underneath. Theme names appear only in the hover tooltip and accessible label. Four SVGs are included locally with their upstream license; no icon font or external request is needed. Preferences persist locally and synchronize across tabs when browser storage is available. Without JavaScript, all writing and navigation still work in the configured theme.
+The picker cycles **Day → Sunset → Forest → Rain → Night** (Light → R → G → B → Dark). A single button cycles on click, Enter, or Space. Its colored [Lucide](https://lucide.dev/) icon shows a sun, flower (`flower-2`), tree, windblown rain cloud, or moon, with five small position markers underneath. Rain is a subdued light blue-gray palette. Theme names appear only in the hover tooltip and accessible label. Five SVGs are included locally with their upstream license; no icon font or external request is needed.
+
+Before the first paint, the site chooses the visitor's theme in this order:
+
+1. A valid `brand-theme` cookie saved by a previous picker click.
+2. Night if the browser explicitly reports a dark preference.
+3. The visitor's local clock: Day from 07:00 until 19:00, otherwise Night.
+4. Day if none of those signals are available.
+
+Browsers commonly report light even when the visitor has not explicitly chosen a scheme; the platform does not distinguish that case. A reported light preference therefore falls through to the local clock. The clock uses the device's local timezone without requesting location access. See [prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-color-scheme).
+
+Each picker click saves a first-party cookie for one year with `Path=/`, `SameSite=Lax`, and `Secure` on HTTPS. Automatic browser/time choices do not set a cookie. Returning to a tab reads any saved cookie change. If cookies are blocked, the picker still works for that page. The old localStorage preference is no longer used. Without JavaScript, writing and navigation work in `site.default_theme`, which defaults to Day.
 
 The output directory must be a dedicated relative directory inside the config's project. The builder refuses source-directory overlaps, symlinks, and nonempty output it does not own. It renders into a temporary staging directory, then replaces output after compilation succeeds. Failed builds preserve the prior output; successful rebuilds remove stale generated files.
 
@@ -224,6 +235,6 @@ npm run check --prefix frontend
 npm run build --prefix frontend
 ```
 
-Rust tests cover metadata, title inference, date ordering, URLs, media, Markdown features, drafts, output safety, and real esbuild compilation with failure recovery. Node tests cover theme behavior, all four palettes' text contrast, clean preview routes, HTTP video ranges, and Wasm MIME types. CI runs these checks and the production build.
+Rust tests cover metadata, title inference, date ordering, URLs, media, Markdown features, drafts, output safety, and real esbuild compilation with failure recovery. Node tests cover theme ordering, cookie/browser/time precedence, all five palettes' contrast, clean preview routes, HTTP video ranges, and Wasm MIME types. CI runs these checks and the production build.
 
 Tests generate temporary content outside the article directory and remove it afterward. No demo articles or media are included in the repository or production output.

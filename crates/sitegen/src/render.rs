@@ -20,16 +20,20 @@ fn theme_control() -> String {
             include_str!("../../../frontend/libs/site/icons/sun.svg"),
         ),
         (
-            "night",
-            include_str!("../../../frontend/libs/site/icons/moon.svg"),
+            "sunset",
+            include_str!("../../../frontend/libs/site/icons/flower-2.svg"),
         ),
         (
             "forest",
             include_str!("../../../frontend/libs/site/icons/tree-pine.svg"),
         ),
         (
-            "sunset",
-            include_str!("../../../frontend/libs/site/icons/sunset.svg"),
+            "rain",
+            include_str!("../../../frontend/libs/site/icons/cloud-rain-wind.svg"),
+        ),
+        (
+            "night",
+            include_str!("../../../frontend/libs/site/icons/moon.svg"),
         ),
     ]
     .into_iter()
@@ -38,7 +42,7 @@ fn theme_control() -> String {
     })
     .collect::<String>();
     format!(
-        r#"<button class="theme-control" id="theme-cycle" type="button" aria-label="Change color theme" hidden><span class="theme-art" aria-hidden="true">{icons}</span><span class="theme-steps" aria-hidden="true"><i></i><i></i><i></i><i></i></span></button>"#
+        r#"<button class="theme-control" id="theme-cycle" type="button" aria-label="Change color theme" hidden><span class="theme-art" aria-hidden="true">{icons}</span><span class="theme-steps" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span></button>"#
     )
 }
 
@@ -88,7 +92,7 @@ fn shell(
 <meta name="twitter:description" content="{description}">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
-<script>try{{const t=localStorage.getItem('brand-theme');if(['day','night','forest','sunset'].includes(t))document.documentElement.dataset.theme=t}}catch{{}}</script>
+<script>{theme_init}</script>
 <link rel="stylesheet" href="/assets/site.css">
 <script type="module" src="/assets/site.js"></script>
 {extra_head}
@@ -101,6 +105,7 @@ fn shell(
 </html>
 "##,
         theme = site.default_theme,
+        theme_init = include_str!("../../../frontend/libs/site/src/theme-init.js"),
         name = escape(&site.name),
         theme_control = theme_control(),
         og_type = if class == "article-page" {

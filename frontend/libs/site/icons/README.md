@@ -1,4 +1,4 @@
-These four SVGs are vendored from [Lucide](https://lucide.dev/), retrieved from
+These five SVGs are vendored from [Lucide](https://lucide.dev/), retrieved from
 [`lucide-icons/lucide/icons`](https://github.com/lucide-icons/lucide/tree/main/icons)
 on 2026-09-10. Only whitespace is condensed; paths are unchanged.
 
