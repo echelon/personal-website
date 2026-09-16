@@ -6,34 +6,15 @@ tags = ["Privacy", "AI", "Technology"]
 draft = true
 +++
 
-We need a new word to describe today's sneakier new evolution of "watermarks":
+We need a new word to describe today's sneaky new evolution of "watermarks":
 
 > "Spymark"
 
-A **watermark** is ((add a concise definition here)). It's a cute little term.
+A **watermark** is a mark embedded in paper or media to assert ownership, identify an official source, or verify authenticity. It typically denotes a third party authority. It's a cute little term.
 
-A **spymark**, by contrast, is a hidden signal that forces your work disclose its author, origin, tools, or distribution history without meaningful control by you.
+A **spymark**, by contrast, is a hidden signal that forces your work disclose its origin, tools, or distribution history without meaningful control by you. It can map directly back to you, often without your knowledge.
 
-## A new word is needed
-
-Articulating this discussion requires a lot of shared context, and we can't keep having this front-loaded conversation over and over.
-
-Unless you're an uber-nerd, most people tire and zone out of this discourse.
-
-> "To speak the name is to control the thing." &mdash; Ursula K. Le Guin
-
-By creating a new word that captures the argument in two syllables, you collapse a salient and gain territory. You no longer have to waste energy establishing the facts.
-
-Ergo,
-
-- *Spy*- &mdash; clandestine signal, not attached as standard metadata
-
-- -*mark* &mdash; already shared with watermark in both use and etymology.
-
-Everything we have to say is immediately obvious. This is our *Rumpelstiltskin*.
-
-
-## Sneaky embeddings
+## Spymarking is sneaky
 
 Adding metadata to an MP3's metadata tags is easy,
 
@@ -47,6 +28,26 @@ fallback = "Compare spectrograms of the same LJ Speech excerpt unwatermarked and
 ```
 
 <small>Spectrograms from Wen et al. (2025), <a href="https://arxiv.org/abs/2503.19176">SoK: How Robust is Audio Watermarking in Generative AI models?</a> · <a href="https://sokaudiowm.github.io/">Original samples</a>. Plots retain the authors’ original scales.</small>
+
+## We need a new word
+
+Unless you're an uber-nerd like me, most ordinary people tire and zone out of this discourse. It's technical, it's boring.
+
+Articulating this discussion requires a lot of shared context, and we can't keep having this front-loaded conversation over and over and expect people to pay attention.
+
+> "To speak the name is to control the thing." &mdash; Ursula K. Le Guin
+
+By creating a new word that captures the argument in two syllables, you collapse a salient and gain territory. You no longer have to waste energy establishing the basic facts.
+
+Ergo,
+
+- *Spy*- &mdash; clandestine signal, not attached as standard metadata
+
+- -*mark* &mdash; already shared with watermark in both use and etymology.
+
+Everything we have to say is immediately obvious. This is our *Rumpelstiltskin*.
+
+
 
 ## Same word, different jobs
 
@@ -79,25 +80,10 @@ SynthID embeds signals into images, audio, and video. Its [text variant](https:/
 
 These signals are embedded in the content. Stripping a metadata field does not necessarily remove them. Some transformations preserve detection; others weaken it. Short or tightly constrained text is harder to mark reliably.
 
-## “No user ID” does not settle the privacy question
-
-A mark can disclose something about me without encoding my account number:
-
-- **My tools:** Put my name on a work, and a tool-origin signal reveals part of my process.
-- **My contribution:** AI involvement might mean translation or editing. Detection alone does not establish who originated the ideas or authored the whole work. [Documentation](https://support.claude.com/en/articles/16266773-how-claude-marks-ai-generated-content).
-- **My choices:** Publishing a work should not silently commit me to disclosing how I made it.
-
-These are passive signals: someone must obtain and inspect the output. They do not need to phone home to compromise privacy.
-
-Provenance and tracing have legitimate uses. Authors still deserve **clear notice, meaningful control, and a way to contest detection results**.
-
-If the job is to make my work tell on me, **spymark** is the more honest name.
-
-
-## Saving the world
+## Keeping the future free
 
 Imagine a future where every device is attested and every social media post is spymarked. It would be dangerously easy to hunt down anyone from a JPEG.
 
-That future is halfway between now and 1984.
+That future lies halfway between now and "1984". So let's work together to stay off that timeline, shall we?
 
-Let's stay off that timeline, shall we?
+Call a spymark what it is. A *spy* mark.

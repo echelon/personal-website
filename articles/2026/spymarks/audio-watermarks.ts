@@ -2,8 +2,10 @@ import type { EmbedMount } from '@brand/embeds';
 import './audio-watermarks.css';
 
 // Original LJ spectrograms: https://sokaudiowm.github.io/
+// Clean originals are verified against the authors' embedded PNGs; see media/audio-watermarks/SOURCES.txt.
+// Annotated copies remain in media/audio-watermarks/ if needed again.
 // Entries compile to _embeds/, alongside the article's copied media directory.
-const asset = (name: string) => new URL(`../media/audio-watermarks/${name}`, import.meta.url).href;
+const asset = (name: string) => new URL(`../media/audio-watermarks/clean/${name}`, import.meta.url).href;
 const examples = [
   ['unwatermarked', 'Unwatermarked'],
   ['timbre', 'Timbre'],
