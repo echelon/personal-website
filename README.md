@@ -18,7 +18,9 @@ Open **http://127.0.0.1:4173**. For rebuilds when articles, Rust, styles, or scr
 npm run dev --prefix frontend
 ```
 
-Refresh the page after a successful rebuild. The preview stays on the last successful build if an edit fails. `PORT=4000` changes the preview port. The dev helper uses this repository's default paths; for a custom output folder, build with your config and pass the output to `node frontend/tools/serve.ts path/to/output`.
+Saving Markdown, article media, frontend code, or generator sources rebuilds the site and automatically reloads connected browsers after a successful build. Drafts are included in local development. Invalid edits leave the last successful preview on screen; saving a fix resumes updates. Saves are debounced and builds run one at a time, with edits during a build queued for another build.
+
+`PORT=4000` changes the local port. A custom configuration works with `npm run dev --prefix frontend -- --config /path/to/config.toml`; changes to its source and output paths are picked up on save. The Rust watcher is enabled only by the optional `dev` Cargo feature. The dev server injects its reload script into HTTP responses, so production HTML and browser bundles contain no reload client, watcher, or event connection. `npm run preview --prefix frontend` remains a plain static preview without watching or injection.
 
 The production build can also run through Nx. Both commands run the TypeScript checker before bundling browser assets:
 
@@ -41,7 +43,7 @@ build/                       Generated static site (ignored by Git)
 netlify.toml                 Build command, publish directory, response headers
 ```
 
-All application code, build/dev/preview tools, and Node tests are authored in TypeScript. Browser code uses `frontend/tsconfig.json`; Node tooling and tests use `frontend/tsconfig.tools.json`. Only generated browser bundles and prebuilt third-party/Wasm app artifacts use JavaScript.
+The generator and file watcher are written in Rust. Browser code, frontend build/preview tools, the dev launcher, and Node tests are authored in TypeScript. Browser code uses `frontend/tsconfig.json`; Node tooling and tests use `frontend/tsconfig.tools.json`. Only generated browser bundles and prebuilt third-party/Wasm app artifacts use JavaScript.
 
 ## Writing an article
 
@@ -196,6 +198,7 @@ cargo run -- check                       # Validate without emitting files
 cargo run -- build                       # Build published articles
 cargo run -- build --drafts              # Include drafts for local review
 cargo run -- --config other.toml build   # Alternate configuration
+cargo run --features dev -- watch        # Rust watcher + rebuilds, without an HTTP server
 ```
 
 The picker cycles **Day → Sunset → Forest → Rain → Night** (Light → R → G → B → Dark). A single button cycles on click, Enter, or Space. Its colored [Lucide](https://lucide.dev/) icon shows a sun, flower (`flower-2`), tree, windblown rain cloud, or moon, with five small position markers underneath. Rain is a subdued light blue-gray palette. Theme names appear only in the hover tooltip and accessible label. Five SVGs are included locally with their upstream license; no icon font or external request is needed.
@@ -231,12 +234,12 @@ After installing frontend dependencies:
 
 ```sh
 cargo fmt --check
-cargo clippy --workspace --all-targets --locked -- -D warnings
-cargo test --workspace --locked
+cargo clippy --workspace --all-targets --all-features --locked -- -D warnings
+cargo test --workspace --all-features --locked
 npm run check --prefix frontend
 npm run build --prefix frontend
 ```
 
 Rust tests cover metadata, title inference, date ordering, URLs, media, Markdown features, drafts, output safety, theme script loading order, and real compilation with syntax/type error recovery. TypeScript tests cover the compiler manifest, executable production bundles, the absence of bare JavaScript source, theme ordering, cookie/browser/time precedence, all five palettes' contrast, clean preview routes, HTTP video ranges, and Wasm MIME types. Run just these tests with `npm test --prefix frontend`. CI runs all checks and the production build.
 
-Tests generate temporary content outside the article directory and remove it afterward. No demo articles or media are included in the repository or production output.
+Dev tests cover atomic saves, newly created/deleted articles, failed-build recovery, config changes, reload events, browser reconnects, and keeping generated files free of dev scripts. Tests generate temporary content outside the article directory and remove it afterward. Watcher implementation or dev-server changes require restarting `npm run dev`; generator and site-asset changes are rebuilt automatically.

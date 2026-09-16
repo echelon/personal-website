@@ -5,11 +5,16 @@ edition.workspace = true
 license.workspace = true
 rust-version.workspace = true
 
+[features]
+default = []
+dev = ["dep:notify"]
+
 [dependencies]
 anyhow.workspace = true
 chrono.workspace = true
 clap.workspace = true
 lol_html.workspace = true
+notify = { version = "8.2", optional = true }
 percent-encoding.workspace = true
 pulldown-cmark.workspace = true
 serde.workspace = true

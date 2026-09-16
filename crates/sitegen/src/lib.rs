@@ -2,6 +2,8 @@ pub mod article;
 pub mod config;
 pub mod markdown;
 pub mod render;
+#[cfg(feature = "dev")]
+pub mod watch;
 
 use std::{collections::HashMap, fs, path::Path, process::Command};
 

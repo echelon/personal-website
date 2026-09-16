@@ -13,6 +13,13 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Command {
+    /// Rebuild on local source changes, including draft articles (dev feature only).
+    #[cfg(feature = "dev")]
+    Watch {
+        /// Emit JSON status lines for the local development server.
+        #[arg(long)]
+        events: bool,
+    },
     /// Render articles, bundle the frontend, and safely replace the output.
     Build {
         /// Include articles marked draft = true.
@@ -29,6 +36,8 @@ enum Command {
 fn main() -> anyhow::Result<()> {
     let cli = Cli::parse();
     match cli.command {
+        #[cfg(feature = "dev")]
+        Command::Watch { events } => sitegen::watch::run(&cli.config, events),
         Command::Build { drafts } => sitegen::build(&cli.config, drafts),
         Command::Check { drafts } => sitegen::check(&cli.config, drafts),
     }

@@ -1,43 +1,64 @@
-import { spawn, type ChildProcess } from 'node:child_process';
-import type { Server } from 'node:http';
-import { watch } from 'node:fs';
+import { spawn } from 'node:child_process';
 import { dirname, resolve } from 'node:path';
+import { createInterface } from 'node:readline';
 import { fileURLToPath } from 'node:url';
 import { createStaticServer } from './serve.ts';
+import { LiveReload } from './live-reload.ts';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
-let running = false, pending = false;
-let timer: ReturnType<typeof setTimeout> | undefined;
-let child: ChildProcess | undefined;
-let server: Server | undefined;
-let stopping = false;
-function rebuild() {
+const liveReload = new LiveReload();
+let output = resolve(root, 'build');
+let listening = false, stopping = false;
+const server = createStaticServer(() => output, liveReload);
+const port = Number(process.env.PORT ?? 4173);
+if (!Number.isInteger(port) || port < 0 || port > 65535) throw new Error('PORT must be an integer between 0 and 65535');
+
+// A process group lets shutdown also stop an in-flight Cargo/Node build.
+const watcher = spawn('cargo', ['run', '--locked', '--features', 'dev', '--', 'watch', '--events', ...process.argv.slice(2)], {
+  cwd: root, stdio: ['ignore', 'pipe', 'inherit'], detached: process.platform !== 'win32',
+});
+const lines = createInterface({ input: watcher.stdout });
+
+function stop(code: number) {
   if (stopping) return;
-  if (running) { pending = true; return; }
-  running = true;
-  child = spawn('cargo', ['run', '--', 'build'], { cwd: root, stdio: 'inherit' });
-  child.on('error', error => { console.error(error); running = false; });
-  child.on('exit', code => {
-    running = false;
-    if (stopping) return;
-    if (code === 0 && !server) {
-      const port = Number(process.env.PORT ?? 4173);
-      server = createStaticServer(resolve(root, 'build'));
-      server.listen(port, '127.0.0.1', () => console.log(`Preview: http://127.0.0.1:${port} (refresh after edits)`));
+  stopping = true;
+  process.exitCode = code;
+  lines.close();
+  liveReload.close();
+  server.close();
+  server.closeAllConnections();
+  if (watcher.pid) {
+    try {
+      if (process.platform === 'win32') spawn('taskkill', ['/pid', String(watcher.pid), '/T', '/F'], { stdio: 'ignore' });
+      else process.kill(-watcher.pid, 'SIGTERM');
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== 'ESRCH') console.error(error);
     }
-    if (code !== 0) console.error('Build failed. The last successful preview is preserved.');
-    if (pending) { pending = false; rebuild(); }
-  });
+  }
 }
-const watchers = ['articles', 'crates', 'frontend/libs', 'frontend/tools', 'config.toml', 'Cargo.toml', 'frontend/tsconfig.json', 'frontend/tsconfig.tools.json']
-  .map(path => watch(resolve(root, path), { recursive: true }, () => {
-    clearTimeout(timer); timer = setTimeout(rebuild, 180);
-  }));
-for (const signal of ['SIGINT', 'SIGTERM'] as const) {
-  process.on(signal, () => {
-    stopping = true; clearTimeout(timer);
-    watchers.forEach(watcher => watcher.close());
-    child?.kill(signal); server?.close();
-  });
-}
-rebuild();
+
+lines.on('line', line => {
+  try {
+    const event: { event: string; output: string } = JSON.parse(line);
+    if (!['ready', 'building', 'built', 'failed'].includes(event.event) || typeof event.output !== 'string') throw new Error('Invalid watcher event');
+    if (event.event === 'ready') {
+      output = event.output;
+      if (!listening) {
+        listening = true;
+        server.listen(port, '127.0.0.1', () => {
+          const address = server.address();
+          if (address && typeof address !== 'string') console.log(`Dev: http://127.0.0.1:${address.port} (drafts + automatic reload)`);
+        });
+      }
+    } else if (event.event === 'built') {
+      output = event.output;
+      liveReload.publish();
+      console.log('Rebuilt; refreshing connected browsers.');
+    }
+  } catch (error) { console.error('Invalid Rust watcher output:', line, error); stop(1); }
+});
+server.on('error', error => { console.error(error); stop(1); });
+watcher.on('error', error => { console.error('Cannot start Rust watcher:', error); stop(1); });
+watcher.on('exit', code => { if (!stopping) stop(code ?? 1); });
+process.on('SIGINT', () => stop(0));
+process.on('SIGTERM', () => stop(0));
