@@ -10,36 +10,43 @@ We need a new word to describe today's sneakier new evolution of "watermarks":
 
 > "Spymark"
 
-A **watermark** is ((add a concise definition here)).
+A **watermark** is ((add a concise definition here)). It's a cute little term.
 
-By contrast, a **spymark** is a hidden signal that makes your work disclose its origin, tools, or distribution history without meaningful control by you.
+A **spymark**, by contrast, is a hidden signal that forces your work disclose its author, origin, tools, or distribution history without meaningful control by you.
 
 ## A new word is needed
 
-Articulating this discussion requires a lot of shared context, and we can't keep having this conversation over and over.
+Articulating this discussion requires a lot of shared context, and we can't keep having this front-loaded conversation over and over.
 
-People tire of this discourse.
+Unless you're an uber-nerd, most people tire and zone out of this discourse.
 
-By creating a new word that captures the argument in two syllables, you collapse the salient and gain territory.
+> "To speak the name is to control the thing." &mdash; Ursula K. Le Guin
+
+By creating a new word that captures the argument in two syllables, you collapse a salient and gain territory. You no longer have to waste energy establishing the facts.
+
+Ergo,
 
 - *Spy*- &mdash; clandestine signal, not attached as standard metadata
 
 - -*mark* &mdash; already shared with watermark in both use and etymology.
 
-It's immediately obvious.
+Everything we have to say is immediately obvious. This is our *Rumpelstiltskin*.
 
-((Describe why we need to declare a name for this))
 
 ## Sneaky embeddings
 
+Adding metadata to an MP3's metadata tags is easy,
+
+Meanwhile, an audio signal spymark is sneaky and doesn't necessarily announce its presence,
+
 ```embed
 src = "audio-watermarks.ts"
-title = "One voice, seven versions"
+title = "Audio watermark spectrograms"
 height = 450
-fallback = "Compare the same LJ Speech excerpt unwatermarked and with Timbre, AudioSeal, WavMark, FSVC, Patchwork, or Norm-Space. The authors’ sample page, linked below, has the audio and spectrograms."
+fallback = "Compare spectrograms of the same LJ Speech excerpt unwatermarked and with Timbre, AudioSeal, WavMark, FSVC, Patchwork, or Norm-Space. The authors’ original plots are linked below."
 ```
 
-<small>Audio and spectrograms from Wen et al. (2025), <a href="https://arxiv.org/abs/2503.19176">SoK: How Robust is Audio Watermarking in Generative AI models?</a> · <a href="https://sokaudiowm.github.io/">Original samples</a>. Plots retain the authors’ original scales.</small>
+<small>Spectrograms from Wen et al. (2025), <a href="https://arxiv.org/abs/2503.19176">SoK: How Robust is Audio Watermarking in Generative AI models?</a> · <a href="https://sokaudiowm.github.io/">Original samples</a>. Plots retain the authors’ original scales.</small>
 
 ## Same word, different jobs
 
@@ -85,3 +92,12 @@ These are passive signals: someone must obtain and inspect the output. They do n
 Provenance and tracing have legitimate uses. Authors still deserve **clear notice, meaningful control, and a way to contest detection results**.
 
 If the job is to make my work tell on me, **spymark** is the more honest name.
+
+
+## Saving the world
+
+Imagine a future where every device is attested and every social media post is spymarked. It would be dangerously easy to hunt down anyone from a JPEG.
+
+That future is halfway between now and 1984.
+
+Let's stay off that timeline, shall we?
