@@ -6,6 +6,16 @@ import { createStaticServer } from './serve.ts';
 import { LiveReload } from './live-reload.ts';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
+const args = process.argv.slice(2);
+if (args.includes('--help') || args.includes('-h')) {
+  console.log(`Usage: ./dev.sh [--config /path/to/config.toml]
+
+Starts Rust watch/builds and the local server with automatic browser refresh.
+Drafts are included. Press Ctrl-C to stop both.
+Set PORT to change the port (default 4173), e.g. PORT=4000 ./dev.sh.
+Relative config paths are resolved from the repository root.`);
+  process.exit(0);
+}
 const liveReload = new LiveReload();
 let output = resolve(root, 'build');
 let listening = false, stopping = false;
@@ -14,7 +24,7 @@ const port = Number(process.env.PORT ?? 4173);
 if (!Number.isInteger(port) || port < 0 || port > 65535) throw new Error('PORT must be an integer between 0 and 65535');
 
 // A process group lets shutdown also stop an in-flight Cargo/Node build.
-const watcher = spawn('cargo', ['run', '--locked', '--features', 'dev', '--', 'watch', '--events', ...process.argv.slice(2)], {
+const watcher = spawn('cargo', ['run', '--locked', '--features', 'dev', '--', 'watch', '--events', ...args], {
   cwd: root, stdio: ['ignore', 'pipe', 'inherit'], detached: process.platform !== 'win32',
 });
 const lines = createInterface({ input: watcher.stdout });
