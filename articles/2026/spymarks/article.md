@@ -6,76 +6,82 @@ tags = ["Privacy", "AI", "Technology"]
 draft = true
 +++
 
-We need a new word to describe today's insidious ((maybe a less harsh word than insidious, but still denotes devilishness)) new forms of "watermarks".
+We need a new word to describe today's sneakier new evolution of "watermarks":
 
 > "Spymark"
 
-They're like watermarks, but they *actively spy on you*.
+A **watermark** is ((add a concise definition here)).
 
-((need good skymark image here - perhaps a close up macro photo of printer dots))
+By contrast, a **spymark** is a hidden signal that makes your work disclose its origin, tools, or distribution history without meaningful control by you.
 
-Google SynthID, (fill in blanks, etc...)) are **SPYMARKS**.
+## A new word is needed
 
-“Watermark” covers authentication, attribution, and tracking. To challenge a particular use, we need a name that distinguishes it.
+Articulating this discussion requires a lot of shared context, and we can't keep having this conversation over and over.
 
-I propose **spymark**: an imperceptible mark imposed on creative output that lets others infer its origin, tools, or distribution history without meaningful control by the person publishing it.
+People tire of this discourse.
 
-The distinction concerns deployment: **what gets disclosed, to whom, and by whose choice.**
+By creating a new word that captures the argument in two syllables, you collapse the salient and gain territory.
 
-## One word, different jobs
+- *Spy*- &mdash; clandestine signal, not attached as standard metadata
 
-| Example | What the mark reveals |
-| --- | --- |
-| **[Paper, c. 1282](https://cameo.mfa.org/wiki/Watermark)** | Papermakers in Fabriano formed translucent designs by varying sheet thickness: manufacturer identification and evidence of quality or authenticity. |
-| **[U.S. $100 bill](https://www.uscurrency.gov/sites/default/files/downloadable-materials/files/en/100-2013-present-features-en.pdf)** | The Franklin portrait watermark helps authenticate the note. It is distinct from the unique serial number and does not identify the spender. |
-| **[Printer tracking dots](https://www.eff.org/deeplinks/2017/06/printer-tracking-dots-back-news)** | In 2005, EFF decoded Xerox DocuColor markings containing the printer serial number and printing date/time—information the author never typed. |
-| **[audiowmark](https://github.com/swesterfeld/audiowmark)** | Small changes to audio frequency-band amplitudes carry a 128-bit payload. Assign payloads to recipients, retain the mapping, and a recovered recording can identify the assigned recipient. |
+- -*mark* &mdash; already shared with watermark in both use and etymology.
 
-Identifying a device or assigned copy does not prove who printed or redistributed it. It does establish that a document or recording can disclose more than its author intended.
+It's immediately obvious.
 
-## SynthID embeds the signal in the output
+((Describe why we need to declare a name for this))
 
-Google introduced SynthID for images in 2023 and extended it to text and video in 2024. [Google's introduction](https://deepmind.google/discover/blog/identifying-ai-generated-images-with-synthid/), [text and video announcement](https://deepmind.google/blog/watermarking-ai-generated-text-and-video-with-synthid/).
+## Sneaky embeddings
 
-- **Images, audio, video:** imperceptible signals embedded in the media itself. [SynthID overview](https://deepmind.google/models/synthid/)
-- **Text:** statistical patterns produced through token selection during generation. No hidden characters or metadata field are required. [Technical explanation](https://deepmind.google/blog/watermarking-ai-generated-text-and-video-with-synthid/)
-- **C2PA:** signed provenance records; a separate mechanism that can accompany a watermark. [C2PA explainer](https://c2pa.org/specifications/specifications/2.3/explainer/Explainer.html)
+```embed
+src = "audio-watermarks.ts"
+title = "One voice, seven versions"
+height = 450
+fallback = "Compare the same LJ Speech excerpt unwatermarked and with Timbre, AudioSeal, WavMark, FSVC, Patchwork, or Norm-Space. The authors’ sample page, linked below, has the audio and spectrograms."
+```
 
-Some ordinary transformations preserve detection; substantial changes can weaken it. Short or tightly constrained text offers less room for a reliable signal. [Documented limits](https://deepmind.google/blog/watermarking-ai-generated-text-and-video-with-synthid/)
+<small>Audio and spectrograms from Wen et al. (2025), <a href="https://arxiv.org/abs/2503.19176">SoK: How Robust is Audio Watermarking in Generative AI models?</a> · <a href="https://sokaudiowm.github.io/">Original samples</a>. Plots retain the authors’ original scales.</small>
 
-## Who uses it?
+## Same word, different jobs
 
-Deployment snapshot from September 10, 2026:
+“Spymark” is my proposed category. These labels describe the use: what the mark reveals and who controls it. Click an image to enlarge it.
 
-| Company | Scope and status |
-| --- | --- |
-| **[Google](https://deepmind.google/models/synthid/)** | Supported Imagen, Veo, Lyria, and Gemini outputs across media and text. |
-| **[OpenAI](https://openai.com/index/advancing-content-provenance/)** | Generated images through ChatGPT, Codex, and the API; supported audio. |
-| **[Anthropic](https://www.anthropic.com/news/claude-text-watermark)** | A SynthID-Text variant in supported newer Claude models; older-model rollout remains in progress. |
-| **[NVIDIA](https://nvidianews.nvidia.com/news/nvidia-alphabet-and-google-collaborate-on-the-future-of-agentic-and-physical-ai)** | Announced SynthID partnership for Cosmos-generated video. |
-| **[Kakao / ElevenLabs](https://blog.google/innovation-and-ai/products/identifying-ai-generated-media-online/)** | Adoption announced by Google; universal product coverage is not established. |
+<div class="watermark-examples">
 
-These are product-specific deployments and announcements. OpenAI's image/audio adoption does **not** establish SynthID marking of ordinary ChatGPT text. [OpenAI's provenance FAQ](https://help.openai.com/en/articles/8912793-provenance-signals-content-credentials-synthid-in-openai-generated-content)
+| Item | Type | Description |
+| --- | --- | --- |
+| **[Traditional paper watermarks](https://en.wikipedia.org/wiki/Watermark)** <a class="example-image" href="media/paper-watermark.jpg" aria-label="Enlarge: Traditional paper watermarks"><img src="media/paper-watermark.jpg" alt="A KRONENPOST paper watermark visible through an 1898 letter from the Penig paper mill." width="500" height="631" loading="lazy" decoding="async"></a><small class="example-credit">Paper watermark<br><a href="https://commons.wikimedia.org/wiki/File:Patentpapierfabrik_zu_Penig,_Maschinen-Wasserzeichen_KRONENPOST_1898.tif">Commons · public domain</a></small> | **Watermark** | Designs formed through variations in paper thickness or density, often revealed by holding the sheet to light. Historically used to identify paper mills, paper quality, and manufacturing origins; they also help researchers date documents. Generally identify the **paper’s source**, rather than the person writing on it. |
+| **[Banknote watermarks](https://www.uscurrency.gov/denominations/100)** <a class="example-image" href="media/banknote-watermark.jpg" aria-label="Enlarge: Banknote watermarks"><img src="media/banknote-watermark.jpg" alt="The faint Benjamin Franklin watermark in a US 100-dollar note, circled in blue." width="200" height="200" loading="lazy" decoding="async"></a><small class="example-credit">Watermark detail<br><a href="https://www.uscurrency.gov/denominations/100">U.S. Currency Education Program</a></small> | **Watermark** | Embedded security images, such as the faint Franklin portrait in a U.S. $100 bill, help people check whether a note is genuine. The shared portrait watermark is distinct from the bill’s individual serial number: it is an **authentication feature**, not an identifier of whoever spends it. |
+| **[Stock-photo preview watermarks](https://helpx.adobe.com/stock/web/common-questions/usage-licensing.html)** <a class="example-image" href="media/stock-preview.png" aria-label="Enlarge: Stock-photo preview watermarks"><img src="media/stock-preview.png" alt="Adobe diagram showing a watermarked stock preview becoming a licensed image." width="547" height="321" loading="lazy" decoding="async"></a><small class="example-credit">Preview/licensing diagram<br><a href="https://helpx.adobe.com/photoshop/using/adobe-stock.html">Adobe</a></small> | **Watermark** | Visible overlays on preview images identify their commercial source and discourage unlicensed use. Adobe Stock, for example, supplies an image without the preview watermark after licensing. This is an overt licensing mechanism—not a hidden record of a particular customer’s activity. |
+| **[Digimarc image copyright marks](https://product.corel.com/help/PHOTO-PAINT/540223850/Main/EN/Documentation/Corel-PHOTO-PAINT-Detecting-embedding-Digimarc-watermarks.html)** <a class="example-image" href="media/digimarc-logo.svg" aria-label="Enlarge: Digimarc image copyright marks"><img src="media/digimarc-logo.svg" alt="Digimarc company wordmark." width="221" height="20" loading="lazy" decoding="async"></a><small class="example-credit">Company logo<br><a href="https://www.digimarc.com/">Digimarc</a></small> | **Watermark—creator attribution** | Subtle pixel changes encode copyright information and link an image to its creator’s contact profile. A photographer can deliberately use this to preserve attribution without a visible logo. A useful counterexample to “invisible means spying”: in this application, the creator chooses to identify **their own work**. |
+| **[Cinavia](https://www.verance.com/cinavia/)** <a class="example-image" href="media/cinavia-diagram.png" aria-label="Enlarge: Cinavia"><img src="media/cinavia-diagram.png" alt="Verance illustration of the Cinavia audio watermark being recognized by a disc player." width="768" height="485" loading="lazy" decoding="async"></a><small class="example-credit">Playback illustration<br><a href="https://www.verance.com/cinavia/">Verance</a></small> | **Watermark—copy control** | An inaudible mark embedded in a film’s soundtrack is recognized by compatible playback devices. Detection can trigger playback restrictions when the system identifies an unauthorized copy. Its documented purpose is **controlling playback**, rather than identifying the individual viewer—a different concern from personal tracing. |
+| **[Nielsen broadcast audio watermarks](https://www.rossvideo.com/products/signal-processing/audience-measurement/)** <a class="example-image" href="media/nielsen-encoder.jpg" aria-label="Enlarge: Nielsen broadcast audio watermarks"><img src="media/nielsen-encoder.jpg" alt="Ross Video NWE-3GA block diagram showing 16 channels of Nielsen watermarking." width="768" height="688" loading="lazy" decoding="async"></a><small class="example-credit">Encoder diagram<br><a href="https://www.rossvideo.com/products/signal-processing/opengear/processing-monitoring/nwe-3ga/">Ross Video</a></small> | **Watermark; part of a measurement system** | Hidden audio codes identify programming and its distributor. Household meters detect those codes to measure viewing. The important distinction: the **mark identifies the content**; pairing that detection with a household’s meter makes it useful for measuring audience behavior. The watermark does not independently report who heard it. |
+| **[audiowmark](https://github.com/swesterfeld/audiowmark)** <a class="example-image" href="media/audiowmark-project.png" aria-label="Enlarge: audiowmark"><img src="media/audiowmark-project.png" alt="GitHub repository card for Stefan Westerfeld’s audiowmark audio watermarking software." width="1200" height="600" loading="lazy" decoding="async"></a><small class="example-credit">Repository card<br><a href="https://github.com/swesterfeld/audiowmark">audiowmark / GitHub</a></small> | **Bit of both—depends on the payload** | Open-source software that embeds a usually inaudible **128-bit message** in audio. That message can identify a recording, but its documentation also describes assigning recipient-linked messages and using a database to match a recovered copy to its recipient. The latter is the clear **spymark application** under your terminology. |
+| **[Meta AudioSeal](https://github.com/facebookresearch/audioseal)** <a class="example-image" href="media/audioseal-diagram.png" aria-label="Enlarge: Meta AudioSeal"><img src="media/audioseal-diagram.png" alt="AudioSeal diagram showing original audio, watermark generation, speech editing, and detection." width="1920" height="384" loading="lazy" decoding="async"></a><small class="example-credit">System diagram<br><a href="https://github.com/facebookresearch/audioseal">Meta AudioSeal</a></small> | **Bit of both—depends on deployment** | An open-source method for embedding imperceptible marks in audio and detecting marked passages within longer or edited recordings, developed for AI-generated speech. It can support voluntary disclosure of synthetic audio; imposed marking can instead disclose a creator’s use of generation tools. The algorithm alone does not settle the consent question. |
+| **[Google SynthID](https://ai.google.dev/responsible/docs/safeguards/synthid)** <a class="example-image" href="media/synthid-illustration.jpg" aria-label="Enlarge: Google SynthID"><img src="media/synthid-illustration.jpg" alt="Google’s SynthID title graphic with an illustrated fingerprint." width="1200" height="630" loading="lazy" decoding="async"></a><small class="example-credit">Product illustration<br><a href="https://deepmind.google/models/synthid/">Google DeepMind</a></small> | **Spymark when imposed—tool attribution** | A family of imperceptible AI-origin signals for images, audio, video, and text. Image marks reside in pixels; text marks arise through patterned generation choices. Under your definition, imposed marking qualifies because it enables later inference about **AI/tool involvement**. That capability should not be conflated with identifying a particular user or account. |
+| **[Printer tracking dots](https://www.eff.org/press/archives/2005/10/16)** <a class="example-image" href="media/printer-tracking-dots.jpg" aria-label="Enlarge: Printer tracking dots"><img src="media/printer-tracking-dots.jpg" alt="Printer tracking dots magnified ten times under blue illumination." width="512" height="384" loading="lazy" decoding="async"></a><small class="example-credit">Dots at 10×, blue light<br><a href="https://w2.eff.org/Privacy/printers/docucolor/">EFF</a> · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></small> | **Spymark—device attribution** | Tiny yellow dots added by certain color printers encode information absent from the document’s visible text. EFF decoded Xerox DocuColor patterns containing the printer’s serial number and printing date and time. These can tie a page to a **specific machine and printing time**, potentially narrowing its source without conclusively identifying its author. |
+| **[Recipient-linked ebook watermarks](https://authors.bookfunnel.com/help/watermarking-epub-and-pdf-files/)** <a class="example-image" href="media/bookfunnel-watermark.jpg" aria-label="Enlarge: Recipient-linked ebook watermarks"><img src="media/bookfunnel-watermark.jpg" alt="BookFunnel’s visible companion watermark on an ebook, naming its intended recipient." width="1024" height="576" loading="lazy" decoding="async"></a><small class="example-credit">Visible companion mark<br><a href="https://authors.bookfunnel.com/help/watermarking-epub-and-pdf-files/">BookFunnel</a></small> | **Spymark in the hidden, recipient-linked form** | Services such as BookFunnel add hidden watermarks to eligible ebook files when the reader’s email address is known; optional visible recipient marks are also available. Unlike a generic publisher’s logo, these personalize copies around **the recipient**, making the privacy question about attribution of a distributed copy rather than attribution of the book’s authorship. |
+| **[NAGRA NexGuard forensic video watermarks](https://help.eventive.org/en/articles/4813115-eventive-advanced-antipiracy)** <a class="example-image" href="media/nexguard-notice.png" aria-label="Enlarge: NAGRA NexGuard forensic video watermarks"><img src="media/nexguard-notice.png" alt="Eventive notice saying the screening contains an invisible forensic watermark traceable to the original user." width="427" height="285" loading="lazy" decoding="async"></a><small class="example-credit">Viewer notice<br><a href="https://help.eventive.org/en/articles/4813115-eventive-advanced-antipiracy">Eventive</a></small> | **Spymark—recipient/session tracing** | Imperceptible identifiers distinguish individual viewers’ streams or viewing sessions so a recovered recording can be traced to its source. Eventive explicitly documents user- and session-specific NexGuard marks and warns viewers that streams are traceable. This is **individualized copy attribution**, not merely a signal that a video came from a particular studio. |
 
-## Privacy does not require a secret account number
+</div>
 
-Anthropic says its text watermark identifies no user, organization, or conversation. A provider signal is therefore insufficient evidence of individualized tracing. [Anthropic's explanation](https://www.anthropic.com/news/claude-text-watermark)
+A machine or assigned copy is a lead, not proof of who printed or redistributed it.
 
-The remaining privacy problem is inference:
+## The signal lives in the output
 
-- **Workflow disclosure:** attach my name to a work, and a detected tool-origin signal reveals something about my process. The mark itself need not identify me.
-- **Overinterpretation:** AI involvement can mean translation, editing, or processing. Detection does not establish who originated the ideas or authored the entire work. [Claude's documentation](https://support.claude.com/en/articles/16266773-how-claude-marks-ai-generated-content)
-- **Unequal access:** Claude's text detector is in private preview for eligible organizations; Google and OpenAI offer public verification for supported media. Access depends on the deployment. [Claude](https://support.claude.com/en/articles/16266773-how-claude-marks-ai-generated-content), [Google](https://blog.google/innovation-and-ai/products/identifying-ai-generated-media-online/), [OpenAI](https://openai.com/index/advancing-content-provenance/)
+SynthID embeds signals into images, audio, and video. Its [text variant](https://deepmind.google/blog/watermarking-ai-generated-text-and-video-with-synthid/) uses token selection to create statistical patterns, without inserting hidden characters.
 
-A passive mark is not, by itself, a network beacon. Its significance is what someone can learn when they obtain the output.
+These signals are embedded in the content. Stripping a metadata field does not necessarily remove them. Some transformations preserve detection; others weaken it. Short or tightly constrained text is harder to mark reliably.
 
-## The boundary
+## “No user ID” does not settle the privacy question
 
-Provenance has legitimate uses. Involuntary disclosure still deserves scrutiny. Require **clear notice, meaningful user control, minimal information, independent scrutiny, and a way to contest consequential detection results**.
+A mark can disclose something about me without encoding my account number:
 
-“Spymark” gives that deployment choice a name. A tool should explain what it makes your work disclose before making the choice for you.
+- **My tools:** Put my name on a work, and a tool-origin signal reveals part of my process.
+- **My contribution:** AI involvement might mean translation or editing. Detection alone does not establish who originated the ideas or authored the whole work. [Documentation](https://support.claude.com/en/articles/16266773-how-claude-marks-ai-generated-content).
+- **My choices:** Publishing a work should not silently commit me to disclosing how I made it.
 
-There are some legitimate use cases for spymarks, but let's not muddy the water by calling these things watermarks anymore. They are tracking tools. Spy marks.
+These are passive signals: someone must obtain and inspect the output. They do not need to phone home to compromise privacy.
 
+Provenance and tracing have legitimate uses. Authors still deserve **clear notice, meaningful control, and a way to contest detection results**.
 
-
+If the job is to make my work tell on me, **spymark** is the more honest name.
