@@ -39,6 +39,17 @@ Neutral gray is unchanged; lighter is an increase; darker is a decrease.
 At 32x, changes of more than 3-4 levels saturate to black or white. The difference
 image is an explanatory visualization; it is not an input to the decoder.
 
+Interactive reveal:
+The browser also reads both comparison PNGs and computes original + gain *
+(marked - original), clamped to 0..255. The gain control runs from 1x to 128x.
+"Show photo" off instead uses 128 + gain * green-channel difference as grayscale.
+The default is 64x on the photo. A six-second opacity loop blends the original
+and the amplified frame. Pixels are computed once when opening the reveal and
+when changing a control, not on every animation frame. Pause freezes opacity
+and cancels the animation; offscreen/hidden-page/reduced-motion states suspend it.
+The previous static 32x difference PNG remains as a canvas-unavailable fallback.
+The decoder always reads the original or marked PNG, never an amplified frame.
+
 Measured on this image with Python 3.14.7, Pillow 12.3.0, NumPy 2.5.3:
 - PNG: ID 173 recovered; signature and checksum valid; all 320 votes agree.
 - Original PNG: no valid demo mark detected.

@@ -34,7 +34,7 @@ This was not the first spymark system designed, and it's hardly the only one und
 src = "image-watermarks.ts"
 title = "An identifier inside an image"
 height = 650
-fallback = "A smaller version of Mochi’s photo contains a real toy watermark: ID 173, encoded through subtle pixel changes. The applet compares the original, marked image, and amplified differences, and decodes the ID from the PNG. The associated author and timestamp are fictional."
+fallback = "A smaller version of Mochi’s photo contains a real toy watermark: ID 173, encoded through subtle pixel changes. Compare the original and marked image, animate the amplified differences, and decode the ID from the PNG. The associated author and timestamp are fictional."
 ```
 
 <small>Photo supplied by the author. The amplified-signal view was inspired by Alosh’s <a href="https://medium.com/@aloshdenny/how-to-reverse-synthid-legally-feafb1d85da2">How to Reverse SynthID</a>. This example uses our own simple encoder and decoder; it demonstrates no SynthID detection or removal.</small>
@@ -73,7 +73,7 @@ fallback = "Compare spectrograms of the same LJ Speech excerpt unwatermarked and
 
 <small>Spectrograms from Wen et al. (2025), <a href="https://arxiv.org/abs/2503.19176">SoK: How Robust is Audio Watermarking in Generative AI models?</a> · <a href="https://sokaudiowm.github.io/">Original samples</a>. Plots retain the authors’ original scales.</small>
 
-The user cannot see or hear such a spymark. Nor do they have any idea what the payload contains.
+The user cannot see or hear such a spymark. Nor do they have any idea what the payload contains. These are frequency domain encoded values that resist compression and reencoding.
 
 Spymarks in text are mostly limited to AI-generated or edited text, but they might soon find their way into articles, social media comments, or word processing tools as a means of tracking dissemination. A comment you read might be subtly edited by a platform so that if it's copied, they can trace who shared it.
 
