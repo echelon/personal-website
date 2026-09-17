@@ -157,11 +157,40 @@ These signals are embedded in the content. Stripping a metadata field does not n
 
 ## Usage
 
-(( write some "dictionary" sounding definitions here, with different parts of speech, usage examples / example sentences, for each of things )) -
+<link rel="stylesheet" href="dictionary.css">
 
-- spymark (n) - (( definition )) ; spymarks (plural) ...
-- spymarking (...) - ...
-- spymarked (...) - ...
+<dl class="spymark-dictionary">
+  <div>
+    <dt><dfn>spy·mark</dfn> <span class="dict-pronunciation">/ˈspaɪmɑːrk/</span> <span class="dict-part">noun</span></dt>
+    <dd>
+      <p class="dict-forms">plural <strong>spymarks</strong></p>
+      <p>A hidden signal embedded in media to trace its origin, tools, or distribution history without the user’s meaningful control.</p>
+      <p class="dict-example">“The spymarks tied each copy to a different recipient.”</p>
+    </dd>
+  </div>
+  <div>
+    <dt><dfn>spymark</dfn> <span class="dict-part">verb, transitive</span></dt>
+    <dd>
+      <p class="dict-forms"><strong>spymarked</strong>; <strong>spymarking</strong>; <strong>spymarks</strong></p>
+      <p>To embed a spymark in a file or piece of media.</p>
+      <p class="dict-example">“The service spymarks every image it exports.”</p>
+    </dd>
+  </div>
+  <div>
+    <dt><dfn>spymarking</dfn> <span class="dict-part">noun</span></dt>
+    <dd>
+      <p>The practice or process of embedding spymarks.</p>
+      <p class="dict-example">“The platform introduced spymarking without telling its users.”</p>
+    </dd>
+  </div>
+  <div>
+    <dt><dfn>spymarked</dfn> <span class="dict-part">adjective</span></dt>
+    <dd>
+      <p>Containing a spymark.</p>
+      <p class="dict-example">“Removing the file’s metadata left the image spymarked.”</p>
+    </dd>
+  </div>
+</dl>
 
 ## Keeping the future free
 
