@@ -4,3 +4,8 @@ export const watermarkRecords = [
   { id: 90, author: 'Samwise Gamgee', date: '2026-05-15', time: '16:22:31 UTC' },
   { id: 214, author: 'Gandalf the Grey', date: '2026-05-16', time: '11:06:52 UTC' },
 ] as const;
+
+export const imageWatermarkRecords = watermarkRecords.map(record => ({
+  ...record,
+  author: record.id === 173 ? 'Shaggy Rogers' : record.author,
+}));

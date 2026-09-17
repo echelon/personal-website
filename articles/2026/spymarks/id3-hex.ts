@@ -1,22 +1,36 @@
 import type { EmbedMount } from '@brand/embeds';
 import { makeSample, textFrames } from './id3-sample.ts';
+import { exifFields, makeExifSample } from './exif-sample';
 import './id3-hex.css';
 
 const hex = (value: number, digits = 2) => value.toString(16).toUpperCase().padStart(digits, '0');
 const printable = (value: number) => value >= 32 && value <= 126 ? String.fromCharCode(value) : '·';
+const formats = [
+  { id: 'id3', label: 'ID3', medium: 'MP3 audio', title: 'Sample tag · ID3v2.4', fields: textFrames, make: makeSample,
+    note: 'Hover or tap a byte to inspect it. This sample contains metadata only.', reference: 'https://en.wikipedia.org/wiki/ID3' },
+  { id: 'exif', label: 'EXIF', medium: 'Image metadata', title: 'Sample segment · EXIF / JPEG APP1', fields: exifFields, make: makeExifSample,
+    note: 'Hover or tap a byte to inspect it. Fictional metadata only; no photo is read or modified.', reference: 'https://en.wikipedia.org/wiki/Exif' },
+] as const;
+let viewerCount = 0;
 
 const mount: EmbedMount = root => {
   const events = new AbortController();
   const { signal } = events;
+  const viewerId = `metadata-hex-${++viewerCount}`;
   root.classList.add('id3-hex');
   root.innerHTML = `
-    <div class="hx-top"><span>Sample tag · ID3v2.4</span><span class="hx-length"></span></div>
+    <div class="hx-tabs" role="tablist" aria-label="Metadata format">${formats.map((format, i) =>
+      `<button type="button" role="tab" id="${viewerId}-${format.id}" aria-controls="${viewerId}-panel" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}"><strong>${format.label}</strong><span>${format.medium}</span></button>`).join('')}</div>
+    <div class="hx-panel" role="tabpanel" id="${viewerId}-panel" aria-labelledby="${viewerId}-id3">
+    <div class="hx-top"><span class="hx-format"></span><span class="hx-length"></span></div>
     <div class="hx-fields"></div>
+    <p class="hx-error" id="${viewerId}-error" role="status" hidden>These EXIF sample fields use ASCII. Replace non-ASCII characters to update the bytes.</p>
     <div class="hx-legend"><span>Edit a value to update the bytes.</span><button type="button" class="hx-reset">Reset</button></div>
     <div class="hx-labels" aria-hidden="true"><span>Addr</span><span>Hex <span class="hx-mobile-label">/ ASCII</span></span><span class="hx-ascii-heading">ASCII</span></div>
     <div class="hx-dump" role="group" aria-label="ID3 tag bytes"></div>
     <div class="hx-inspector" role="status" aria-live="off"><div><strong class="hx-field-name"></strong><span class="hx-offset"></span></div><p class="hx-explanation"></p></div>
-    <p class="hx-note">Hover or tap a byte to inspect it. This sample contains metadata only. <a href="https://id3.org/id3v2.4.0-structure">ID3 specification</a></p>`;
+    <p class="hx-note"><span></span> <a></a></p>
+    </div>`;
   const find = <T extends Element>(selector: string) => root.querySelector<T>(selector)!;
   const dump = find<HTMLElement>('.hx-dump');
   const inspector = find<HTMLElement>('.hx-inspector');
@@ -25,32 +39,104 @@ const mount: EmbedMount = root => {
   const explanation = find<HTMLElement>('.hx-explanation');
   const length = find<HTMLElement>('.hx-length');
   const form = find<HTMLElement>('.hx-fields');
-  let model = makeSample(textFrames.map(frame => frame.initial));
+  const error = find<HTMLElement>('.hx-error');
+  const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+  const states = formats.map(format => {
+    const values = format.fields.map(field => String(field.initial));
+    return { values, model: format.make(values), selected: 0, scrollTop: 0 };
+  });
+  let formatIndex = 0;
+  let model = states[0].model;
   let selected = 0;
   let columns = 16;
   let cells: HTMLButtonElement[] = [];
   let asciiCells: HTMLElement[] = [];
+  let inputs: HTMLInputElement[] = [];
 
-  const inputs = textFrames.map(({ id, label, initial }) => {
-    const wrapper = document.createElement('label');
-    const caption = document.createElement('span');
-    caption.textContent = `${label} · ${id}`;
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.value = initial;
-    input.maxLength = 60;
-    input.spellcheck = false;
-    input.autocomplete = 'off';
-    input.addEventListener('input', () => {
-      model = makeSample(inputs.map(element => element.value));
-      selected = model.fields.find(field => field.key === `${id}-text` || field.key === `${id}-encoding` && !input.value)!.start;
-      renderBytes();
-      revealSelected();
-    }, { signal });
-    wrapper.append(caption, input);
-    form.append(wrapper);
-    return input;
-  });
+  function validateInputs() {
+    let valid = true;
+    inputs.forEach(input => {
+      const invalid = formatIndex === 1 && !/^[\x20-\x7e]*$/.test(input.value);
+      input.setAttribute('aria-invalid', String(invalid));
+      input.setCustomValidity(invalid ? 'Use ASCII characters for this EXIF sample.' : '');
+      if (invalid) input.setAttribute('aria-describedby', error.id);
+      else input.removeAttribute('aria-describedby');
+      valid = valid && !invalid;
+    });
+    error.hidden = valid;
+    return valid;
+  }
+
+  function renderForm() {
+    const format = formats[formatIndex];
+    root.dataset.format = format.id;
+    find<HTMLElement>('.hx-format').textContent = format.title;
+    find<HTMLElement>('.hx-panel').setAttribute('aria-labelledby', tabs[formatIndex].id);
+    dump.setAttribute('aria-label', `${format.label} metadata bytes`);
+    find<HTMLElement>('.hx-note span').textContent = format.note;
+    const reference = find<HTMLAnchorElement>('.hx-note a');
+    reference.href = format.reference;
+    reference.textContent = `${format.label} on Wikipedia`;
+    form.replaceChildren();
+    inputs = format.fields.map(({ id, label }, i) => {
+      const wrapper = document.createElement('label');
+      const caption = document.createElement('span');
+      caption.textContent = `${label} · ${id}`;
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.value = states[formatIndex].values[i];
+      input.dataset.index = String(i);
+      input.maxLength = 60;
+      input.spellcheck = false;
+      input.autocomplete = 'off';
+      wrapper.append(caption, input);
+      form.append(wrapper);
+      return input;
+    });
+    validateInputs();
+  }
+
+  form.addEventListener('input', event => {
+    const input = event.target;
+    if (!(input instanceof HTMLInputElement)) return;
+    const state = states[formatIndex];
+    state.values = inputs.map(element => element.value);
+    if (!validateInputs()) return;
+    model = state.model = formats[formatIndex].make(state.values);
+    const id = formats[formatIndex].fields[Number(input.dataset.index)].id;
+    selected = model.fields.find(field => field.key === `${id}-text`
+      || !input.value && (field.key === `${id}-encoding` || field.key === `${id}-terminator`))!.start;
+    renderBytes();
+    revealSelected();
+  }, { signal });
+
+  function chooseTab(index: number) {
+    if (index === formatIndex) return;
+    states[formatIndex].selected = selected;
+    states[formatIndex].scrollTop = dump.scrollTop;
+    formatIndex = index;
+    model = states[index].model;
+    selected = states[index].selected;
+    tabs.forEach((tab, i) => {
+      tab.setAttribute('aria-selected', String(i === index));
+      tab.tabIndex = i === index ? 0 : -1;
+    });
+    renderForm();
+    renderBytes();
+    dump.scrollTop = states[index].scrollTop;
+  }
+  tabs.forEach((tab, index) => tab.addEventListener('click', () => chooseTab(index), { signal }));
+  find<HTMLElement>('.hx-tabs').addEventListener('keydown', event => {
+    let next: number;
+    if (event.key === 'ArrowRight') next = (formatIndex + 1) % tabs.length;
+    else if (event.key === 'ArrowLeft') next = (formatIndex + tabs.length - 1) % tabs.length;
+    else if (event.key === 'Home') next = 0;
+    else if (event.key === 'End') next = tabs.length - 1;
+    else return;
+    event.preventDefault();
+    chooseTab(next);
+    tabs[next].focus({ preventScroll: true });
+  }, { signal });
 
   function select(index: number, announce = false) {
     selected = Math.max(0, Math.min(model.bytes.length - 1, index));
@@ -151,8 +237,10 @@ const mount: EmbedMount = root => {
     revealSelected();
   }, { signal });
   find<HTMLButtonElement>('.hx-reset').addEventListener('click', () => {
-    inputs.forEach((input, i) => { input.value = textFrames[i].initial; });
-    model = makeSample(inputs.map(input => input.value));
+    inputs.forEach((input, i) => { input.value = formats[formatIndex].fields[i].initial; });
+    states[formatIndex].values = inputs.map(input => input.value);
+    model = states[formatIndex].model = formats[formatIndex].make(states[formatIndex].values);
+    validateInputs();
     selected = 0;
     dump.scrollTop = 0;
     renderBytes();
@@ -168,6 +256,7 @@ const mount: EmbedMount = root => {
     renderBytes();
     if (hadFocus) { cells[selected].focus({ preventScroll: true }); revealSelected(); }
   }
+  renderForm();
   resize(root.clientWidth - 40);
   const observer = new ResizeObserver(([entry]) => resize(entry.contentRect.width));
   observer.observe(root);

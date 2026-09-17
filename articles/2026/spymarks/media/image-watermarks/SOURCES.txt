@@ -28,9 +28,10 @@ Our own toy algorithm (not SynthID):
   dimensions. It does not use the original image, filename, metadata, or an
   expected ID. It does not prove who created or distributed an image.
 
-This photo encodes ID 173. The browser then looks up Frodo Baggins and a sample
-timestamp in the same fictional record list used by the text applet. Neither
-the name nor the timestamp is embedded in the image.
+This photo encodes ID 173. The browser then looks up Shaggy Rogers and a sample
+timestamp in the image example's fictional record list. The text example keeps
+its Lord of the Rings names. Neither the name nor the timestamp is embedded in
+the image.
 
 Difference visualization:
 For each pixel: gray = clamp(128 + 32 * (marked_green - original_green), 0, 255).

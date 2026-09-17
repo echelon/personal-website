@@ -1,6 +1,6 @@
 import type { EmbedMount } from '@brand/embeds';
 import { decodeWatermark } from './image-watermark-codec';
-import { watermarkRecords } from './watermark-records';
+import { imageWatermarkRecords as watermarkRecords } from './watermark-records';
 import './image-watermarks.css';
 
 const asset = (name: string) => new URL(`../media/image-watermarks/${name}`, import.meta.url).href;
@@ -66,6 +66,7 @@ const mount: EmbedMount = (root) => {
     decode.disabled = true;
     decode.textContent = index === 0 ? 'Decode original PNG' : 'Decode spymarked PNG';
     decode.hidden = index === 2;
+    result.hidden = index === 2;
     controls.forEach((control, i) => control.setAttribute('aria-pressed', String(i === index)));
     resetResult();
     status.textContent = index === 2 ? 'Difference view — switch to a photo to decode.' : 'Ready to read the pixels.';

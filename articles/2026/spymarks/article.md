@@ -23,13 +23,23 @@ A **watermark** is a mark embedded in paper or media to assert ownership, identi
 
 A **spymark**, by contrast, is a hidden signal that forces your work disclose its origin, tools, or distribution history without meaningful control by you. It can map directly back to you, often without your knowledge.
 
-## Spymark examples
+
+## Spymarking is sneaking into your files
 
 **Google SynthID** is a spymark "imperceptible to humans", as Google describes, and can embed database IDs into images, audio, text, and video. Link: https://deepmind.google/models/synthid/
 
-- two
+This was not the first spymark system designed, and it's hardly the only one under active deployment. Anthropic, OpenAI, and many other tech companies are developing these systems at scale. Soon Social Media, media production tools, and smartphones may find themselves filled with spymarking algorithms.
 
-- three
+```embed
+src = "image-watermarks.ts"
+title = "An identifier inside an image"
+height = 650
+fallback = "A smaller version of Mochi’s photo contains a real toy watermark: ID 173, encoded through subtle pixel changes. The applet compares the original, marked image, and amplified differences, and decodes the ID from the PNG. The associated author and timestamp are fictional."
+```
+
+<small>Photo supplied by the author. The amplified-signal view was inspired by Alosh’s <a href="https://medium.com/@aloshdenny/how-to-reverse-synthid-legally-feafb1d85da2">How to Reverse SynthID</a>. This example uses our own simple encoder and decoder; it demonstrates no SynthID detection or removal.</small>
+
+
 
 ## We need a new word for this
 
@@ -49,8 +59,8 @@ Ergo,
 
 Everything we have to say is immediately obvious. This is our *Rumpelstiltskin*.
 
+## Spymarks are getting into everything
 
-## Spymarking sneaks into your files
 
 Meanwhile, an audio signal spymark is sneaky and doesn't necessarily announce its presence,
 
@@ -65,6 +75,8 @@ fallback = "Compare spectrograms of the same LJ Speech excerpt unwatermarked and
 
 The user cannot see or hear such a spymark. Nor do they have any idea what the payload contains.
 
+Spymarks in text are mostly limited to AI-generated or edited text, but they might soon find their way into articles, social media comments, or word processing tools as a means of tracking dissemination. A comment you read might be subtly edited by a platform so that if it's copied, they can trace who shared it.
+
 ```embed
 src = "text-watermarks.ts"
 title = "Text as a hidden identifier"
@@ -74,14 +86,7 @@ fallback = "An illustrative encoding: eight word choices represent eight bits. T
 
 <small>This demo illustrates word choices encoding an identifier, followed by a database lookup. <a href="https://deepmind.google/blog/watermarking-ai-generated-text-and-video-with-synthid/">Google DeepMind’s SynthID for text</a> instead detects statistical patterns in token choices to identify AI-generated text; it does not establish the personal-data lookup illustrated here.</small>
 
-```embed
-src = "image-watermarks.ts"
-title = "An identifier inside an image"
-height = 650
-fallback = "A smaller version of Mochi’s photo contains a real toy watermark: ID 173, encoded through subtle pixel changes. The applet compares the original, marked image, and amplified differences, and decodes the ID from the PNG. The associated author and timestamp are fictional."
-```
 
-<small>Photo supplied by the author. The amplified-signal view was inspired by Alosh’s <a href="https://medium.com/@aloshdenny/how-to-reverse-synthid-legally-feafb1d85da2">How to Reverse SynthID</a>. This example uses our own simple encoder and decoder; it demonstrates no SynthID detection or removal.</small>
 
 ## The watermarks we all know and love
 
@@ -110,9 +115,9 @@ Just adding an invisible digital signal to a file does not mean it's a spymark. 
 
 ```embed
 src = "id3-hex.ts"
-title = "ID3 tags in hex"
+title = "ID3 and EXIF metadata in hex"
 height = 520
-fallback = "MP3 metadata can be stored in an ID3 tag. The bytes 49 44 33 spell ID3; TIT2, TPE1, and TALB identify the title, artist, and album frames. With JavaScript enabled, edit the sample values and inspect their bytes."
+fallback = "Inspect editable ID3 and EXIF metadata in two tabs. ID3 shows an MP3’s title, artist, and album; EXIF shows fictional camera-maker, model, and author tags in a JPEG metadata segment. Hover or tap the bytes for explanations. These samples contain metadata only."
 ```
 
 We need to be careful though: spymarks such as Google SynthID purport to be a "standard". Yet they does not limit what parties can encode to track users, nor does the spymark even announce to users its presence. Users have no idea and no control over what identifying data the payload contains.
