@@ -26,7 +26,7 @@ A **spymark**, by contrast, is a hidden signal that forces your work disclose it
 
 ## Spymarking is sneaking into your files
 
-**Google SynthID** is a spymark "imperceptible to humans", as Google describes, and can embed database IDs into images, audio, text, and video. Link: https://deepmind.google/models/synthid/
+**[Google SynthID](https://deepmind.google/models/synthid/)** is a spymark "imperceptible to humans", as Google describes, and can embed database IDs into images, audio, text, and video.
 
 This was not the first spymark system designed, and it's hardly the only one under active deployment. Anthropic, OpenAI, and many other tech companies are developing these systems at scale. Soon Social Media, media production tools, and smartphones may find themselves filled with spymarking algorithms.
 
@@ -38,8 +38,6 @@ fallback = "A smaller version of Mochi’s photo contains a real toy watermark: 
 ```
 
 <small>Photo supplied by the author. The amplified-signal view was inspired by Alosh’s <a href="https://medium.com/@aloshdenny/how-to-reverse-synthid-legally-feafb1d85da2">How to Reverse SynthID</a>. This example uses our own simple encoder and decoder; it demonstrates no SynthID detection or removal.</small>
-
-
 
 ## We need a new word for this
 
@@ -86,28 +84,29 @@ fallback = "An illustrative encoding: eight word choices represent eight bits. T
 
 <small>This demo illustrates word choices encoding an identifier, followed by a database lookup. <a href="https://deepmind.google/blog/watermarking-ai-generated-text-and-video-with-synthid/">Google DeepMind’s SynthID for text</a> instead detects statistical patterns in token choices to identify AI-generated text; it does not establish the personal-data lookup illustrated here.</small>
 
-
-
 ## The watermarks we all know and love
 
-Watermarks of the past were fairly benign. They were clear visual marks, easy for the user to spot. Their intentions were not nefarious, and they could not be turned against the user.
+Watermarks are still out there, and they're mostly benign. They bear clear visual marks, easy for the user to spot. They are typically not nefarious, and they won't spy on you.
 
-Sometimes they were used to deter counterfeiting,
+Sometimes they deter counterfeiting,
 
 <figure style="max-width: 708px; margin-inline: auto;">
   <img src="media/twenty-dollar-watermark.png" alt="A $20 bill with a circular close-up of its faint portrait watermark." width="708" height="274" loading="lazy" decoding="async">
   <figcaption>A $20 bill and its portrait watermark. Image: <a href="https://www.uscurrency.gov/sites/default/files/currency_academy/scienceLab-watermarks.jpg">U.S. Currency Education Program</a>.</figcaption>
 </figure>
 
-Sometimes to denote ownership,
+Sometimes they denote ownership,
 
 <figure style="max-width: 481px; margin-inline: 0 auto;">
   <a href="https://commons.wikimedia.org/wiki/File:DorotheaGetty.webp"><img src="media/dorothea-getty.webp" alt="Dorothea Lange’s Migrant Mother with a visible Getty Images watermark across the photograph." width="481" height="612" loading="lazy" decoding="async"></a>
   <figcaption><small>Dorothea Lange, <cite>Migrant Mother</cite> (1936) · Public domain in the U.S. · <a href="https://commons.wikimedia.org/wiki/File:DorotheaGetty.webp">Wikimedia Commons</a> · <a href="https://www.gettyimages.com/photos/migrant-mother-by-dorothea-lange">Getty Images listings</a>.</small></figcaption>
 </figure>
 
-The presence of a watermark isn't always foolproof.
-These watermarks are all doing very different things. But one thing they all don't do is track you.
+And sometimes they're annoying,
+
+(( imgflip example ))
+
+These watermarks are all doing very different things. But one thing they don't do is track you.
 
 ## Standardized, user-editable tags are not Spymarks
 
@@ -122,38 +121,17 @@ fallback = "Inspect editable ID3 and EXIF metadata in two tabs. ID3 shows an MP3
 
 We need to be careful though: spymarks such as Google SynthID purport to be a "standard". Yet they does not limit what parties can encode to track users, nor does the spymark even announce to users its presence. Users have no idea and no control over what identifying data the payload contains.
 
+## Keeping the future free
 
+Imagine a future where every device is attested and every social media post is spymarked. It would be dangerously easy to hunt down anyone from a JPEG.
 
-## Same word, different jobs
+That future lies halfway between now and "1984". So let's work together to stay off that timeline, shall we?
 
-“Spymark” is my proposed category. These labels describe the use: what the mark reveals and who controls it. Click an image to enlarge it.
+Call a spymark what it is. A *spy* mark.
 
-<div class="watermark-examples">
+Now that we have a name for these things, we can start to demand platforms stop tracking us with them.
 
-| Item | Type | Description |
-| --- | --- | --- |
-| **[Traditional paper watermarks](https://en.wikipedia.org/wiki/Watermark)** <a class="example-image" href="media/paper-watermark.jpg" aria-label="Enlarge: Traditional paper watermarks"><img src="media/paper-watermark.jpg" alt="A KRONENPOST paper watermark visible through an 1898 letter from the Penig paper mill." width="500" height="631" loading="lazy" decoding="async"></a><small class="example-credit">Paper watermark<br><a href="https://commons.wikimedia.org/wiki/File:Patentpapierfabrik_zu_Penig,_Maschinen-Wasserzeichen_KRONENPOST_1898.tif">Commons · public domain</a></small> | **Watermark** | Designs formed through variations in paper thickness or density, often revealed by holding the sheet to light. Historically used to identify paper mills, paper quality, and manufacturing origins; they also help researchers date documents. Generally identify the **paper’s source**, rather than the person writing on it. |
-| **[Banknote watermarks](https://www.uscurrency.gov/denominations/100)** <a class="example-image" href="media/banknote-watermark.jpg" aria-label="Enlarge: Banknote watermarks"><img src="media/banknote-watermark.jpg" alt="The faint Benjamin Franklin watermark in a US 100-dollar note, circled in blue." width="200" height="200" loading="lazy" decoding="async"></a><small class="example-credit">Watermark detail<br><a href="https://www.uscurrency.gov/denominations/100">U.S. Currency Education Program</a></small> | **Watermark** | Embedded security images, such as the faint Franklin portrait in a U.S. $100 bill, help people check whether a note is genuine. The shared portrait watermark is distinct from the bill’s individual serial number: it is an **authentication feature**, not an identifier of whoever spends it. |
-| **[Stock-photo preview watermarks](https://helpx.adobe.com/stock/web/common-questions/usage-licensing.html)** <a class="example-image" href="media/stock-preview.png" aria-label="Enlarge: Stock-photo preview watermarks"><img src="media/stock-preview.png" alt="Adobe diagram showing a watermarked stock preview becoming a licensed image." width="547" height="321" loading="lazy" decoding="async"></a><small class="example-credit">Preview/licensing diagram<br><a href="https://helpx.adobe.com/photoshop/using/adobe-stock.html">Adobe</a></small> | **Watermark** | Visible overlays on preview images identify their commercial source and discourage unlicensed use. Adobe Stock, for example, supplies an image without the preview watermark after licensing. This is an overt licensing mechanism—not a hidden record of a particular customer’s activity. |
-| **[Digimarc image copyright marks](https://product.corel.com/help/PHOTO-PAINT/540223850/Main/EN/Documentation/Corel-PHOTO-PAINT-Detecting-embedding-Digimarc-watermarks.html)** <a class="example-image" href="media/digimarc-logo.svg" aria-label="Enlarge: Digimarc image copyright marks"><img src="media/digimarc-logo.svg" alt="Digimarc company wordmark." width="221" height="20" loading="lazy" decoding="async"></a><small class="example-credit">Company logo<br><a href="https://www.digimarc.com/">Digimarc</a></small> | **Watermark—creator attribution** | Subtle pixel changes encode copyright information and link an image to its creator’s contact profile. A photographer can deliberately use this to preserve attribution without a visible logo. A useful counterexample to “invisible means spying”: in this application, the creator chooses to identify **their own work**. |
-| **[Cinavia](https://www.verance.com/cinavia/)** <a class="example-image" href="media/cinavia-diagram.png" aria-label="Enlarge: Cinavia"><img src="media/cinavia-diagram.png" alt="Verance illustration of the Cinavia audio watermark being recognized by a disc player." width="768" height="485" loading="lazy" decoding="async"></a><small class="example-credit">Playback illustration<br><a href="https://www.verance.com/cinavia/">Verance</a></small> | **Watermark—copy control** | An inaudible mark embedded in a film’s soundtrack is recognized by compatible playback devices. Detection can trigger playback restrictions when the system identifies an unauthorized copy. Its documented purpose is **controlling playback**, rather than identifying the individual viewer—a different concern from personal tracing. |
-| **[Nielsen broadcast audio watermarks](https://www.rossvideo.com/products/signal-processing/audience-measurement/)** <a class="example-image" href="media/nielsen-encoder.jpg" aria-label="Enlarge: Nielsen broadcast audio watermarks"><img src="media/nielsen-encoder.jpg" alt="Ross Video NWE-3GA block diagram showing 16 channels of Nielsen watermarking." width="768" height="688" loading="lazy" decoding="async"></a><small class="example-credit">Encoder diagram<br><a href="https://www.rossvideo.com/products/signal-processing/opengear/processing-monitoring/nwe-3ga/">Ross Video</a></small> | **Watermark; part of a measurement system** | Hidden audio codes identify programming and its distributor. Household meters detect those codes to measure viewing. The important distinction: the **mark identifies the content**; pairing that detection with a household’s meter makes it useful for measuring audience behavior. The watermark does not independently report who heard it. |
-| **[audiowmark](https://github.com/swesterfeld/audiowmark)** <a class="example-image" href="media/audiowmark-project.png" aria-label="Enlarge: audiowmark"><img src="media/audiowmark-project.png" alt="GitHub repository card for Stefan Westerfeld’s audiowmark audio watermarking software." width="1200" height="600" loading="lazy" decoding="async"></a><small class="example-credit">Repository card<br><a href="https://github.com/swesterfeld/audiowmark">audiowmark / GitHub</a></small> | **Bit of both—depends on the payload** | Open-source software that embeds a usually inaudible **128-bit message** in audio. That message can identify a recording, but its documentation also describes assigning recipient-linked messages and using a database to match a recovered copy to its recipient. The latter is the clear **spymark application** under your terminology. |
-| **[Meta AudioSeal](https://github.com/facebookresearch/audioseal)** <a class="example-image" href="media/audioseal-diagram.png" aria-label="Enlarge: Meta AudioSeal"><img src="media/audioseal-diagram.png" alt="AudioSeal diagram showing original audio, watermark generation, speech editing, and detection." width="1920" height="384" loading="lazy" decoding="async"></a><small class="example-credit">System diagram<br><a href="https://github.com/facebookresearch/audioseal">Meta AudioSeal</a></small> | **Bit of both—depends on deployment** | An open-source method for embedding imperceptible marks in audio and detecting marked passages within longer or edited recordings, developed for AI-generated speech. It can support voluntary disclosure of synthetic audio; imposed marking can instead disclose a creator’s use of generation tools. The algorithm alone does not settle the consent question. |
-| **[Google SynthID](https://ai.google.dev/responsible/docs/safeguards/synthid)** <a class="example-image" href="media/synthid-illustration.jpg" aria-label="Enlarge: Google SynthID"><img src="media/synthid-illustration.jpg" alt="Google’s SynthID title graphic with an illustrated fingerprint." width="1200" height="630" loading="lazy" decoding="async"></a><small class="example-credit">Product illustration<br><a href="https://deepmind.google/models/synthid/">Google DeepMind</a></small> | **Spymark when imposed—tool attribution** | A family of imperceptible AI-origin signals for images, audio, video, and text. Image marks reside in pixels; text marks arise through patterned generation choices. Under your definition, imposed marking qualifies because it enables later inference about **AI/tool involvement**. That capability should not be conflated with identifying a particular user or account. |
-| **[Printer tracking dots](https://www.eff.org/press/archives/2005/10/16)** <a class="example-image" href="media/printer-tracking-dots.jpg" aria-label="Enlarge: Printer tracking dots"><img src="media/printer-tracking-dots.jpg" alt="Printer tracking dots magnified ten times under blue illumination." width="512" height="384" loading="lazy" decoding="async"></a><small class="example-credit">Dots at 10×, blue light<br><a href="https://w2.eff.org/Privacy/printers/docucolor/">EFF</a> · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></small> | **Spymark—device attribution** | Tiny yellow dots added by certain color printers encode information absent from the document’s visible text. EFF decoded Xerox DocuColor patterns containing the printer’s serial number and printing date and time. These can tie a page to a **specific machine and printing time**, potentially narrowing its source without conclusively identifying its author. |
-| **[Recipient-linked ebook watermarks](https://authors.bookfunnel.com/help/watermarking-epub-and-pdf-files/)** <a class="example-image" href="media/bookfunnel-watermark.jpg" aria-label="Enlarge: Recipient-linked ebook watermarks"><img src="media/bookfunnel-watermark.jpg" alt="BookFunnel’s visible companion watermark on an ebook, naming its intended recipient." width="1024" height="576" loading="lazy" decoding="async"></a><small class="example-credit">Visible companion mark<br><a href="https://authors.bookfunnel.com/help/watermarking-epub-and-pdf-files/">BookFunnel</a></small> | **Spymark in the hidden, recipient-linked form** | Services such as BookFunnel add hidden watermarks to eligible ebook files when the reader’s email address is known; optional visible recipient marks are also available. Unlike a generic publisher’s logo, these personalize copies around **the recipient**, making the privacy question about attribution of a distributed copy rather than attribution of the book’s authorship. |
-| **[NAGRA NexGuard forensic video watermarks](https://help.eventive.org/en/articles/4813115-eventive-advanced-antipiracy)** <a class="example-image" href="media/nexguard-notice.png" aria-label="Enlarge: NAGRA NexGuard forensic video watermarks"><img src="media/nexguard-notice.png" alt="Eventive notice saying the screening contains an invisible forensic watermark traceable to the original user." width="427" height="285" loading="lazy" decoding="async"></a><small class="example-credit">Viewer notice<br><a href="https://help.eventive.org/en/articles/4813115-eventive-advanced-antipiracy">Eventive</a></small> | **Spymark—recipient/session tracing** | Imperceptible identifiers distinguish individual viewers’ streams or viewing sessions so a recovered recording can be traced to its source. Eventive explicitly documents user- and session-specific NexGuard marks and warns viewers that streams are traceable. This is **individualized copy attribution**, not merely a signal that a video came from a particular studio. |
-
-</div>
-
-A machine or assigned copy is a lead, not proof of who printed or redistributed it.
-
-## The signal lives in the output
-
-SynthID embeds signals into images, audio, and video. Its [text variant](https://deepmind.google/blog/watermarking-ai-generated-text-and-video-with-synthid/) uses token selection to create statistical patterns, without inserting hidden characters.
-
-These signals are embedded in the content. Stripping a metadata field does not necessarily remove them. Some transformations preserve detection; others weaken it. Short or tightly constrained text is harder to mark reliably.
+Imagined future horrors and slippery slopes are often called comedic hyperbole.
 
 ## Usage
 
@@ -191,33 +169,3 @@ These signals are embedded in the content. Stripping a metadata field does not n
     </dd>
   </div>
 </dl>
-
-## Keeping the future free
-
-Imagine a future where every device is attested and every social media post is spymarked. It would be dangerously easy to hunt down anyone from a JPEG.
-
-That future lies halfway between now and "1984". So let's work together to stay off that timeline, shall we?
-
-Call a spymark what it is. A *spy* mark.
-
-Now that we have a name for these things, we can start to demand platforms stop tracking us with them.
-
-Imagined future horrors and slippery slopes are often called comedic hyperbole.
-
----
-
-**Graveyard**
-
-We've all seen these watermarks.
-It used to be that every image in Google Image Search was tagged with "Getty Images(r)", including the public domain ones.
-
-Getty likes to watermark every image.
-
-It's pretty clear that the following image has a watermark:
-
-Once upon a time, nearly every image in Google Image Search was watermarked. Getty doesn't own this image &mdash; it's public domain.
-
-Other articles in the future:
-
-- Should trademarks be ads marketplace targets? (betteridge law of headlines: no)
-- Should app stores exist in 2026? (no.)
