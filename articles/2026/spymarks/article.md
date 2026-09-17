@@ -1,7 +1,7 @@
 +++
 slug = "spymarks"
 title = "Spymarks, not Watermarks"
-description = "Encoded unique IDs are more spy tool than anything else"
+description = "Encoded unique IDs are more spy tool than protection"
 tags = ["Privacy", "AI", "Technology"]
 draft = true
 +++
@@ -67,9 +67,20 @@ The user cannot see or hear such a spymark. Nor do they have any idea what the p
 
 (( can you include this example : https://deepmind.google/blog/watermarking-ai-generated-text-and-video-with-synthid/   https://lh3.googleusercontent.com/yxJLDpIUGAOgpiDYfq8LSD-clFhstkQm9Rpg-bh4ATZoss1W8qNgesAOvvqNHX_J8lZfmf6Excs34trsrTsqFhqw9DcBMl_PhbqUH4NJ0UzDt1dUMQ=w2880-rw-lo  - we need an applet that shows a text payload - not editable -- that has highlights for the word choices that encode information. and an animation that maps those words to Date / Time, Database ID, author name, etc. ))
 
-## Image overlays: Not spymarks
+## The watermarks we all know and love
 
-(( Include this example: https://www.uscurrency.gov/sites/default/files/currency_academy/scienceLab-watermarks.jpg - just extract the $20 bill, we don't need the $5 bill ))
+Watermarks of the past didn't need to come pre-packed with their own EU-mandated cookie notice. They were mostly benign.
+
+<figure style="max-width: 708px; margin-inline: auto;">
+  <div style="position: relative; aspect-ratio: 708 / 274; overflow: clip; border-radius: 3px;">
+    <img src="media/currency-watermarks-source.jpg" alt="A $20 bill with a circular close-up of its faint portrait watermark." width="708" height="587" loading="lazy" decoding="async" style="position: absolute; inset: 0 auto auto 0; width: 100%; height: auto; margin: 0;">
+  </div>
+  <figcaption>A $20 bill and its portrait watermark. Image: <a href="https://www.uscurrency.gov/sites/default/files/currency_academy/scienceLab-watermarks.jpg">U.S. Currency Education Program</a>.</figcaption>
+</figure>
+
+It used to be that every image in Google Image Search was tagged with "Getty Images(r)", including the public domain ones.
+
+Getty likes to watermark every image.
 
 It's pretty clear that the following image has a watermark:
 
@@ -79,6 +90,8 @@ It's pretty clear that the following image has a watermark:
 </figure>
 
 The presence of a watermark isn't always foolproof. Getty doesn't own this image &mdash; it's public domain.
+
+These watermarks are all doing very different things. But one thing they all don't do is track you.
 
 ## Standardized, user-editable tags are not Spymarks
 
@@ -126,6 +139,14 @@ SynthID embeds signals into images, audio, and video. Its [text variant](https:/
 
 These signals are embedded in the content. Stripping a metadata field does not necessarily remove them. Some transformations preserve detection; others weaken it. Short or tightly constrained text is harder to mark reliably.
 
+## Usage
+
+(( write some "dictionary" sounding definitions here, with different parts of speech, usage examples / example sentences, for each of things )) -
+
+- spymark (n) - (( definition )) ; spymarks (plural) ...
+- spymarking (...) - ...
+- spymarked (...) - ...
+
 ## Keeping the future free
 
 Imagine a future where every device is attested and every social media post is spymarked. It would be dangerously easy to hunt down anyone from a JPEG.
@@ -133,3 +154,5 @@ Imagine a future where every device is attested and every social media post is s
 That future lies halfway between now and "1984". So let's work together to stay off that timeline, shall we?
 
 Call a spymark what it is. A *spy* mark.
+
+Now that we have a name for these things, we can start to demand platforms stop tracking us with them.
