@@ -14,22 +14,7 @@ A **watermark** is a mark embedded in paper or media to assert ownership, identi
 
 A **spymark**, by contrast, is a hidden signal that forces your work disclose its origin, tools, or distribution history without meaningful control by you. It can map directly back to you, often without your knowledge.
 
-## Spymarking is sneaky
-
-Adding metadata to an MP3's metadata tags is easy,
-
-Meanwhile, an audio signal spymark is sneaky and doesn't necessarily announce its presence,
-
-```embed
-src = "audio-watermarks.ts"
-title = "Audio watermark spectrograms"
-height = 450
-fallback = "Compare spectrograms of the same LJ Speech excerpt unwatermarked and with Timbre, AudioSeal, WavMark, FSVC, Patchwork, or Norm-Space. The authors’ original plots are linked below."
-```
-
-<small>Spectrograms from Wen et al. (2025), <a href="https://arxiv.org/abs/2503.19176">SoK: How Robust is Audio Watermarking in Generative AI models?</a> · <a href="https://sokaudiowm.github.io/">Original samples</a>. Plots retain the authors’ original scales.</small>
-
-## We need a new word
+## We need a new word for this
 
 Unless you're an uber-nerd like me, most ordinary people tire and zone out of this discourse. It's technical, it's boring.
 
@@ -46,6 +31,46 @@ Ergo,
 - -*mark* &mdash; already shared with watermark in both use and etymology.
 
 Everything we have to say is immediately obvious. This is our *Rumpelstiltskin*.
+
+
+## Spymarking is sneaky
+
+Meanwhile, an audio signal spymark is sneaky and doesn't necessarily announce its presence,
+
+```embed
+src = "audio-watermarks.ts"
+title = "Audio watermark spectrograms"
+height = 450
+fallback = "Compare spectrograms of the same LJ Speech excerpt unwatermarked and with Timbre, AudioSeal, WavMark, FSVC, Patchwork, or Norm-Space. The authors’ original plots are linked below."
+```
+
+<small>Spectrograms from Wen et al. (2025), <a href="https://arxiv.org/abs/2503.19176">SoK: How Robust is Audio Watermarking in Generative AI models?</a> · <a href="https://sokaudiowm.github.io/">Original samples</a>. Plots retain the authors’ original scales.</small>
+
+The user cannot see or hear such a spymark. Nor do they have any idea what the payload contains.
+
+## Image overlays: Not spymarks
+
+It's pretty clear that the following image has a watermark:
+
+<figure style="max-width: 481px; margin-inline: auto;">
+  <a href="https://commons.wikimedia.org/wiki/File:DorotheaGetty.webp"><img src="media/dorothea-getty.webp" alt="Dorothea Lange’s Migrant Mother with a visible Getty Images watermark across the photograph." width="481" height="612" loading="lazy" decoding="async"></a>
+  <figcaption>Public domain, but that didn't stop Getty Images.<br><small>Dorothea Lange, <cite>Migrant Mother</cite> (1936) · Public domain in the U.S. · <a href="https://commons.wikimedia.org/wiki/File:DorotheaGetty.webp">Wikimedia Commons</a> · <a href="https://www.gettyimages.com/photos/migrant-mother-by-dorothea-lange">Getty Images listings</a>.</small></figcaption>
+</figure>
+
+The presence of a watermark isn't always foolproof. Getty doesn't own this image &mdash; it's public domain.
+
+## Standardized, user-editable tags are not Spymarks
+
+Just adding an invisible digital signal to a file does not mean it's a spymark. The ID3 tags on MP3s are technically "invisible" to users, yet their inclusion is standardized, easy to edit, and almost universally accessible. You can even read them in the raw file &mdash; they don't try to hide from you, and you can easily scrub them if you want.
+
+```embed
+src = "id3-hex.ts"
+title = "ID3 tags in hex"
+height = 520
+fallback = "MP3 metadata can be stored in an ID3 tag. The bytes 49 44 33 spell ID3; TIT2, TPE1, and TALB identify the title, artist, and album frames. With JavaScript enabled, edit the sample values and inspect their bytes."
+```
+
+We need to be careful though: spymarks such as Google SynthID purport to be a "standard". Yet they does not limit what parties can encode to track users, nor does the spymark even announce to users its presence. Users have no idea and no control over what identifying data the payload contains.
 
 
 

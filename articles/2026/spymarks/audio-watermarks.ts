@@ -27,7 +27,7 @@ const mount: EmbedMount = (root, { reducedMotion }) => {
   const caption = root.closest('figure')?.querySelector('figcaption');
   if (caption) caption.hidden = true;
   root.innerHTML = `
-    <div class="aw-heading"><strong class="aw-name"></strong><span class="aw-count"></span></div>
+    <div class="aw-heading"><div><strong class="aw-name"></strong><span class="aw-subtitle"></span></div><span class="aw-count"></span></div>
     <div class="aw-plot"></div>
     <p class="aw-axes">Frequency ↑ <span>Time → · 6.5 seconds</span></p>
     <div class="aw-slider">
@@ -38,6 +38,7 @@ const mount: EmbedMount = (root, { reducedMotion }) => {
     <div class="aw-controls"><span>Hover or drag to compare.</span><button class="aw-cycle" type="button"></button></div>`;
   const find = <T extends Element>(selector: string) => root.querySelector<T>(selector)!;
   const name = find<HTMLElement>('.aw-name');
+  const subtitle = find<HTMLElement>('.aw-subtitle');
   const count = find<HTMLElement>('.aw-count');
   const plot = find<HTMLElement>('.aw-plot');
   const slider = find<HTMLInputElement>('.aw-range');
@@ -70,6 +71,7 @@ const mount: EmbedMount = (root, { reducedMotion }) => {
     images.forEach((image, i) => { image.hidden = i !== index; });
     ticks.forEach((tick, i) => tick.classList.toggle('aw-current', i === index));
     name.textContent = examples[index][1];
+    subtitle.textContent = index === 0 ? 'audio file from the LJSpeech data set' : 'spymarked audio';
     count.textContent = `${index + 1} / ${examples.length}`;
     slider.value = String(index);
     slider.setAttribute('aria-valuetext', examples[index][1]);
