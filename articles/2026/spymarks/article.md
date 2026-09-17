@@ -8,7 +8,16 @@ draft = true
 
 We need a new word to describe today's sneaky new evolution of "watermarks":
 
-> "Spymark"
+<div class="spymark-intro">
+
+```embed
+src = "spymark-title.ts"
+title = "Spymark"
+height = 410
+fallback = "“Spymark”"
+```
+
+</div>
 
 A **watermark** is a mark embedded in paper or media to assert ownership, identify an official source, or verify authenticity. It typically denotes a third party authority. It's a cute little term.
 
@@ -16,7 +25,7 @@ A **spymark**, by contrast, is a hidden signal that forces your work disclose it
 
 ## We need a new word for this
 
-Unless you're an uber-nerd like me, most ordinary people tire and zone out of this discourse. It's technical, it's boring.
+Unless you're an uber-nerd like me, most ordinary people tire and zone out of the discourse on privacy. It's technical, it's boring. Imagined future horrors and slippery slopes are often called comedic hyperbole.
 
 Articulating this discussion requires a lot of shared context, and we can't keep having this front-loaded conversation over and over and expect people to pay attention.
 
@@ -33,7 +42,7 @@ Ergo,
 Everything we have to say is immediately obvious. This is our *Rumpelstiltskin*.
 
 
-## Spymarking is sneaky
+## Spymarking sneaks into your files
 
 Meanwhile, an audio signal spymark is sneaky and doesn't necessarily announce its presence,
 
@@ -54,7 +63,7 @@ It's pretty clear that the following image has a watermark:
 
 <figure style="max-width: 481px; margin-inline: auto;">
   <a href="https://commons.wikimedia.org/wiki/File:DorotheaGetty.webp"><img src="media/dorothea-getty.webp" alt="Dorothea Lange’s Migrant Mother with a visible Getty Images watermark across the photograph." width="481" height="612" loading="lazy" decoding="async"></a>
-  <figcaption>Public domain, but that didn't stop Getty Images.<br><small>Dorothea Lange, <cite>Migrant Mother</cite> (1936) · Public domain in the U.S. · <a href="https://commons.wikimedia.org/wiki/File:DorotheaGetty.webp">Wikimedia Commons</a> · <a href="https://www.gettyimages.com/photos/migrant-mother-by-dorothea-lange">Getty Images listings</a>.</small></figcaption>
+  <figcaption><small>Dorothea Lange, <cite>Migrant Mother</cite> (1936) · Public domain in the U.S. · <a href="https://commons.wikimedia.org/wiki/File:DorotheaGetty.webp">Wikimedia Commons</a> · <a href="https://www.gettyimages.com/photos/migrant-mother-by-dorothea-lange">Getty Images listings</a>.</small></figcaption>
 </figure>
 
 The presence of a watermark isn't always foolproof. Getty doesn't own this image &mdash; it's public domain.

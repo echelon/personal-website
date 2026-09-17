@@ -159,6 +159,20 @@ h1, h2, h3 { text-wrap: balance; }
 .prose table { border-collapse: collapse; width: 100%; font: 1rem/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
 .prose th, .prose td { border-bottom: 1px solid var(--line); padding: .8rem 1rem .8rem 0; text-align: left; }
 .prose th { font-weight: 600; }
+.prose .watermark-examples th, .prose .watermark-examples td { vertical-align: top; }
+.prose .watermark-examples th:first-child { width: 26%; }
+.prose .watermark-examples th:nth-child(2) { width: 22%; }
+.prose .watermark-examples .example-image { display: block; margin: .65rem 0 .4rem; }
+.prose .watermark-examples .example-image img { width: 100%; height: 110px; object-fit: contain; margin: 0; background: #fff; border: 1px solid var(--line); }
+.prose .watermark-examples .example-credit { display: block; font-size: .75rem; line-height: 1.45; color: var(--muted); }
+@media (max-width: 600px) {
+  .prose .watermark-examples table, .prose .watermark-examples tbody { display: block; }
+  .prose .watermark-examples thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .prose .watermark-examples tbody tr { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: .8rem 1rem; padding: 1.25rem 0; border-bottom: 1px solid var(--line); }
+  .prose .watermark-examples td { display: block; padding: 0; border: 0; }
+  .prose .watermark-examples td:nth-child(2)::before { content: "Type"; display: block; margin-bottom: .35rem; font-size: .75rem; font-weight: 400; color: var(--muted); }
+  .prose .watermark-examples td:last-child { grid-column: 1 / -1; }
+}
 .prose input[type="checkbox"] { accent-color: var(--accent); }
 .footnote-definition { font-size: .85em; color: var(--muted); }
 .footnote-definition p { display: inline; }
