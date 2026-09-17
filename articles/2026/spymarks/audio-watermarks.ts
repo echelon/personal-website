@@ -86,7 +86,7 @@ const mount: EmbedMount = (root, { reducedMotion }) => {
       timer = window.setTimeout(() => {
         select((selected + 1) % examples.length);
         schedule();
-      }, 3000);
+      }, 2000);
     }
   }
 

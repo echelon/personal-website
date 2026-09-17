@@ -23,6 +23,14 @@ A **watermark** is a mark embedded in paper or media to assert ownership, identi
 
 A **spymark**, by contrast, is a hidden signal that forces your work disclose its origin, tools, or distribution history without meaningful control by you. It can map directly back to you, often without your knowledge.
 
+## Spymark examples
+
+**Google SynthID** is a spymark "imperceptible to humans", as Google describes, and can embed database IDs into images, audio, text, and video. Link: https://deepmind.google/models/synthid/
+
+- two
+
+- three
+
 ## We need a new word for this
 
 Unless you're an uber-nerd like me, most ordinary people tire and zone out of the discourse on privacy. It's technical, it's boring. Imagined future horrors and slippery slopes are often called comedic hyperbole.
@@ -57,7 +65,11 @@ fallback = "Compare spectrograms of the same LJ Speech excerpt unwatermarked and
 
 The user cannot see or hear such a spymark. Nor do they have any idea what the payload contains.
 
+(( can you include this example : https://deepmind.google/blog/watermarking-ai-generated-text-and-video-with-synthid/   https://lh3.googleusercontent.com/yxJLDpIUGAOgpiDYfq8LSD-clFhstkQm9Rpg-bh4ATZoss1W8qNgesAOvvqNHX_J8lZfmf6Excs34trsrTsqFhqw9DcBMl_PhbqUH4NJ0UzDt1dUMQ=w2880-rw-lo  - we need an applet that shows a text payload - not editable -- that has highlights for the word choices that encode information. and an animation that maps those words to Date / Time, Database ID, author name, etc. ))
+
 ## Image overlays: Not spymarks
+
+(( Include this example: https://www.uscurrency.gov/sites/default/files/currency_academy/scienceLab-watermarks.jpg - just extract the $20 bill, we don't need the $5 bill ))
 
 It's pretty clear that the following image has a watermark:
 

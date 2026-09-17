@@ -39,10 +39,9 @@
 .sm-echo { opacity: 0; }
 .sm-contour { opacity: .17; transform: translate(-2px, -3px); }
 .sm-tendrils { opacity: .27; }
-.sm-tower-crown { opacity: .78; }
-.sm-tower-body { opacity: .3; }
+.sm-tower-crown { opacity: .88; }
+.sm-tower-plane { fill: var(--paper); opacity: .13; }
 .sm-tower-ribs { opacity: .45; }
-.sm-tower-rim { opacity: .5; }
 .sm-eye { transform-box: fill-box; transform-origin: center; }
 .sm-fire-halo { fill: var(--accent); opacity: .2; }
 .sm-fire-edge { fill: var(--paper); stroke: var(--accent); stroke-width: 1.7; }
@@ -50,7 +49,7 @@
 .sm-iris { fill: var(--accent); fill-opacity: .22; stroke: var(--accent); stroke-width: .8; }
 .sm-pupil { fill: var(--accent); }
 .sm-pupil-core { fill: currentColor; }
-.sm-gaze { transition: transform 140ms ease-out; }
+.sm-playing .sm-gaze { transition: transform 140ms ease-out; }
 .sm-quotes { font: italic 58px Georgia, "Times New Roman", serif; opacity: .4; }
 .sm-toggle {
   position: absolute;
@@ -62,6 +61,7 @@
   gap: .4rem;
   min-width: 76px;
   min-height: 44px;
+  touch-action: manipulation;
   padding: .4rem .2rem .4rem .6rem;
   border: 0;
   background: transparent;
@@ -70,53 +70,54 @@
   letter-spacing: .04em;
 }
 .sm-toggle:hover { color: var(--ink); }
-.sm-pause-icon, .sm-playing .sm-replay-icon { display: none; }
+.sm-pause-icon, .sm-playing .sm-resume-icon { display: none; }
 .sm-playing .sm-pause-icon { display: initial; }
 
-/* One slow apparition, under five seconds. Only transforms and opacity animate. */
+/* Seamless, slow breathing. Removing sm-playing removes every animation and
+   transition; the mount function supplies a frozen frame as inline styles. */
 @media (prefers-reduced-motion: no-preference) {
-  .sm-playing .sm-word { animation: spymark-arrive 4.4s ease-in-out; }
-  .sm-playing .sm-echo-above { animation: spymark-haunt-above 4.4s ease-in-out; }
-  .sm-playing .sm-echo-below { animation: spymark-haunt-below 4.4s ease-in-out; }
-  .sm-playing .sm-eye { animation: spymark-watch 4.4s ease-in-out; }
-  .sm-playing .sm-tendrils { animation: spymark-reach 4.4s ease-in-out; }
+  .sm-playing .sm-word { animation: spymark-drift 12s ease-in-out infinite; }
+  .sm-playing .sm-echo-above { animation: spymark-haunt-above 12s ease-in-out infinite; }
+  .sm-playing .sm-echo-below { animation: spymark-haunt-below 12s ease-in-out infinite; }
+  .sm-playing .sm-eye { animation: spymark-watch 12s ease-in-out infinite; }
+  .sm-playing .sm-tendrils { animation: spymark-reach 12s ease-in-out infinite; }
+  .sm-playing :is(.sm-word, .sm-echo-above, .sm-echo-below, .sm-eye, .sm-tendrils) {
+    animation-delay: var(--sm-phase, 0ms);
+  }
 }
-@keyframes spymark-arrive {
-  0% { opacity: .65; transform: translateY(3px) skewX(-2deg); }
-  48% { opacity: 1; transform: translateY(-1px) skewX(.5deg); }
-  100% { opacity: 1; transform: none; }
+@keyframes spymark-drift {
+  0%, 100% { opacity: .94; transform: translateY(0) skewX(0); }
+  50% { opacity: 1; transform: translateY(-1px) skewX(.5deg); }
 }
 @keyframes spymark-haunt-above {
-  0%, 100% { opacity: 0; transform: none; }
+  0%, 100% { opacity: .08; transform: translate(2px, -5px) skewX(-1deg) scaleY(1.01); }
   28% { opacity: .24; transform: translate(6px, -12px) skewX(-4deg) scaleY(1.05); }
-  65% { opacity: .1; transform: translate(-4px, -3px) skewX(2deg); }
+  65% { opacity: .1; transform: translate(-4px, -3px) skewX(2deg) scaleY(1); }
 }
 @keyframes spymark-haunt-below {
-  0%, 100% { opacity: 0; transform: none; }
+  0%, 100% { opacity: .05; transform: translate(-1px, 3px) skewX(0) scaleY(1); }
   40% { opacity: .17; transform: translate(-6px, 11px) skewX(3deg) scaleY(.97); }
-  72% { opacity: .08; transform: translate(3px, 4px); }
+  72% { opacity: .08; transform: translate(3px, 4px) skewX(0) scaleY(1); }
 }
 @keyframes spymark-watch {
-  0% { opacity: .25; transform: scale(.92, .65); }
-  40% { opacity: 1; transform: scale(1.04, 1.02); }
-  100% { opacity: 1; transform: scale(1); }
+  0%, 100% { opacity: .92; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.035, 1.045); }
 }
 @keyframes spymark-reach {
-  0% { opacity: .08; transform: translateY(-5px); }
+  0%, 100% { opacity: .27; transform: translateY(0); }
   55% { opacity: .4; transform: translateY(2px); }
-  100% { opacity: .27; transform: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .sm-toggle { display: none; }
-  .sm-gaze { transition: none; transform: none !important; }
+  .sm-gaze { transition: none !important; transform: none !important; }
 }
 @media (forced-colors: active) {
   .spymark-intro .embed-root { color: CanvasText; }
   .sm-echo, .sm-contour, .sm-tendrils { display: none; }
-  .sm-word, .sm-eye { animation: none; opacity: 1; }
+  .sm-word, .sm-eye { animation: none !important; opacity: 1; }
   .sm-fire-edge, .sm-fire-threads, .sm-iris { stroke: CanvasText; }
   .sm-pupil, .sm-pupil-core { fill: CanvasText; }
-  .sm-gaze { transition: none; }
+  .sm-gaze { transition: none !important; }
   .sm-toggle { display: none; }
 }
 @media print {
