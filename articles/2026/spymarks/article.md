@@ -28,7 +28,7 @@ A **spymark**, by contrast, is a hidden signal that forces your work disclose it
 
 **[Google SynthID](https://deepmind.google/models/synthid/)** is a spymark "imperceptible to humans", as Google describes, and can embed database IDs into images, audio, text, and video.
 
-This was not the first spymark system designed, and it's hardly the only one under active deployment. Anthropic, OpenAI, and many other tech companies are developing these systems at scale. Soon Social Media, media production tools, and smartphones may find themselves filled with spymarking algorithms.
+This was not the first spymark system designed, and it's hardly the only one under active deployment. Anthropic, OpenAI, and many other tech companies are developing these systems at scale. Social media, content production tools, and smartphones may find themselves filled with spymarking algorithms.
 
 ```embed
 src = "image-watermarks.ts"
@@ -86,27 +86,28 @@ fallback = "An illustrative encoding: eight word choices represent eight bits. T
 
 ## The watermarks we all know and love
 
-Watermarks are still out there, and they're mostly benign. They bear clear visual marks, easy for the user to spot. They are typically not nefarious, and they won't spy on you.
+Watermarks are mostly benign. Easy for the user to spot, not typically nefarious.
 
 Sometimes they deter counterfeiting,
 
 <figure style="max-width: 708px; margin-inline: auto;">
   <img src="media/twenty-dollar-watermark.png" alt="A $20 bill with a circular close-up of its faint portrait watermark." width="708" height="274" loading="lazy" decoding="async">
-  <figcaption>A $20 bill and its portrait watermark. Image: <a href="https://www.uscurrency.gov/sites/default/files/currency_academy/scienceLab-watermarks.jpg">U.S. Currency Education Program</a>.</figcaption>
 </figure>
 
-Sometimes they denote ownership,
+Sometimes they claim ownership,
 
 <figure style="max-width: 481px; margin-inline: 0 auto;">
   <a href="https://commons.wikimedia.org/wiki/File:DorotheaGetty.webp"><img src="media/dorothea-getty.webp" alt="Dorothea Lange’s Migrant Mother with a visible Getty Images watermark across the photograph." width="481" height="612" loading="lazy" decoding="async"></a>
-  <figcaption><small>Dorothea Lange, <cite>Migrant Mother</cite> (1936) · Public domain in the U.S. · <a href="https://commons.wikimedia.org/wiki/File:DorotheaGetty.webp">Wikimedia Commons</a> · <a href="https://www.gettyimages.com/photos/migrant-mother-by-dorothea-lange">Getty Images listings</a>.</small></figcaption>
+  <figcaption><small>Dorothea Lange, <cite>Migrant Mother</cite> (1936) &mdash; <a href="https://www.gettyimages.com/photos/migrant-mother-by-dorothea-lange">Getty sells</a> some <a href="https://en.wikipedia.org/wiki/Migrant_Mother">public domain images</a>.</small></figcaption>
 </figure>
 
-And sometimes they're annoying,
+And sometimes they're just annoying,
 
-(( imgflip example ))
+<figure style="max-width: 500px; margin-inline: 0 auto;">
+  <a href="https://en.wikipedia.org/wiki/Willy_Wonka_%26_the_Chocolate_Factory"><img src="media/deepfried-wonka-v3.webp" alt="A lightly deep-fried Willy Wonka meme with TOP TEXT and BOTTOM TEXT captions, a small imgflip.com watermark in the bottom-left corner, www.9gag.com at the top right, and a tilted ifunny.co stamp across the middle." width="640" height="640" loading="lazy" decoding="async"></a>
+</figure>
 
-These watermarks are all doing very different things. But one thing they don't do is track you.
+But these watermarks don't track you.
 
 ## Standardized, user-editable tags are not Spymarks
 
@@ -114,9 +115,9 @@ Just adding an invisible digital signal to a file does not mean it's a spymark. 
 
 ```embed
 src = "id3-hex.ts"
-title = "ID3 and EXIF metadata in hex"
+title = "EXIF and ID3 metadata in hex"
 height = 520
-fallback = "Inspect editable ID3 and EXIF metadata in two tabs. ID3 shows an MP3’s title, artist, and album; EXIF shows fictional camera-maker, model, and author tags in a JPEG metadata segment. Hover or tap the bytes for explanations. These samples contain metadata only."
+fallback = "Inspect editable EXIF and ID3 metadata in two tabs. EXIF shows fictional camera-maker, model, and author tags in a JPEG metadata segment; ID3 shows an MP3’s title, artist, and album. Hover or tap the bytes for explanations. These samples contain metadata only."
 ```
 
 We need to be careful though: spymarks such as Google SynthID purport to be a "standard". Yet they does not limit what parties can encode to track users, nor does the spymark even announce to users its presence. Users have no idea and no control over what identifying data the payload contains.

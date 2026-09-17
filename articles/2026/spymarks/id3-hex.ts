@@ -6,10 +6,10 @@ import './id3-hex.css';
 const hex = (value: number, digits = 2) => value.toString(16).toUpperCase().padStart(digits, '0');
 const printable = (value: number) => value >= 32 && value <= 126 ? String.fromCharCode(value) : '·';
 const formats = [
-  { id: 'id3', label: 'ID3', medium: 'MP3 audio', title: 'Sample tag · ID3v2.4', fields: textFrames, make: makeSample,
-    note: 'Hover or tap a byte to inspect it. This sample contains metadata only.', reference: 'https://en.wikipedia.org/wiki/ID3' },
   { id: 'exif', label: 'EXIF', medium: 'Image metadata', title: 'Sample segment · EXIF / JPEG APP1', fields: exifFields, make: makeExifSample,
     note: 'Hover or tap a byte to inspect it. Fictional metadata only; no photo is read or modified.', reference: 'https://en.wikipedia.org/wiki/Exif' },
+  { id: 'id3', label: 'ID3', medium: 'MP3 audio', title: 'Sample tag · ID3v2.4', fields: textFrames, make: makeSample,
+    note: 'Hover or tap a byte to inspect it. This sample contains metadata only.', reference: 'https://en.wikipedia.org/wiki/ID3' },
 ] as const;
 let viewerCount = 0;
 
@@ -21,13 +21,13 @@ const mount: EmbedMount = root => {
   root.innerHTML = `
     <div class="hx-tabs" role="tablist" aria-label="Metadata format">${formats.map((format, i) =>
       `<button type="button" role="tab" id="${viewerId}-${format.id}" aria-controls="${viewerId}-panel" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}"><strong>${format.label}</strong><span>${format.medium}</span></button>`).join('')}</div>
-    <div class="hx-panel" role="tabpanel" id="${viewerId}-panel" aria-labelledby="${viewerId}-id3">
+    <div class="hx-panel" role="tabpanel" id="${viewerId}-panel" aria-labelledby="${viewerId}-${formats[0].id}">
     <div class="hx-top"><span class="hx-format"></span><span class="hx-length"></span></div>
     <div class="hx-fields"></div>
     <p class="hx-error" id="${viewerId}-error" role="status" hidden>These EXIF sample fields use ASCII. Replace non-ASCII characters to update the bytes.</p>
     <div class="hx-legend"><span>Edit a value to update the bytes.</span><button type="button" class="hx-reset">Reset</button></div>
     <div class="hx-labels" aria-hidden="true"><span>Addr</span><span>Hex <span class="hx-mobile-label">/ ASCII</span></span><span class="hx-ascii-heading">ASCII</span></div>
-    <div class="hx-dump" role="group" aria-label="ID3 tag bytes"></div>
+    <div class="hx-dump" role="group" aria-label="${formats[0].label} metadata bytes"></div>
     <div class="hx-inspector" role="status" aria-live="off"><div><strong class="hx-field-name"></strong><span class="hx-offset"></span></div><p class="hx-explanation"></p></div>
     <p class="hx-note"><span></span> <a></a></p>
     </div>`;
@@ -56,7 +56,7 @@ const mount: EmbedMount = root => {
   function validateInputs() {
     let valid = true;
     inputs.forEach(input => {
-      const invalid = formatIndex === 1 && !/^[\x20-\x7e]*$/.test(input.value);
+      const invalid = formats[formatIndex].id === 'exif' && !/^[\x20-\x7e]*$/.test(input.value);
       input.setAttribute('aria-invalid', String(invalid));
       input.setCustomValidity(invalid ? 'Use ASCII characters for this EXIF sample.' : '');
       if (invalid) input.setAttribute('aria-describedby', error.id);
