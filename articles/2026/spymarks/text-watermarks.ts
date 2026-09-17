@@ -1,4 +1,5 @@
 import type { EmbedMount } from '@brand/embeds';
+import { watermarkRecords as samples } from './watermark-records';
 import './text-watermarks.css';
 
 // A deliberately simple, one-bit-per-choice illustration, NOT a SynthID decoder.
@@ -10,11 +11,6 @@ const choices = [
 ] as const;
 const fragments = ['At ', ', a ', ' ', ' followed a ', ' path toward the ', ' ',
   ', carrying a ', ' notebook to record the ', '.'];
-const samples = [
-  { id: 173, author: 'Maya Chen', date: '2026-05-14', time: '09:41:08 UTC' },
-  { id: 90, author: 'Alex Rivera', date: '2026-05-15', time: '16:22:31 UTC' },
-  { id: 214, author: 'Sam Okafor', date: '2026-05-16', time: '11:06:52 UTC' },
-] as const;
 const stages = ['Word choices', 'Binary digits', 'Database identifier', 'Database record'] as const;
 
 const mount: EmbedMount = (root, { reducedMotion }) => {

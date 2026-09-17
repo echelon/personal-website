@@ -1,0 +1,6 @@
+// Fictional lookup records shared by the text and image demonstrations.
+export const watermarkRecords = [
+  { id: 173, author: 'Frodo Baggins', date: '2026-05-14', time: '09:41:08 UTC' },
+  { id: 90, author: 'Samwise Gamgee', date: '2026-05-15', time: '16:22:31 UTC' },
+  { id: 214, author: 'Gandalf the Grey', date: '2026-05-16', time: '11:06:52 UTC' },
+] as const;

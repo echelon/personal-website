@@ -74,6 +74,15 @@ fallback = "An illustrative encoding: eight word choices represent eight bits. T
 
 <small>This demo illustrates word choices encoding an identifier, followed by a database lookup. <a href="https://deepmind.google/blog/watermarking-ai-generated-text-and-video-with-synthid/">Google DeepMind’s SynthID for text</a> instead detects statistical patterns in token choices to identify AI-generated text; it does not establish the personal-data lookup illustrated here.</small>
 
+```embed
+src = "image-watermarks.ts"
+title = "An identifier inside an image"
+height = 650
+fallback = "A smaller version of Mochi’s photo contains a real toy watermark: ID 173, encoded through subtle pixel changes. The applet compares the original, marked image, and amplified differences, and decodes the ID from the PNG. The associated author and timestamp are fictional."
+```
+
+<small>Photo supplied by the author. The amplified-signal view was inspired by Alosh’s <a href="https://medium.com/@aloshdenny/how-to-reverse-synthid-legally-feafb1d85da2">How to Reverse SynthID</a>. This example uses our own simple encoder and decoder; it demonstrates no SynthID detection or removal.</small>
+
 ## The watermarks we all know and love
 
 Watermarks of the past were fairly benign. They were clear visual marks, easy for the user to spot. Their intentions were not nefarious, and they could not be turned against the user.
