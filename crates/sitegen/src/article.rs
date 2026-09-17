@@ -62,6 +62,8 @@ pub struct Metadata {
     pub updated_at: Option<Date>,
     #[serde(default)]
     pub draft: bool,
+    #[serde(default)]
+    pub nofollow_external_links: bool,
 }
 
 #[derive(Debug)]

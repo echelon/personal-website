@@ -94,7 +94,7 @@ fn titles_are_independent_and_escaped() {
     let articles = f.articles();
     let rendered = markdown::render(&articles[0], &HashMap::new()).unwrap();
     let config = Config::load(&f.root().join("config.toml")).unwrap();
-    let html = render::article(&config.site, &articles[0], &rendered, &[]);
+    let html = render::article(&config.site, &articles[0], &rendered, &[]).unwrap();
     assert!(html.contains("<h1>A &lt;B&gt; &amp; C</h1>"));
     assert!(html.contains("<title>Browser title - brand</title>"));
     assert!(html.contains("https://brand.io/article/permanent-url"));
@@ -142,6 +142,7 @@ fn frontmatter_handles_bom_crlf_and_rejects_bad_metadata() {
         "+++\ncreated_at = 'yesterday'\n+++",
         "+++\ncreated_at = 2026-02-30\n+++",
         "+++\ncreated_att = '2026-01-01'\n+++",
+        "+++\nnofollow_external_links = 'true'\n+++",
     ] {
         assert!(
             split_frontmatter(source).is_err(),
@@ -264,6 +265,126 @@ fn embed_metadata_produces_build_entries_and_accessible_fallbacks() {
             .html
             .contains("src=\"/article/demo/game/index.html\"")
     );
+}
+
+#[test]
+fn app_embed_titles_can_be_omitted_without_empty_captions() {
+    let f = Fixture::new();
+    f.put("articles/demo/app.ts", "export default () => {}");
+    f.put("articles/demo/game/index.html", "<p>Game</p>");
+    f.put(
+        "articles/demo/article.md",
+        "```embed\nsrc = 'app.ts'\nfallback = 'A useful description'\n```",
+    );
+    let result = markdown::render(&f.articles()[0], &HashMap::new()).unwrap();
+    assert_eq!(result.entries.len(), 1);
+    assert!(!result.html.contains("figcaption"));
+    assert!(result.html.contains("A useful description"));
+    assert!(result.html.contains("/article/demo/_embeds/1.js"));
+    for metadata in [
+        "src = 'app.ts'\ntitle = ' '",
+        "src = 'game/index.html'\nkind = 'iframe'",
+    ] {
+        f.put(
+            "articles/demo/article.md",
+            &format!("```embed\n{metadata}\n```"),
+        );
+        assert!(markdown::render(&f.articles()[0], &HashMap::new()).is_err());
+    }
+}
+
+#[test]
+fn outbound_link_policy_is_opt_in_preserves_rels_and_handles_markdown_and_html() {
+    let f = Fixture::new();
+    let config = Config::load(&f.root().join("config.toml")).unwrap();
+    let body = r##"
+[Markdown](https://remote.test/post)
+
+<a href="//remote.test/protocol" rel="ugc sponsored">Protocol-relative</a>
+<a href="https://remote.test/existing" rel="NOFOLLOW noreferrer noopener">Existing</a>
+<a href="https://brand.io.evil.test/">Lookalike domain</a>
+<a href="https://brand.io@remote.test/">Credentials</a>
+<a href="HTTP://REMOTE.TEST/">Uppercase scheme</a>
+<map name="demo"><area href="https://remote.test/map" alt="Map"></map>
+<a href="https://brand.io:443/article/another">Same origin</a>
+<a href="//brand.io/article/another">Same origin, protocol-relative</a>
+<a href="/articles">Local route</a>
+<a href="#section">Anchor</a>
+<a href="?page=2">Query</a>
+<a href="mailto:reader@example.com">Email</a>
+<a href="tel:+1234567890">Telephone</a>
+<link rel="stylesheet" href="https://remote.test/style.css">
+"##;
+    for setting in [None, Some(false), Some(true)] {
+        let metadata = setting
+            .map(|value| format!("+++\nnofollow_external_links = {value}\n+++\n"))
+            .unwrap_or_default();
+        f.put("articles/example.md", &format!("{metadata}{body}"));
+        let articles = f.articles();
+        assert_eq!(
+            articles[0].metadata.nofollow_external_links,
+            setting.unwrap_or(false)
+        );
+        let rendered = markdown::render(&articles[0], &HashMap::new()).unwrap();
+        let html = render::article(&config.site, &articles[0], &rendered, &[]).unwrap();
+        let mut links = HashMap::new();
+        lol_html::rewrite_str(
+            &html,
+            lol_html::RewriteStrSettings {
+                element_content_handlers: vec![lol_html::element!("a[href], area[href]", |el| {
+                    links.insert(el.get_attribute("href").unwrap(), el.get_attribute("rel"));
+                    Ok(())
+                })],
+                ..Default::default()
+            },
+        )
+        .unwrap();
+        for href in [
+            "https://remote.test/post",
+            "https://brand.io.evil.test/",
+            "https://brand.io@remote.test/",
+            "HTTP://REMOTE.TEST/",
+            "https://remote.test/map",
+        ] {
+            assert_eq!(
+                links[href].as_deref(),
+                if setting == Some(true) {
+                    Some("nofollow noreferrer")
+                } else {
+                    None
+                },
+                "{href}"
+            );
+        }
+        assert_eq!(
+            links["//remote.test/protocol"].as_deref(),
+            Some(if setting == Some(true) {
+                "ugc sponsored nofollow noreferrer"
+            } else {
+                "ugc sponsored"
+            })
+        );
+        assert_eq!(
+            links["https://remote.test/existing"].as_deref(),
+            Some("NOFOLLOW noreferrer noopener")
+        );
+        for href in [
+            "https://brand.io:443/article/another",
+            "//brand.io/article/another",
+            "/articles",
+            "#section",
+            "?page=2",
+            "mailto:reader@example.com",
+            "tel:+1234567890",
+        ] {
+            assert_eq!(links[href], None, "{href}");
+        }
+        assert!(html.contains("<link rel=\"stylesheet\" href=\"https://remote.test/style.css\">"));
+        assert_eq!(
+            html.contains("data-nofollow-external-links=\"https://brand.io\""),
+            setting == Some(true)
+        );
+    }
 }
 
 #[test]

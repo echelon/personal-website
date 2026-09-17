@@ -31,8 +31,8 @@ crates/sitegen/              CLI, discovery, metadata, Markdown, rendering, buil
 frontend/                    Nx workspace
   libs/site/                 Shared CSS, theme control, lazy embed loader
   libs/embeds/               Typed embed contract and small reusable controls
-  tools/                     esbuild compiler, dev server, tests
-articles/                    Markdown plus colocated source and public media
+  tools/                     esbuild compiler, dev server, shared tests and test runner
+articles/                    Markdown plus colocated applets, styles, tests and public media
 config.toml                  Site identity and build settings
 build/                       Generated static site (ignored by Git)
 netlify.toml                 Build command, publish directory, response headers
@@ -48,6 +48,11 @@ Use one directory per article when it has assets. Years and other parent directo
 articles/2026/llm_survey/
   article.md
   typescript_mini_embed_animation.ts
+  styles.css
+  .tests/
+    animation.test.mts
+    fixtures/
+      sample.json
   media/
     foo.jpg
     video.mp4
@@ -65,6 +70,7 @@ tags = ["AI", "Engineering"]
 created_at = 2026-09-10
 updated_at = "2026-09-11T09:30:00-04:00"
 draft = false
+nofollow_external_links = false
 +++
 
 Start with the introduction. The renderer supplies the page's h1.
@@ -77,6 +83,8 @@ Ordinary Markdown, with **emphasis**, [links](https://example.com), and quotes.
 Dates accept native TOML dates, quoted `YYYY-MM-DD`, or RFC 3339 timestamps **with a timezone**. Omitted dates produce no date label. The list sorts newest first by `created_at`, falling back to `updated_at` only when creation is absent. Undated posts follow dated posts; equal dates sort by slug for deterministic output. An update does not move an old article to the top.
 
 Unknown front-matter fields, invalid dates, blank explicit titles, dates in reverse order, duplicate slugs, and missing local references fail with source context. UTF-8, a BOM, and Windows line endings are supported.
+
+Set `nofollow_external_links = true` to add `rel="nofollow noreferrer"` to outbound HTTP(S) links. The default is `false`. This covers Markdown and raw HTML links in the generated page, plus links created or updated by app embeds. Existing `rel` values are preserved. Same-origin links (relative to `site.base_url`), local links, anchors, and `mailto:` links are left alone. `nofollow` marks links as unendorsed; `noreferrer` suppresses the referring page when following them. Static links receive these attributes at build time and work without JavaScript.
 
 ### Slugs and titles
 
@@ -137,6 +145,8 @@ fallback = "A textual explanation of the figure when JavaScript is unavailable."
 ```
 ````
 
+The `title` is optional for app embeds; omit it to render without a visible caption. Label the applet's controls in its code and provide useful fallback text. Iframe embeds still require a title to identify the embedded document.
+
 Export a mount function from that local entry point:
 
 ```ts
@@ -158,6 +168,10 @@ export default mount;
 The default export may be async. It receives an isolated root element and a live reduced-motion `MediaQueryList`. The example library provides a labeled slider. Entries are bundled by [esbuild](https://esbuild.github.io/api/), with ESM splitting and local npm imports. Imported CSS is emitted and linked only on the owning article. A missing default export or compilation error fails the build. Runtime errors restore the textual fallback and leave the article readable.
 
 Author embeds in `.ts` or `.tsx`. Add any framework dependencies to `frontend/package.json` if you choose to use them; React is not required by the site. The alias `@brand/embeds` points to the shared Nx library. Every build type-checks browser code, tools, tests, and TypeScript embed entries, including those from an alternate article directory, before esbuild emits JavaScript. `npm run check --prefix frontend` runs type checking and the Node test suite independently of a site build.
+
+Keep article-specific styles in the article directory. Import applet CSS from its TypeScript entry point; for static article content, use `<link rel="stylesheet" href="styles.css">` in the Markdown. Shared `frontend/libs/site/src/site.css` is only for site-wide styles.
+
+Put applet tests and their fixtures in the article's `.tests/` directory. Use `*.test.mts` for Node ESM tests outside the frontend package; helper modules can use `.mts` too. `npm test --prefix frontend` automatically discovers tests under `frontend/tools/` and `articles/`, including nested `.tests/` directories. No per-article registration is needed. Article tests are checked with Node types, separately from browser source, and the static publisher excludes the entire hidden directory, including JSON fixtures. For browser modules that need compilation or bundling, tests can import `loadBrowserModule` from `frontend/tools/test-support.ts` using a relative path. It uses the production esbuild configuration's target and aliases without providing a DOM.
 
 ### Standalone apps and future Rust/Wasm
 

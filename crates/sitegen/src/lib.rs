@@ -168,7 +168,7 @@ pub fn build(config_path: &Path, drafts: bool) -> Result<()> {
                 .join("article")
                 .join(&article.slug)
                 .join("index.html"),
-            render::article(&config.site, article, rendered, &styles),
+            render::article(&config.site, article, rendered, &styles)?,
         )?;
     }
     write(

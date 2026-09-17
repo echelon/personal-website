@@ -35,7 +35,7 @@ pub struct Rendered {
 #[serde(deny_unknown_fields)]
 struct Embed {
     src: String,
-    title: String,
+    title: Option<String>,
     #[serde(default = "default_height")]
     height: u32,
     #[serde(default = "default_kind")]
@@ -186,8 +186,11 @@ fn render_embed(
 ) -> Result<String> {
     let embed: Embed = toml::from_str(input).context("Invalid embed block (expected TOML)")?;
     ensure!(
-        !embed.title.trim().is_empty(),
-        "Embed title is required for accessibility"
+        embed
+            .title
+            .as_ref()
+            .is_none_or(|title| !title.trim().is_empty()),
+        "Omit the embed title to hide its caption; an explicit title cannot be blank"
     );
     ensure!(
         (160..=1200).contains(&embed.height),
@@ -204,7 +207,11 @@ fn render_embed(
         source.starts_with(article.directory()),
         "Embed may not escape its article directory"
     );
-    let title = escape(&embed.title);
+    let title = embed.title.as_deref().map(escape);
+    let caption = title
+        .as_ref()
+        .map(|title| format!("<figcaption>{title}</figcaption>"))
+        .unwrap_or_default();
     let fallback = escape(
         embed
             .fallback
@@ -222,13 +229,14 @@ fn render_embed(
             );
             let output = format!("article/{}/_embeds/{index}", article.slug);
             let result = format!(
-                r#"<figure class="interactive"><figcaption>{title}</figcaption><div class="embed-root" data-embed-src="/{output}.js" style="--embed-height: {}px"><p class="embed-fallback">{fallback}</p></div></figure>"#,
+                r#"<figure class="interactive">{caption}<div class="embed-root" data-embed-src="/{output}.js" style="--embed-height: {}px"><p class="embed-fallback">{fallback}</p></div></figure>"#,
                 embed.height
             );
             entries.push(Entry { source, output });
             Ok(result)
         }
         "iframe" => {
+            let title = title.context("Iframe embeds require a title for accessibility")?;
             ensure!(
                 source.extension().is_some_and(|e| e == "html"),
                 "Iframe embeds need a local HTML file"
@@ -239,7 +247,7 @@ fn render_embed(
                 encode_path(source.strip_prefix(article.directory())?)
             );
             Ok(format!(
-                r#"<figure class="interactive"><figcaption>{title}</figcaption><iframe src="{src}" title="{title}" loading="lazy" height="{}" allow="fullscreen" referrerpolicy="no-referrer"></iframe></figure>"#,
+                r#"<figure class="interactive">{caption}<iframe src="{src}" title="{title}" loading="lazy" height="{}" allow="fullscreen" referrerpolicy="no-referrer"></iframe></figure>"#,
                 embed.height
             ))
         }

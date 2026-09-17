@@ -1,3 +1,6 @@
+use anyhow::{Context, Result};
+use lol_html::{RewriteStrSettings, element, rewrite_str};
+
 use crate::{
     article::{Article, Date},
     config::Site,
@@ -200,7 +203,39 @@ pub fn archive(site: &Site, articles: &[Article]) -> String {
     )
 }
 
-pub fn article(site: &Site, article: &Article, rendered: &Rendered, styles: &[String]) -> String {
+fn outbound_link_rels(html: &str, base_url: &str) -> Result<String> {
+    let base = url::Url::parse(base_url)?;
+    rewrite_str(
+        html,
+        RewriteStrSettings {
+            element_content_handlers: vec![element!("a[href], area[href]", |el| {
+                let href = el.get_attribute("href").unwrap_or_default();
+                if base.join(&href).is_ok_and(|url| {
+                    matches!(url.scheme(), "http" | "https") && url.origin() != base.origin()
+                }) {
+                    let existing = el.get_attribute("rel").unwrap_or_default();
+                    let mut tokens: Vec<_> = existing.split_ascii_whitespace().collect();
+                    for token in ["nofollow", "noreferrer"] {
+                        if !tokens.iter().any(|value| value.eq_ignore_ascii_case(token)) {
+                            tokens.push(token);
+                        }
+                    }
+                    el.set_attribute("rel", &tokens.join(" "))?;
+                }
+                Ok(())
+            })],
+            ..RewriteStrSettings::default()
+        },
+    )
+    .context("Could not apply outbound link attributes")
+}
+
+pub fn article(
+    site: &Site,
+    article: &Article,
+    rendered: &Rendered,
+    styles: &[String],
+) -> Result<String> {
     let metadata = &article.metadata;
     let mut dates = String::new();
     let mut extra = String::new();
@@ -256,7 +291,7 @@ pub fn article(site: &Site, article: &Article, rendered: &Rendered, styles: &[St
         r#"<main id="main" class="article-layout">
 <aside class="article-aside"><a class="back-link" href="/articles"><span aria-hidden="true">←</span> All articles</a>{toc}</aside>
 <article><header class="article-heading"><div class="tags">{tags}</div><h1>{title}</h1>{description}<div class="article-meta">{dates}<span>{minutes} min read</span>{draft}</div></header>
-<div class="prose">{body}</div><footer class="article-footer"><a href="/articles">← All articles</a><a href="mailto:{email}">{email}</a></footer></article>
+<div class="prose"{link_policy}>{body}</div><footer class="article-footer"><a href="/articles">← All articles</a><a href="mailto:{email}">{email}</a></footer></article>
 </main>"#,
         tags = tags(article),
         title = escape(&article.title),
@@ -267,9 +302,17 @@ pub fn article(site: &Site, article: &Article, rendered: &Rendered, styles: &[St
             ""
         },
         body = rendered.html,
+        link_policy = if metadata.nofollow_external_links {
+            format!(
+                " data-nofollow-external-links=\"{}\"",
+                escape(&site.base_url)
+            )
+        } else {
+            String::new()
+        },
         email = escape(&site.email)
     );
-    shell(
+    let html = shell(
         site,
         metadata.html_title.as_deref().unwrap_or(&article.title),
         metadata.description.as_deref().unwrap_or(&site.description),
@@ -277,7 +320,12 @@ pub fn article(site: &Site, article: &Article, rendered: &Rendered, styles: &[St
         "article-page",
         &content,
         &extra,
-    )
+    );
+    if metadata.nofollow_external_links {
+        outbound_link_rels(&html, &site.base_url)
+    } else {
+        Ok(html)
+    }
 }
 
 pub fn not_found(site: &Site) -> String {

@@ -14,5 +14,6 @@
     "baseUrl": ".",
     "paths": { "@brand/embeds": ["libs/embeds/src/index.ts"] }
   },
-  "include": ["libs/**/*.ts", "libs/**/*.tsx", "../articles/**/*.ts", "../articles/**/*.tsx"]
+  "include": ["libs/**/*.ts", "libs/**/*.tsx", "../articles/**/*.ts", "../articles/**/*.tsx"],
+  "exclude": ["../articles/**/.tests/**"]
 }

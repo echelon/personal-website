@@ -6,5 +6,6 @@
     "erasableSyntaxOnly": true,
     "types": ["node"]
   },
-  "include": ["tools/**/*.ts"]
+  "include": ["tools/**/*.ts", "../articles/**/.tests/**/*.ts", "../articles/**/.tests/**/*.mts"],
+  "exclude": []
 }

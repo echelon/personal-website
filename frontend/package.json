@@ -6,7 +6,7 @@
   "scripts": {
     "build": "nx run site:build",
     "check": "nx run-many -t typecheck && npm test",
-    "test": "node --test tools/*.test.ts",
+    "test": "node tools/test.ts",
     "dev": "node tools/dev.ts",
     "preview": "node tools/serve.ts"
   },
