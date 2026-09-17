@@ -33,17 +33,17 @@ A **spymark**, by contrast, is a hidden signal that forces your work disclose it
 
 ## We need a new word for this
 
-Unless you're an uber-nerd like me, most ordinary people tire and zone out of the discourse on privacy. It's technical, it's boring. Imagined future horrors and slippery slopes are often called comedic hyperbole.
+Unless you're an uber-nerd like me, this stuff just isn't interesting. Most ordinary people tire and zone out of the discourse on privacy. It's technical, it's boring, and it's not about to *immanentize the eschaton*.
 
 Articulating this discussion requires a lot of shared context, and we can't keep having this front-loaded conversation over and over and expect people to pay attention.
 
 > "To speak the name is to control the thing." &mdash; Ursula K. Le Guin
 
-By creating a new word that captures the argument in two syllables, you collapse a salient and gain territory. You no longer have to waste energy establishing the basic facts.
+By creating a new word that captures the argument in two syllables, you collapse a salient and gain valuable territory. You no longer have to waste energy establishing the basic facts.
 
 Ergo,
 
-- *Spy*- &mdash; clandestine signal, not attached as standard metadata
+- *Spy*- &mdash; privacy-invading clandestine signal, not standard metadata
 
 - -*mark* &mdash; already shared with watermark in both use and etymology.
 
@@ -65,32 +65,34 @@ fallback = "Compare spectrograms of the same LJ Speech excerpt unwatermarked and
 
 The user cannot see or hear such a spymark. Nor do they have any idea what the payload contains.
 
-(( can you include this example : https://deepmind.google/blog/watermarking-ai-generated-text-and-video-with-synthid/   https://lh3.googleusercontent.com/yxJLDpIUGAOgpiDYfq8LSD-clFhstkQm9Rpg-bh4ATZoss1W8qNgesAOvvqNHX_J8lZfmf6Excs34trsrTsqFhqw9DcBMl_PhbqUH4NJ0UzDt1dUMQ=w2880-rw-lo  - we need an applet that shows a text payload - not editable -- that has highlights for the word choices that encode information. and an animation that maps those words to Date / Time, Database ID, author name, etc. ))
+```embed
+src = "text-watermarks.ts"
+title = "Text as a hidden identifier"
+height = 650
+fallback = "An illustrative encoding: eight word choices represent eight bits. The binary value 10101101 gives database ID 173, which can point to a record containing an author and timestamp. These are fictional examples, not a SynthID decoder."
+```
+
+<small>This demo illustrates word choices encoding an identifier, followed by a database lookup. <a href="https://deepmind.google/blog/watermarking-ai-generated-text-and-video-with-synthid/">Google DeepMind’s SynthID for text</a> instead detects statistical patterns in token choices to identify AI-generated text; it does not establish the personal-data lookup illustrated here.</small>
 
 ## The watermarks we all know and love
 
-Watermarks of the past didn't need to come pre-packed with their own EU-mandated cookie notice. They were mostly benign.
+Watermarks of the past were fairly benign. They were clear visual marks, easy for the user to spot. Their intentions were not nefarious, and they could not be turned against the user.
+
+Sometimes they were used to deter counterfeiting,
 
 <figure style="max-width: 708px; margin-inline: auto;">
-  <div style="position: relative; aspect-ratio: 708 / 274; overflow: clip; border-radius: 3px;">
-    <img src="media/currency-watermarks-source.jpg" alt="A $20 bill with a circular close-up of its faint portrait watermark." width="708" height="587" loading="lazy" decoding="async" style="position: absolute; inset: 0 auto auto 0; width: 100%; height: auto; margin: 0;">
-  </div>
+  <img src="media/twenty-dollar-watermark.png" alt="A $20 bill with a circular close-up of its faint portrait watermark." width="708" height="274" loading="lazy" decoding="async">
   <figcaption>A $20 bill and its portrait watermark. Image: <a href="https://www.uscurrency.gov/sites/default/files/currency_academy/scienceLab-watermarks.jpg">U.S. Currency Education Program</a>.</figcaption>
 </figure>
 
-It used to be that every image in Google Image Search was tagged with "Getty Images(r)", including the public domain ones.
+Sometimes to denote ownership,
 
-Getty likes to watermark every image.
-
-It's pretty clear that the following image has a watermark:
-
-<figure style="max-width: 481px; margin-inline: auto;">
+<figure style="max-width: 481px; margin-inline: 0 auto;">
   <a href="https://commons.wikimedia.org/wiki/File:DorotheaGetty.webp"><img src="media/dorothea-getty.webp" alt="Dorothea Lange’s Migrant Mother with a visible Getty Images watermark across the photograph." width="481" height="612" loading="lazy" decoding="async"></a>
   <figcaption><small>Dorothea Lange, <cite>Migrant Mother</cite> (1936) · Public domain in the U.S. · <a href="https://commons.wikimedia.org/wiki/File:DorotheaGetty.webp">Wikimedia Commons</a> · <a href="https://www.gettyimages.com/photos/migrant-mother-by-dorothea-lange">Getty Images listings</a>.</small></figcaption>
 </figure>
 
-The presence of a watermark isn't always foolproof. Getty doesn't own this image &mdash; it's public domain.
-
+The presence of a watermark isn't always foolproof.
 These watermarks are all doing very different things. But one thing they all don't do is track you.
 
 ## Standardized, user-editable tags are not Spymarks
@@ -156,3 +158,23 @@ That future lies halfway between now and "1984". So let's work together to stay 
 Call a spymark what it is. A *spy* mark.
 
 Now that we have a name for these things, we can start to demand platforms stop tracking us with them.
+
+Imagined future horrors and slippery slopes are often called comedic hyperbole.
+
+---
+
+**Graveyard**
+
+We've all seen these watermarks.
+It used to be that every image in Google Image Search was tagged with "Getty Images(r)", including the public domain ones.
+
+Getty likes to watermark every image.
+
+It's pretty clear that the following image has a watermark:
+
+Once upon a time, nearly every image in Google Image Search was watermarked. Getty doesn't own this image &mdash; it's public domain.
+
+Other articles in the future:
+
+- Should trademarks be ads marketplace targets? (betteridge law of headlines: no)
+- Should app stores exist in 2026? (no.)
