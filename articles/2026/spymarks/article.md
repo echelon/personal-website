@@ -138,10 +138,6 @@ That future lies halfway between now and "1984". So let's work together to stay 
 
 Call a spymark what it is. A *spy* mark.
 
-Now that we have a name for these things, we can start to demand platforms stop tracking us with them.
-
-Imagined future horrors and slippery slopes are often called comedic hyperbole.
-
 ## Usage
 
 <link rel="stylesheet" href="dictionary.css">
@@ -160,7 +156,7 @@ Imagined future horrors and slippery slopes are often called comedic hyperbole.
     <dd>
       <p class="dict-forms"><strong>spymarked</strong>; <strong>spymarking</strong>; <strong>spymarks</strong></p>
       <p>To embed a spymark in a file or piece of media.</p>
-      <p class="dict-example">“The service spymarks every image it exports.”</p>
+      <p class="dict-example">“The social network spymarks every uploaded image.”</p>
     </dd>
   </div>
   <div>
@@ -174,7 +170,8 @@ Imagined future horrors and slippery slopes are often called comedic hyperbole.
     <dt><dfn>spymarked</dfn> <span class="dict-part">adjective</span></dt>
     <dd>
       <p>Containing a spymark.</p>
-      <p class="dict-example">“Removing the file’s metadata left the image spymarked.”</p>
+      <p class="dict-example">“Removing the file’s metadata still left the image spymarked.”</p>
     </dd>
   </div>
 </dl>
+
