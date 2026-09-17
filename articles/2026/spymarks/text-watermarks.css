@@ -7,7 +7,6 @@
 .tw-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .4rem .75rem; }
 .tw-sample-label { display: inline-flex; align-items: center; gap: .5rem; font-size: .8rem; }
 .tw-sample { min-height: 44px; min-width: 64px; padding: .25rem .5rem; border: 1px solid var(--line); border-radius: 4px; background: var(--paper); color: var(--ink); font: inherit; }
-.tw-badge { color: var(--muted); font-size: .7rem; }
 .text-watermarks .tw-passage { margin: .8rem 0 .5rem; font-family: Georgia, 'Times New Roman', serif; font-size: 1.12rem; line-height: 2.65; }
 .tw-word { display: inline-block; min-height: 44px; padding: 0 .24rem; border: 0; border-radius: 3px; background: transparent; color: inherit; font: inherit; line-height: 1.5; cursor: pointer; touch-action: manipulation; }
 .text-watermarks [data-bit="0"] { --tw-color: var(--tw-zero); }

@@ -25,7 +25,6 @@ const mount: EmbedMount = (root, { reducedMotion }) => {
         <canvas class="iw-reveal-frame" width="360" height="478" role="img" aria-label="Amplified pixel differences on the photo" hidden></canvas></div>
         <p class="iw-view-note"></p></div>
       <div class="iw-inspection">
-        <p class="iw-intro">A real ID, hidden in the pixels.</p>
         <p class="iw-explanation">Compare the images, then read the embedded number. Select Difference for an animated reveal.</p>
         <div class="iw-reveal-controls" hidden>
           <label class="iw-gain"><span>Amplify changes <output>64×</output></span>
@@ -55,7 +54,6 @@ const mount: EmbedMount = (root, { reducedMotion }) => {
   const status = find<HTMLElement>('.iw-status');
   const payload = find<HTMLElement>('.iw-payload code');
   const result = find<HTMLElement>('.iw-result');
-  const intro = find<HTMLElement>('.iw-intro');
   const explanation = find<HTMLElement>('.iw-explanation');
   const note = find<HTMLElement>('.iw-note');
   const revealFrame = find<HTMLCanvasElement>('.iw-reveal-frame');
@@ -183,7 +181,6 @@ const mount: EmbedMount = (root, { reducedMotion }) => {
     decode.textContent = index === 0 ? 'Decode original PNG' : 'Decode spymarked PNG';
     decode.hidden = index === 2;
     result.hidden = index === 2;
-    intro.textContent = index === 2 ? 'Bring the hidden signal into view.' : 'A real ID, hidden in the pixels.';
     explanation.textContent = index === 2
       ? 'Watch the tiny changes grow, then disappear into the photo. Turn off “Show photo” to isolate the signal.'
       : 'Compare the images, then read the embedded number. Select Difference for an animated reveal.';

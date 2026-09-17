@@ -24,7 +24,6 @@ const mount: EmbedMount = (root, { reducedMotion }) => {
       <label class="tw-sample-label">Passage <select class="tw-sample" aria-label="Example passage">
         <option value="0">A</option><option value="1">B</option><option value="2">C</option>
       </select></label>
-      <span class="tw-badge">Illustrative encoding</span>
     </div>
     <p class="tw-passage">${fragments.map((fragment, i) => fragment + (i < choices.length
       ? `<button type="button" class="tw-word" data-index="${i}" aria-pressed="false"></button>` : '')).join('')}</p>

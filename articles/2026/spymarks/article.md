@@ -4,6 +4,7 @@ title = "Spymarks, not Watermarks"
 description = "Encoded unique IDs are more spy tool than protection"
 tags = ["Privacy", "AI", "Technology"]
 draft = true
+nofollow_external_links = true
 +++
 
 We need a new word to describe today's sneaky new evolution of "watermarks":
@@ -28,26 +29,25 @@ A **spymark**, by contrast, is a hidden signal that forces your work disclose it
 
 **[Google SynthID](https://deepmind.google/models/synthid/)** is a spymark "imperceptible to humans", as Google describes, and can embed database IDs into images, audio, text, and video.
 
-This was not the first spymark system designed, and it's hardly the only one under active deployment. Anthropic, OpenAI, and many other tech companies are developing these systems at scale. Social media, content production tools, and smartphones may find themselves filled with spymarking algorithms.
+This was not the first spymark system designed, and it's hardly the only one under active deployment. [Anthropic](https://www.anthropic.com/news/claude-text-watermark), [OpenAI](https://help.openai.com/en/articles/8912793-provenance-signals-content-credentials-synthid-in-openai-generated-content), and many other tech companies are developing these systems at scale. Social media, content production tools, and smartphones may find themselves filled with spymarking algorithms.
+
+For example, images may be imperceptibly altered to encode secret frequency domain information, such as database IDs containing authorship and provenance information:
 
 ```embed
 src = "image-watermarks.ts"
-title = "An identifier inside an image"
 height = 650
 fallback = "A smaller version of Mochi’s photo contains a real toy watermark: ID 173, encoded through subtle pixel changes. Compare the original and marked image, animate the amplified differences, and decode the ID from the PNG. The associated author and timestamp are fictional."
 ```
-
-<small>Photo supplied by the author. The amplified-signal view was inspired by Alosh’s <a href="https://medium.com/@aloshdenny/how-to-reverse-synthid-legally-feafb1d85da2">How to Reverse SynthID</a>. This example uses our own simple encoder and decoder; it demonstrates no SynthID detection or removal.</small>
 
 ## We need a new word for this
 
 Unless you're an uber-nerd like me, this stuff just isn't interesting. Most ordinary people tire and zone out of the discourse on privacy. It's technical, it's boring, and it's not about to *immanentize the eschaton*.
 
-Articulating this discussion requires a lot of shared context, and we can't keep having this front-loaded conversation over and over and expect people to pay attention.
+Articulating this discussion requires a lot of shared context. We can't keep having this front-loaded conversation over and over and expect people to pay attention.
 
 > "To speak the name is to control the thing." &mdash; Ursula K. Le Guin
 
-By creating a new word that captures the argument in two syllables, you collapse a salient and gain valuable territory. You no longer have to waste energy establishing the basic facts.
+By creating a new word that captures the argument in two syllables, you collapse a salient and gain valuable ground. You no longer have to waste energy establishing the basic facts.
 
 Ergo,
 
@@ -55,12 +55,12 @@ Ergo,
 
 - -*mark* &mdash; already shared with watermark in both use and etymology.
 
-Everything we have to say is immediately obvious. This is our *Rumpelstiltskin*.
+Everything that follows becomes immediately obvious. This is a privacy *Rumpelstiltskin*.
 
 ## Spymarks are getting into everything
 
-
-Meanwhile, an audio signal spymark is sneaky and doesn't necessarily announce its presence,
+Every kind of data you create and consume is amenable to statistical tracking.
+An audio signal spymark doesn't announce its presence either,
 
 ```embed
 src = "audio-watermarks.ts"
@@ -71,22 +71,23 @@ fallback = "Compare spectrograms of the same LJ Speech excerpt unwatermarked and
 
 <small>Spectrograms from Wen et al. (2025), <a href="https://arxiv.org/abs/2503.19176">SoK: How Robust is Audio Watermarking in Generative AI models?</a> · <a href="https://sokaudiowm.github.io/">Original samples</a>. Plots retain the authors’ original scales.</small>
 
-The user cannot see or hear such a spymark. Nor do they have any idea what the payload contains. These are frequency domain encoded values that resist compression and reencoding.
+You can't hear this. It resists compression, reencoding, and frequency domain attacks. The won't know it's there, let alone would they have any idea what is being communicated about them against their will.
 
-Spymarks in text are mostly limited to AI-generated or edited text, but they might soon find their way into articles, social media comments, or word processing tools as a means of tracking dissemination. A comment you read might be subtly edited by a platform so that if it's copied, they can trace who shared it.
+Spymarks can be [included in text passages too](https://deepmind.google/blog/watermarking-ai-generated-text-and-video-with-synthid/),
+
 
 ```embed
 src = "text-watermarks.ts"
-title = "Text as a hidden identifier"
 height = 650
 fallback = "An illustrative encoding: eight word choices represent eight bits. The binary value 10101101 gives database ID 173, which can point to a record containing an author and timestamp. These are fictional examples, not a SynthID decoder."
 ```
 
-<small>This demo illustrates word choices encoding an identifier, followed by a database lookup. <a href="https://deepmind.google/blog/watermarking-ai-generated-text-and-video-with-synthid/">Google DeepMind’s SynthID for text</a> instead detects statistical patterns in token choices to identify AI-generated text; it does not establish the personal-data lookup illustrated here.</small>
+Today, spymarks in text are mostly limited to AI-generated or edited text. But they might find their way into articles, social media comments, or word processing tools soon as a means of tracking dissemination.
 
-## The watermarks we all know and love
 
-Watermarks are mostly benign. Easy for the user to spot, not typically nefarious.
+## Watermarks are benign, Spymarks are not
+
+Watermarks remain easy for the user to spot and are not typically nefarious.
 
 Sometimes they deter counterfeiting,
 
@@ -109,6 +110,13 @@ And sometimes they're just annoying,
 
 But these watermarks don't track you.
 
+[Printer tracking dots](https://en.wikipedia.org/wiki/Printer_tracking_dots) are not watermarks &mdash; they're spymarks.
+
+<figure style="max-width: 512px; margin-inline: 0 auto;">
+  <a href="https://commons.wikimedia.org/wiki/File:Machine_Identification_Code_von_Druckern.png"><img src="media/printer-tracking-dots.webp" alt="Magnified printer tracking dots annotated to show encoded time, date, and printer serial number." width="512" height="384" loading="lazy" decoding="async"></a>
+  <figcaption><small>Image: <a href="https://commons.wikimedia.org/wiki/File:Machine_Identification_Code_von_Druckern.png">EFF — Robert Lee, Seth Schoen, Patrick Murphy, Joel Alwen, and Andrew “bunnie” Huang</a> · <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</small></figcaption>
+</figure>
+
 ## Standardized, user-editable tags are not Spymarks
 
 Just adding an invisible digital signal to a file does not mean it's a spymark. The ID3 tags on MP3s are technically "invisible" to users, yet their inclusion is standardized, easy to edit, and almost universally accessible. You can even read them in the raw file &mdash; they don't try to hide from you, and you can easily scrub them if you want.
@@ -120,7 +128,7 @@ height = 520
 fallback = "Inspect editable EXIF and ID3 metadata in two tabs. EXIF shows fictional camera-maker, model, and author tags in a JPEG metadata segment; ID3 shows an MP3’s title, artist, and album. Hover or tap the bytes for explanations. These samples contain metadata only."
 ```
 
-We need to be careful though: spymarks such as Google SynthID purport to be a "standard". Yet they does not limit what parties can encode to track users, nor does the spymark even announce to users its presence. Users have no idea and no control over what identifying data the payload contains.
+Spymarks such as Google SynthID purport to be a "standard". Yet they does not limit what parties can encode to track users, nor does the spymark even announce to users its presence. Users have no idea and no control over what identifying data the payload contains.
 
 ## Keeping the future free
 
