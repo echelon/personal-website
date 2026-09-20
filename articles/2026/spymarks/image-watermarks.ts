@@ -183,7 +183,9 @@ const mount: EmbedMount = (root, { reducedMotion }) => {
     result.hidden = index === 2;
     caption.textContent = index === 0
       ? 'This is the original, non-spymarked image.'
-      : 'Spymarked copy of the original image.';
+      : index === 1
+        ? 'Spymarked copy of the original image.'
+        : 'Amplified differences between the original and spymarked image.';
     explanation.hidden = index !== 2;
     note.hidden = index === 2;
     controls.forEach((control, i) => control.setAttribute('aria-pressed', String(i === index)));
