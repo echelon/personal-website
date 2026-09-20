@@ -11,11 +11,11 @@ npm ci --prefix frontend
 ./dev.sh
 ```
 
-Open **http://127.0.0.1:4173**. `./dev.sh` starts both the Rust watcher/builds and the frontend server with automatic browser refresh. Press **Ctrl-C** to stop both. The existing `npm run dev --prefix frontend` command starts the same dev launcher.
+Open the **Dev:** URL printed in the terminal. `./dev.sh` starts at **http://127.0.0.1:4173** and tries subsequent ports if one is already in use. It starts both the Rust watcher/builds and the frontend server with automatic browser refresh. Press **Ctrl-C** to stop both. The existing `npm run dev --prefix frontend` command starts the same dev launcher.
 
 Saving Markdown, article media, frontend code, or generator sources rebuilds the site and automatically reloads connected browsers after a successful build. Drafts are included in local development. Invalid edits leave the last successful preview on screen; saving a fix resumes updates. Saves are debounced and builds run one at a time, with edits during a build queued for another build.
 
-`PORT=4000 ./dev.sh` changes the local port. A custom configuration works with `./dev.sh --config /path/to/config.toml`; changes to its source and output paths are picked up on save. You can invoke the script by its full path from another directory; relative config paths are resolved from the repository root. The Rust watcher is enabled only by the optional `dev` Cargo feature. The dev server injects its reload script into HTTP responses, so production HTML and browser bundles contain no reload client, watcher, or event connection. `npm run preview --prefix frontend` remains a plain static preview without watching or injection.
+`PORT=4000 ./dev.sh` changes the starting port; busy ports are skipped automatically. `PORT=0 ./dev.sh` lets the operating system choose an available port. A custom configuration works with `./dev.sh --config /path/to/config.toml`; changes to its source and output paths are picked up on save. You can invoke the script by its full path from another directory; relative config paths are resolved from the repository root. The Rust watcher is enabled only by the optional `dev` Cargo feature. The dev server injects its reload script into HTTP responses, so production HTML and browser bundles contain no reload client, watcher, or event connection. `npm run preview --prefix frontend` remains a plain static preview without watching or injection.
 
 The production build can also run through Nx. Both commands run the TypeScript checker before bundling browser assets:
 

@@ -147,16 +147,6 @@ fn time(date: &Date) -> String {
     )
 }
 
-fn tags(article: &Article) -> String {
-    article
-        .metadata
-        .tags
-        .iter()
-        .map(|tag| format!("<span>{}</span>", escape(tag)))
-        .collect::<Vec<_>>()
-        .join("")
-}
-
 pub fn archive(site: &Site, articles: &[Article]) -> String {
     let mut rows = String::new();
     for article in articles {
@@ -179,8 +169,8 @@ pub fn archive(site: &Site, articles: &[Article]) -> String {
             .as_ref()
             .map(|s| format!("<p>{}</p>", escape(s)))
             .unwrap_or_default();
-        rows.push_str(&format!(r#"<li class="article-row"><div class="row-date">{date}</div><div class="row-content"><h2><a href="{}">{}{}</a></h2>{description}<div class="tags">{}</div></div><span class="row-arrow" aria-hidden="true">↗</span></li>"#,
-            article.url(), escape(&article.title), if article.metadata.draft { " <span class=\"draft-label\">Draft</span>" } else { "" }, tags(article)));
+        rows.push_str(&format!(r#"<li class="article-row"><div class="row-date">{date}</div><div class="row-content"><h2><a href="{}">{}{}</a></h2>{description}</div><span class="row-arrow" aria-hidden="true">↗</span></li>"#,
+            article.url(), escape(&article.title), if article.metadata.draft { " <span class=\"draft-label\">Draft</span>" } else { "" }));
     }
     let list = if articles.is_empty() {
         "<p class=\"empty-state\">No articles yet.</p>".to_owned()
@@ -290,10 +280,9 @@ pub fn article(
     let content = format!(
         r#"<main id="main" class="article-layout">
 <aside class="article-aside"><a class="back-link" href="/articles"><span aria-hidden="true">←</span> All articles</a>{toc}</aside>
-<article><header class="article-heading"><div class="tags">{tags}</div><h1>{title}</h1>{description}<div class="article-meta">{dates}<span>{minutes} min read</span>{draft}</div></header>
+<article><header class="article-heading"><h1>{title}</h1>{description}<div class="article-meta">{dates}<span>{minutes} min read</span>{draft}</div></header>
 <div class="prose"{link_policy}>{body}</div><footer class="article-footer"><a href="/articles">← All articles</a><a href="mailto:{email}">{email}</a></footer></article>
 </main>"#,
-        tags = tags(article),
         title = escape(&article.title),
         minutes = rendered.minutes,
         draft = if metadata.draft {

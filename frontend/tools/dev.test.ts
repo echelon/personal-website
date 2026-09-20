@@ -1,14 +1,16 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
+import { once } from 'node:events';
 import { mkdtemp, mkdir, readFile, writeFile, rename, rm } from 'node:fs/promises';
+import { createServer } from 'node:net';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const repository = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 
-test('Rust dev loop rebuilds drafts, recovers from errors, and follows config and new files', { timeout: 120_000 }, async t => {
+for (const busyPort of [false, true]) test(`Rust dev loop rebuilds drafts, recovers from errors, and follows config and new files (${busyPort ? 'busy port' : 'automatic port'})`, { timeout: 120_000 }, async t => {
   const root = await mkdtemp(join(tmpdir(), 'brand-dev-'));
   await mkdir(join(root, 'articles'));
   const config = (output: string) => `
@@ -30,8 +32,22 @@ output_dir = "${output}"
   const source = join(root, 'articles/demo.md');
   await writeFile(join(root, 'config.toml'), config('build'));
   await writeFile(source, article('Original draft'));
+  let port = 0;
+  if (busyPort) {
+    const occupied = createServer();
+    t.after(() => new Promise<void>(resolve => occupied.close(() => resolve())));
+    // Reserve a real port with room for the launcher to try a higher one.
+    do {
+      occupied.listen(0, '127.0.0.1');
+      await once(occupied, 'listening');
+      const address = occupied.address();
+      assert.ok(address && typeof address !== 'string');
+      port = address.port;
+      if (port === 65535) await new Promise<void>(resolve => occupied.close(() => resolve()));
+    } while (port === 65535);
+  }
   const child = spawn(process.execPath, ['frontend/tools/dev.ts', '--config', join(root, 'config.toml')], {
-    cwd: repository, env: { ...process.env, PORT: '0' }, stdio: ['ignore', 'pipe', 'pipe'],
+    cwd: repository, env: { ...process.env, PORT: String(port) }, stdio: ['ignore', 'pipe', 'pipe'],
   });
   let stdout = '', stderr = '';
   child.stdout.on('data', chunk => { stdout += chunk; });
@@ -53,6 +69,9 @@ output_dir = "${output}"
   const builds = () => stdout.split('Rebuilt; refreshing connected browsers.').length - 1;
   await until(() => builds() >= 1 && stdout.includes('Dev: http'), 'Initial build');
   const url = /Dev: (http:\/\/127\.0\.0\.1:\d+)/.exec(stdout)![1]!;
+  assert.equal(stdout.split('Dev: http').length - 1, 1, 'print the listening URL only once');
+  assert.ok(Number(new URL(url).port) > port, 'use an available port');
+  if (busyPort) assert.ok(stdout.includes(`Port ${port} is in use; trying ${port + 1}.`));
   const page = async (path = '/article/demo') => (await fetch(url + path)).text();
   const revision = (html: string) => /data-revision="([^"]+)"/.exec(html)![1]!;
   const original = await page();
