@@ -279,7 +279,7 @@ pub fn article(
         .unwrap_or_default();
     let content = format!(
         r#"<main id="main" class="article-layout">
-<aside class="article-aside"><a class="back-link" href="/articles"><span aria-hidden="true">←</span> All articles</a>{toc}</aside>
+<aside class="article-aside">{toc}</aside>
 <article><header class="article-heading"><h1>{title}</h1>{description}<div class="article-meta">{dates}<span>{minutes} min read</span>{draft}</div></header>
 <div class="prose"{link_policy}>{body}</div><footer class="article-footer"><a href="/articles">← All articles</a><a href="mailto:{email}">{email}</a></footer></article>
 </main>"#,
