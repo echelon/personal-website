@@ -102,7 +102,7 @@ const mount: EmbedMount = (root, { reducedMotion }) => {
     loadImage(index);
     images.forEach((image, i) => { image.hidden = i !== index; });
     ticks.forEach((tick, i) => tick.classList.toggle('aw-current', i === index));
-    name.textContent = examples[index][1];
+    name.textContent = `${examples[index][1]} Spectrogram`;
     subtitle.textContent = index === 0 ? 'audio file from the LJSpeech data set' : 'spymarked audio';
     count.textContent = `${index + 1} / ${examples.length}`;
     slider.value = String(index);
