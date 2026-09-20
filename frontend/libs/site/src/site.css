@@ -186,12 +186,16 @@ h1, h2, h3 { text-wrap: balance; }
   .home-main { padding-top: 21vh; }
 }
 @media (min-width: 1051px) {
-  /* Align with the header's inset while keeping the reading column in place. */
+  /* Anchor the sidebar to the header, with a small inward nudge on wider screens. */
   .article-aside {
     --header-left: max(4rem, calc((100vw - 1328px) / 2 + 4rem));
     --sidebar-left: max(2.5rem, calc((100vw - 160px - 800px - 2.5rem) / 2));
-    transform: translateX(calc(var(--header-left) - var(--sidebar-left)));
+    transform: translateX(calc(var(--header-left) - var(--sidebar-left) + var(--toc-nudge, 0px)));
   }
+}
+@media (min-width: 1150px) {
+  .article-aside { --toc-nudge: 1rem; }
+  .article-layout > article { position: relative; left: -1rem; }
 }
 @media (max-width: 1050px) {
   .site-header { padding-inline: 2.5rem; }
