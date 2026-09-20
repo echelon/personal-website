@@ -23,37 +23,45 @@ const mount: EmbedMount = (root, { reducedMotion }) => {
     <div class="iw-body">
       <div class="iw-visual"><div class="iw-picture"><span class="iw-loading">Loading image…</span>
         <canvas class="iw-reveal-frame" width="360" height="478" role="img" aria-label="Amplified pixel differences on the photo" hidden></canvas></div>
-        <p class="iw-view-note"></p></div>
+        <p class="iw-caption"></p></div>
       <div class="iw-inspection">
-        <p class="iw-explanation">Compare the images, then read the embedded number. Select Difference for an animated reveal.</p>
+        <p class="iw-explanation" hidden>Visualize pixel values encoding hidden data.</p>
         <div class="iw-reveal-controls" hidden>
           <label class="iw-gain"><span>Amplify changes <output>64×</output></span>
             <input type="range" min="0" max="7" step="1" value="6" aria-label="Difference amplification" aria-valuetext="64 times">
             <span class="iw-gain-scale" aria-hidden="true"><span>1×</span><span>128×</span></span></label>
           <label class="iw-photo-toggle"><input type="checkbox" checked> Show photo</label>
-          <button class="iw-animate" type="button">Pause reveal</button>
-          <p class="iw-reveal-hint">Pause to inspect a frame, or drag the slider to hold a strength.</p>
         </div>
-        <button class="iw-decode" type="button" disabled>Decode spymarked PNG</button>
+        <button class="iw-decode" type="button" disabled>
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+          <span>Decode spymarked PNG</span>
+        </button>
         <div class="iw-result">
           <p class="iw-status" role="status">Ready to read the pixels.</p>
           <div class="iw-payload"><span>Recovered payload</span><code>—</code></div>
-          <div class="iw-record-heading">Fictional database lookup</div>
-          <dl><div><dt>Database ID</dt><dd data-field="id">—</dd></div><div><dt>Author name</dt><dd data-field="author">—</dd></div>
-            <div><dt>Date</dt><dd data-field="date">—</dd></div><div><dt>Time</dt><dd data-field="time">—</dd></div></dl>
+          <div class="iw-lookup" hidden>
+            <div class="iw-record-heading">Fictional database lookup</div>
+            <dl><div><dt>Database ID</dt><dd data-field="id">—</dd></div><div><dt>Author name</dt><dd data-field="author">—</dd></div>
+              <div><dt>Date</dt><dd data-field="date">—</dd></div><div><dt>Time</dt><dd data-field="time">—</dd></div>
+              <div class="iw-history" hidden><dt>Internet history</dt><dd><ul></ul></dd></div></dl>
+          </div>
         </div>
-        <p class="iw-note">The ID is really encoded. The name and timestamp are fictional lookup data. This is our own toy, not SynthID.</p>
+        <p class="iw-note">Toy example; not SynthID.</p>
       </div>
     </div>`;
   const find = <T extends Element>(selector: string) => root.querySelector<T>(selector)!;
   const controls = [...root.querySelectorAll<HTMLButtonElement>('.iw-modes button')];
   const picture = find<HTMLElement>('.iw-picture');
   const loading = find<HTMLElement>('.iw-loading');
-  const viewNote = find<HTMLElement>('.iw-view-note');
+  const caption = find<HTMLElement>('.iw-caption');
   const decode = find<HTMLButtonElement>('.iw-decode');
+  const decodeLabel = find<HTMLElement>('.iw-decode span');
   const status = find<HTMLElement>('.iw-status');
   const payload = find<HTMLElement>('.iw-payload code');
   const result = find<HTMLElement>('.iw-result');
+  const lookup = find<HTMLElement>('.iw-lookup');
+  const history = find<HTMLElement>('.iw-history');
+  const historyList = find<HTMLUListElement>('.iw-history ul');
   const explanation = find<HTMLElement>('.iw-explanation');
   const note = find<HTMLElement>('.iw-note');
   const revealFrame = find<HTMLCanvasElement>('.iw-reveal-frame');
@@ -61,8 +69,6 @@ const mount: EmbedMount = (root, { reducedMotion }) => {
   const gain = find<HTMLInputElement>('.iw-gain input');
   const gainLabel = find<HTMLOutputElement>('.iw-gain output');
   const showPhoto = find<HTMLInputElement>('.iw-photo-toggle input');
-  const animate = find<HTMLButtonElement>('.iw-animate');
-  const revealHint = find<HTMLElement>('.iw-reveal-hint');
   const fields = ['id', 'author', 'date', 'time'] as const;
   const values = fields.map(field => find<HTMLElement>(`[data-field="${field}"]`));
   const images = new Map<number, HTMLImageElement>();
@@ -89,12 +95,6 @@ const mount: EmbedMount = (root, { reducedMotion }) => {
   function syncReveal() {
     const canPlay = selected === 2 && revealReady && visible && pageActive && !document.hidden
       && !userPaused && !reducedMotion.matches && !printing.matches && !signal.aborted;
-    animate.hidden = reducedMotion.matches;
-    revealHint.textContent = reducedMotion.matches
-      ? 'Drag the slider to inspect different strengths.'
-      : 'Pause to inspect a frame, or drag the slider to hold a strength.';
-    animate.textContent = userPaused ? 'Animate reveal' : 'Pause reveal';
-    animate.setAttribute('aria-pressed', String(!userPaused));
     if (!canPlay) { freezeReveal(); return; }
     if (animation) return;
     // Composite two cached frames. No per-frame JS, pixel reads, drawing, or timers.
@@ -153,9 +153,6 @@ const mount: EmbedMount = (root, { reducedMotion }) => {
     revealFrame.setAttribute('aria-label', showPhoto.checked
       ? `Actual pixel changes amplified ${amplification} times on the photo`
       : `Actual green-channel changes amplified ${amplification} times; gray is unchanged, light and dark show increases and decreases`);
-    viewNote.textContent = showPhoto.checked
-      ? `Normal photo ↔ pixel changes amplified ${amplification}×.`
-      : `Signal only · ${amplification}×. Gray = unchanged; light / dark = increased / decreased.`;
     revealFrame.hidden = false;
     revealControls.hidden = false;
     revealReady = true;
@@ -163,6 +160,9 @@ const mount: EmbedMount = (root, { reducedMotion }) => {
 
   function resetResult() {
     result.classList.remove('iw-found');
+    lookup.hidden = true;
+    history.hidden = true;
+    historyList.replaceChildren();
     payload.textContent = '—';
     values.forEach(value => { value.textContent = '—'; });
   }
@@ -178,19 +178,17 @@ const mount: EmbedMount = (root, { reducedMotion }) => {
     root.dataset.mode = String(index);
     ready = false;
     decode.disabled = true;
-    decode.textContent = index === 0 ? 'Decode original PNG' : 'Decode spymarked PNG';
+    decodeLabel.textContent = index === 0 ? 'Decode original PNG' : 'Decode spymarked PNG';
     decode.hidden = index === 2;
     result.hidden = index === 2;
-    explanation.textContent = index === 2
-      ? 'Watch the tiny changes grow, then disappear into the photo. Turn off “Show photo” to isolate the signal.'
-      : 'Compare the images, then read the embedded number. Select Difference for an animated reveal.';
-    note.textContent = index === 2
-      ? 'These are the actual pixel differences, exaggerated for display. The encoded PNG is unchanged.'
-      : 'The ID is really encoded. The name and timestamp are fictional lookup data. This is our own toy, not SynthID.';
+    caption.textContent = index === 0
+      ? 'This is the original, non-spymarked image.'
+      : 'Spymarked copy of the original image.';
+    explanation.hidden = index !== 2;
+    note.hidden = index === 2;
     controls.forEach((control, i) => control.setAttribute('aria-pressed', String(i === index)));
     resetResult();
     status.textContent = index === 2 ? 'Difference view — switch to a photo to decode.' : 'Ready to read the pixels.';
-    viewNote.textContent = index === 2 ? 'Preparing the pixel difference…' : '360 × 478 pixels · lossless PNG';
     images.forEach(image => { image.hidden = true; });
     loading.textContent = 'Loading image…';
     loading.hidden = false;
@@ -208,7 +206,6 @@ const mount: EmbedMount = (root, { reducedMotion }) => {
           const image = await loadImage(2);
           if (signal.aborted || currentRequest !== request) return;
           images.forEach(other => { other.hidden = other !== image; });
-          viewNote.textContent = 'Static difference ×32. Gray = unchanged; light / dark = increased / decreased.';
         }
       } else {
         const image = await loadImage(index);
@@ -238,7 +235,6 @@ const mount: EmbedMount = (root, { reducedMotion }) => {
   }
   gain.addEventListener('input', inspectStrength, { signal });
   showPhoto.addEventListener('change', inspectStrength, { signal });
-  animate.addEventListener('click', () => { userPaused = !userPaused; syncReveal(); }, { signal });
   reducedMotion.addEventListener('change', () => {
     if (reducedMotion.matches) {
       userPaused = true;
@@ -275,8 +271,16 @@ const mount: EmbedMount = (root, { reducedMotion }) => {
       values[1].textContent = record?.author ?? 'No matching record';
       values[2].textContent = record?.date ?? '—';
       values[3].textContent = record?.time ?? '—';
+      const entries = record?.internetHistory ?? [];
+      historyList.replaceChildren(...entries.map(entry => {
+        const item = document.createElement('li');
+        item.textContent = entry;
+        return item;
+      }));
+      history.hidden = entries.length === 0;
+      lookup.hidden = selected !== 1;
       result.classList.add('iw-found');
-      status.textContent = `ID ${decoded.id} recovered · checksum valid${record ? ` · ${record.author}` : ''}.`;
+      status.textContent = `ID ${decoded.id} recovered · checksum valid`;
     } catch {
       status.textContent = 'This browser could not read the pixels. Please try another browser.';
     }

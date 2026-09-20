@@ -1,4 +1,4 @@
-.prose .spymark-dictionary { margin: 0 0 2rem; padding: 1.25rem 0; border-block: 1px solid var(--line); }
+.prose .spymark-dictionary { margin: 0 0 2rem; padding: 1.25rem 0; border-top: 1px solid var(--line); }
 .spymark-dictionary > div + div { margin-top: 1.5rem; }
 .spymark-dictionary dt { display: flex; flex-wrap: wrap; align-items: baseline; gap: .2rem .65rem; line-height: 1.4; }
 .spymark-dictionary dfn { font-size: 1.4em; font-weight: 700; font-style: normal; letter-spacing: -.025em; }

@@ -8,4 +8,9 @@ export const watermarkRecords = [
 export const imageWatermarkRecords = watermarkRecords.map(record => ({
   ...record,
   author: record.id === 173 ? 'Shaggy Rogers' : record.author,
+  internetHistory: record.id === 173 ? [
+    'SpiritHalloween.com — T-rex Costumes',
+    'are ghosts real - Google Search',
+    'can a ghost sue you in court - Google Search',
+  ] : [],
 }));
