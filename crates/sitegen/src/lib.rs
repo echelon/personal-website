@@ -193,9 +193,12 @@ pub fn build(config_path: &Path, drafts: bool) -> Result<()> {
             .metadata
             .updated_at
             .as_ref()
-            .or(article.metadata.created_at.as_ref())
+            .or(article.metadata.published_at.as_ref())
         {
-            sitemap.push_str(&format!("<lastmod>{}</lastmod>", render::escape(&date.raw)));
+            sitemap.push_str(&format!(
+                "<lastmod>{}</lastmod>",
+                render::escape(&date.raw[..10])
+            ));
         }
         sitemap.push_str("</url>");
     }

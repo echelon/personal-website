@@ -5,7 +5,7 @@ use std::{
 };
 
 use anyhow::{Context, Result, bail, ensure};
-use chrono::{DateTime, NaiveDate};
+use chrono::{DateTime, NaiveDate, NaiveDateTime};
 use serde::{Deserialize, Deserializer};
 use walkdir::WalkDir;
 
@@ -28,18 +28,37 @@ impl<'de> Deserialize<'de> for Date {
             Input::Text(s) => s,
             Input::Native(d) => d.to_string(),
         };
+        // Normalize optional minutes-only times and the date/time separator for HTML.
+        let mut raw = raw;
+        if raw.len() > 10 && raw.get(10..11) == Some(" ") {
+            raw.replace_range(10..11, "T");
+        }
+        if let Some(time) = raw.get(11..) {
+            let clock_len = time.find(['Z', '+', '-']).unwrap_or(time.len());
+            if clock_len == 5 {
+                raw.insert_str(16, ":00");
+            }
+        }
         let parsed = if let Ok(date) = NaiveDate::parse_from_str(&raw, "%Y-%m-%d") {
-            Some((
-                date,
-                date.and_hms_opt(0, 0, 0).unwrap().and_utc().timestamp(),
-            ))
+            (date.format("%Y-%m-%d").to_string() == raw).then(|| {
+                (
+                    date,
+                    date.and_hms_opt(0, 0, 0).unwrap().and_utc().timestamp(),
+                )
+            })
         } else if let Ok(date) = DateTime::parse_from_rfc3339(&raw) {
             Some((date.date_naive(), date.timestamp()))
+        } else if let Ok(date) = NaiveDateTime::parse_from_str(&raw, "%Y-%m-%dT%H:%M:%S") {
+            // Timezone-free values use UTC only for deterministic comparisons.
+            (date.format("%Y-%m-%dT%H:%M:%S").to_string() == raw)
+                .then(|| (date.date(), date.and_utc().timestamp()))
         } else {
             None
         };
         let (date, timestamp) = parsed.ok_or_else(|| {
-            serde::de::Error::custom("Dates must be YYYY-MM-DD or RFC 3339 with a timezone")
+            serde::de::Error::custom(
+                "Dates must be YYYY-MM-DD, optionally followed by HH:MM or HH:MM:SS and a timezone (Z or ±HH:MM)",
+            )
         })?;
         Ok(Self {
             raw,
@@ -59,6 +78,7 @@ pub struct Metadata {
     #[serde(default)]
     pub tags: Vec<String>,
     pub created_at: Option<Date>,
+    pub published_at: Option<Date>,
     pub updated_at: Option<Date>,
     #[serde(default)]
     pub draft: bool,
@@ -84,8 +104,9 @@ impl Article {
     }
     pub fn sort_date(&self) -> Option<i64> {
         self.metadata
-            .created_at
+            .published_at
             .as_ref()
+            .or(self.metadata.created_at.as_ref())
             .or(self.metadata.updated_at.as_ref())
             .map(|d| d.timestamp)
     }

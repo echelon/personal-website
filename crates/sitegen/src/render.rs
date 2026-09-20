@@ -152,7 +152,7 @@ pub fn archive(site: &Site, articles: &[Article]) -> String {
     for article in articles {
         let date = article
             .metadata
-            .created_at
+            .published_at
             .as_ref()
             .map(time)
             .or_else(|| {
@@ -235,7 +235,7 @@ pub fn article(
             escape(style)
         ));
     }
-    if let Some(date) = &metadata.created_at {
+    if let Some(date) = &metadata.published_at {
         dates.push_str(&format!("<span>Published {}</span>", time(date)));
         extra.push_str(&format!(
             "<meta property=\"article:published_time\" content=\"{}\">\n",

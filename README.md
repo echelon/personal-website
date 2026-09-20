@@ -68,6 +68,7 @@ html_title = "A Practical Survey of LLMs"
 description = "A short introduction for the article list and page metadata."
 tags = ["AI", "Engineering"]
 created_at = 2026-09-10
+published_at = 2026-09-11
 updated_at = "2026-09-11T09:30:00-04:00"
 draft = false
 nofollow_external_links = false
@@ -80,7 +81,9 @@ Start with the introduction. The renderer supplies the page's h1.
 Ordinary Markdown, with **emphasis**, [links](https://example.com), and quotes.
 ```
 
-Dates accept native TOML dates, quoted `YYYY-MM-DD`, or RFC 3339 timestamps **with a timezone**. Omitted dates produce no date label. The list sorts newest first by `created_at`, falling back to `updated_at` only when creation is absent. Undated posts follow dated posts; equal dates sort by slug for deterministic output. An update does not move an old article to the top.
+All three dates are optional. Use native TOML dates or quoted `YYYY-MM-DD`. Times are optional: `"2026-09-11 09:30"` or `"2026-09-11 09:30:15"`, with an optional timezone (`Z` or `-04:00`); a `T` separator and RFC 3339 timestamps are also supported. Quote timestamps when using minutes without seconds. Timezone-free values use UTC for sorting and comparisons, without shifting the displayed calendar date.
+
+`published_at` and `updated_at` appear beneath the article title when present; only calendar dates are displayed. `created_at` stays private and is never emitted in pages or the sitemap. The list sorts newest first by `published_at`, falling back to `created_at`, then `updated_at`. Undated posts follow dated posts; equal dates sort by slug. An update does not move an article with a publication or creation date to the top.
 
 Unknown front-matter fields, invalid dates, blank explicit titles, dates in reverse order, duplicate slugs, and missing local references fail with source context. UTF-8, a BOM, and Windows line endings are supported.
 

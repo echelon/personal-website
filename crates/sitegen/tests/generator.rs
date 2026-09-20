@@ -488,3 +488,81 @@ fn nonempty_unmanaged_output_is_preserved() {
         "Do not remove"
     );
 }
+
+#[test]
+fn optional_dates_accept_local_times_and_offsets() {
+    for field in ["created_at", "published_at", "updated_at"] {
+        for value in [
+            "2026-09-20",
+            "2026-09-20 09:30",
+            "2026-09-20 09:30:15",
+            "2026-09-20T09:30",
+            "2026-09-20T09:30:15",
+            "2026-09-20 09:30Z",
+            "2026-09-20 09:30-04:00",
+            "2026-09-20T09:30:15+05:30",
+        ] {
+            let source = format!("+++\n{field} = '{value}'\n+++\nBody");
+            assert!(split_frontmatter(&source).is_ok(), "{source}");
+        }
+        for value in [
+            "2026-02-30",
+            "2026-09-20 24:01",
+            "2026-09-20 09:99",
+            "2026-09-20 09:30:99",
+            "2026-09-20Z",
+        ] {
+            assert!(
+                split_frontmatter(&format!("+++\n{field} = '{value}'\n+++\n")).is_err(),
+                "{value}"
+            );
+        }
+    }
+}
+
+#[test]
+fn public_dates_are_independent_and_creation_stays_private() {
+    let f = Fixture::new();
+    let config = Config::load(&f.root().join("config.toml")).unwrap();
+    for public_fields in [
+        "",
+        "published_at = '2026-09-20 09:30'",
+        "updated_at = 2026-09-21",
+        "published_at = 2026-09-20\nupdated_at = 2026-09-21",
+    ] {
+        f.put(
+            "articles/example.md",
+            &format!("+++\ncreated_at = 2001-02-03\n{public_fields}\n+++\nBody"),
+        );
+        let articles = f.articles();
+        let rendered = markdown::render(&articles[0], &HashMap::new()).unwrap();
+        let html = render::article(&config.site, &articles[0], &rendered, &[]).unwrap();
+        assert!(!html.contains("2001"));
+        assert!(!render::archive(&config.site, &articles).contains("2001"));
+        assert_eq!(
+            html.contains("Published <time"),
+            public_fields.contains("published_at")
+        );
+        assert_eq!(
+            html.contains("Updated <time"),
+            public_fields.contains("updated_at")
+        );
+        if public_fields.contains("09:30") {
+            assert!(html.contains("datetime=\"2026-09-20T09:30:00\""));
+        }
+    }
+}
+
+#[test]
+fn publication_date_takes_sorting_priority() {
+    let f = Fixture::new();
+    f.put(
+        "articles/a.md",
+        "+++\ncreated_at = 2020-01-01\npublished_at = 2026-09-20\n+++\nA",
+    );
+    f.put(
+        "articles/b.md",
+        "+++\ncreated_at = 2025-01-01\npublished_at = 2026-09-19\n+++\nB",
+    );
+    assert_eq!(f.articles()[0].slug, "a");
+}
