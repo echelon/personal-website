@@ -28,7 +28,7 @@ A **spymark** is a hidden signal that forces your work to disclose its origin an
 
 **[Google SynthID](https://deepmind.google/models/synthid/)** is a spymark that embeds secret hidden signals "imperceptible to humans" (Google's own words) into images, audio, text, and video. This signal can encode database identifiers that map to your identity. Your user records, full name, IP addresses, date of birth, physical addresses, political party affiliation, and more.
 
-SynthID was not the first spymark system designed, and it's hardly the only one under active development. [Anthropic](https://www.anthropic.com/news/claude-text-watermark), [OpenAI](https://help.openai.com/en/articles/8912793-provenance-signals-content-credentials-synthid-in-openai-generated-content), and many other tech companies are developing these systems at scale. Social media, content production tools, and smartphones may soon find themselves filled with spymarking algorithms that sneak these signals into everything you publish.
+SynthID was not the first spymark system designed, and it's hardly the only one under active development. [Anthropic](https://www.anthropic.com/news/claude-text-watermark), [OpenAI](https://help.openai.com/en/articles/8912793-provenance-signals-content-credentials-synthid-in-openai-generated-content), and many other tech companies are developing these systems at scale. These companies claim spymarking can help identify AI-generated content, yet they've built tracking mechanisms and . Social media, content production tools, and smartphones may soon find themselves filled with spymarking algorithms that sneak these signals into everything you publish.
 
 For example, images can be invisibly altered in their frequency domain to carry tracking information &mdash; database IDs that contain a wealth of information on users:
 
@@ -137,7 +137,7 @@ Furthermore, whereas tags are helpful for maintaining information such as song t
 
 ## Keeping the future free
 
-It's hard to imagine the future where we can't even trust our own files. And the sad thing is, this has already started.
+It's hard to imagine the future where we can't even trust our own files. And the sad thing is that this has already started.
 
 Spymarks are certainly not great for whistleblowers or anyone who doesn't want to be persecuted for their words or affiliations. No matter where you stand on whatever issues, spymarks can be used against you and those you care about.
 
