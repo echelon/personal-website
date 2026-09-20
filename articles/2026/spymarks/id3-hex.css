@@ -30,7 +30,6 @@
 .hx-inspector > div { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: .3rem .7rem; }
 .hx-offset { color: var(--muted); font: .75rem/1.5 ui-monospace, SFMono-Regular, Consolas, monospace; white-space: nowrap; }
 .id3-hex .hx-explanation { margin: .35rem 0 0; font-size: .8rem; line-height: 1.5; overflow-wrap: anywhere; }
-.id3-hex .hx-note { margin: .7rem 0 0; font-size: .75rem; line-height: 1.5; color: var(--muted); }
 .hx-compact .hx-fields { grid-template-columns: 1fr; gap: .5rem; }
 .hx-compact .hx-fields label { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr); align-items: center; gap: .4rem; }
 .hx-compact .hx-labels, .hx-compact .hx-row { grid-template-columns: 3ch minmax(0, 1fr); gap: .3rem; }

@@ -6,10 +6,8 @@ import './id3-hex.css';
 const hex = (value: number, digits = 2) => value.toString(16).toUpperCase().padStart(digits, '0');
 const printable = (value: number) => value >= 32 && value <= 126 ? String.fromCharCode(value) : '·';
 const formats = [
-  { id: 'exif', label: 'EXIF', medium: 'Image metadata', title: 'Sample segment · EXIF / JPEG APP1', fields: exifFields, make: makeExifSample,
-    note: 'Hover or tap a byte to inspect it. Fictional metadata only; no photo is read or modified.', reference: 'https://en.wikipedia.org/wiki/Exif' },
-  { id: 'id3', label: 'ID3', medium: 'MP3 audio', title: 'Sample tag · ID3v2.4', fields: textFrames, make: makeSample,
-    note: 'Hover or tap a byte to inspect it. This sample contains metadata only.', reference: 'https://en.wikipedia.org/wiki/ID3' },
+  { id: 'exif', label: 'EXIF', medium: 'Image metadata', title: 'Sample segment · EXIF / JPEG APP1', fields: exifFields, make: makeExifSample },
+  { id: 'id3', label: 'ID3', medium: 'MP3 audio', title: 'Sample tag · ID3v2.4', fields: textFrames, make: makeSample },
 ] as const;
 let viewerCount = 0;
 
@@ -29,7 +27,6 @@ const mount: EmbedMount = root => {
     <div class="hx-labels" aria-hidden="true"><span>Addr</span><span>Hex <span class="hx-mobile-label">/ ASCII</span></span><span class="hx-ascii-heading">ASCII</span></div>
     <div class="hx-dump" role="group" aria-label="${formats[0].label} metadata bytes"></div>
     <div class="hx-inspector" role="status" aria-live="off"><div><strong class="hx-field-name"></strong><span class="hx-offset"></span></div><p class="hx-explanation"></p></div>
-    <p class="hx-note"><span></span> <a></a></p>
     </div>`;
   const find = <T extends Element>(selector: string) => root.querySelector<T>(selector)!;
   const dump = find<HTMLElement>('.hx-dump');
@@ -73,10 +70,6 @@ const mount: EmbedMount = root => {
     find<HTMLElement>('.hx-format').textContent = format.title;
     find<HTMLElement>('.hx-panel').setAttribute('aria-labelledby', tabs[formatIndex].id);
     dump.setAttribute('aria-label', `${format.label} metadata bytes`);
-    find<HTMLElement>('.hx-note span').textContent = format.note;
-    const reference = find<HTMLAnchorElement>('.hx-note a');
-    reference.href = format.reference;
-    reference.textContent = `${format.label} on Wikipedia`;
     form.replaceChildren();
     inputs = format.fields.map(({ id, label }, i) => {
       const wrapper = document.createElement('label');
