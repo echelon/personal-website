@@ -1,9 +1,18 @@
+# Netlify project: brandon-website (domain: brand.io).
+# Repository linking, production branch, custom domains, and HTTPS live in Netlify.
 [build]
-command = "npm ci --prefix frontend && cargo run --locked --release -- build"
+base = "."
+# Build from the repository root; frontend/ contains the Node dependencies.
+# Drafts remain excluded in every deployment context.
+command = "npm ci --prefix frontend --include=dev && cargo run --locked --release -p sitegen -- build"
 publish = "build"
 
 [build.environment]
 NODE_VERSION = "24"
+# Cargo/rustup reads the pinned toolchain from rust-toolchain.toml.
+
+[build.processing.html]
+pretty_urls = true
 
 # Files are real HTML routes, so there is deliberately no SPA catch-all rewrite.
 [[headers]]
@@ -11,6 +20,8 @@ for = "/*"
 [headers.values]
 X-Content-Type-Options = "nosniff"
 Referrer-Policy = "strict-origin-when-cross-origin"
+# CSS, JS, and article media use stable URLs: revalidate after deployments.
+Cache-Control = "public, max-age=0, must-revalidate"
 
 [[headers]]
 for = "/*.wasm"

@@ -230,15 +230,19 @@ The output directory must be a dedicated relative directory inside the config's 
 
 ## Netlify
 
-Connect this repository to Netlify with the repository root as the base directory. The checked-in `netlify.toml` sets:
+Connect this repository to the existing [brandon-website Netlify project](https://app.netlify.com/projects/brandon-website/overview). The base directory is the repository root (`.`), not `frontend/`. The checked-in `netlify.toml` sets:
 
-- Build: `npm ci --prefix frontend && cargo run --locked --release -- build`
+- Build: `npm ci --prefix frontend --include=dev && cargo run --locked --release -p sitegen -- build`
 - Publish directory: `build`
 - Node 24; the Rust toolchain comes from `rust-toolchain.toml`
+- Pretty URLs, response security headers, and browser cache revalidation for stable asset URLs
+- Drafts excluded from production, branch deploys, and deploy previews
 
 This follows Netlify's [Rust dependency setup](https://docs.netlify.com/build/configure-builds/manage-dependencies/#rust). The generated directory is the complete deployment artifact. Real HTML files back `/`, `/articles`, and `/article/{slug}`, with a `404.html`, sitemap, and robots file. There is no SPA fallback. Set up `brand.io` and HTTPS in Netlify when deploying; this repository does not change DNS or publish automatically from the local workspace.
 
-If you change `build.output_dir`, update Netlify's publish directory too. The `articles/` directory starts empty; add your first Markdown article when you are ready to publish.
+If you change `build.output_dir`, update Netlify's publish directory too. Spymarks currently has `draft = true`; change it to `false` when the article is ready to publish.
+
+Choose the linked repository and production branch in Netlify. Add `brand.io` in Domain management and follow Netlify’s DNS instructions at the current DNS provider (DreamHost). Domain ownership, DNS records, TLS certificates, and the project association cannot be established by this TOML file. File-based build settings override their corresponding dashboard settings. No credentials or site ID are required in `netlify.toml`.
 
 ## Verification
 
