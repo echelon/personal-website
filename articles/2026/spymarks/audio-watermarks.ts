@@ -48,11 +48,11 @@ const mount: EmbedMount = (root, { reducedMotion }) => {
         `<span class="aw-tick" style="--tick: ${index / (examples.length - 1) * 100}%"><span>${label}</span></span>`).join('')}</div>
       <input class="aw-range" type="range" min="0" max="${examples.length - 1}" step="1" value="0" aria-label="Watermark method">
     </div>
+    <p class="aw-method-note">Unwatermarked is the reference audio. The other options each use a different spectral data encoding algorithm.</p>
     <div class="aw-controls">
       <label class="aw-highlight-toggle"><input type="checkbox" checked><span>Highlight signal</span></label>
       <button class="aw-cycle" type="button"></button>
-    </div>
-    <p class="aw-hint">Hover or drag to compare. Highlights follow the authors’ annotations.</p>`;
+    </div>`;
   const find = <T extends Element>(selector: string) => root.querySelector<T>(selector)!;
   const name = find<HTMLElement>('.aw-name');
   const subtitle = find<HTMLElement>('.aw-subtitle');
@@ -73,7 +73,7 @@ const mount: EmbedMount = (root, { reducedMotion }) => {
     return image;
   });
   let selected = 0;
-  let rotating = !reducedMotion.matches;
+  let rotating = false;
   let hovering = false;
   let visible = false;
   let pageActive = true;
@@ -103,7 +103,7 @@ const mount: EmbedMount = (root, { reducedMotion }) => {
     images.forEach((image, i) => { image.hidden = i !== index; });
     ticks.forEach((tick, i) => tick.classList.toggle('aw-current', i === index));
     name.textContent = `${examples[index][1]} Spectrogram`;
-    subtitle.textContent = index === 0 ? 'audio file from the LJSpeech data set' : 'spymarked audio';
+    subtitle.textContent = index === 0 ? 'Spectrogram of a real audio file from the LJ Speech data set. This is audio visualized in the frequency domain.' : 'Spymarked audio.';
     count.textContent = `${index + 1} / ${examples.length}`;
     slider.value = String(index);
     slider.setAttribute('aria-valuetext', examples[index][1]);
@@ -119,7 +119,7 @@ const mount: EmbedMount = (root, { reducedMotion }) => {
       timer = window.setTimeout(() => {
         select((selected + 1) % examples.length);
         schedule();
-      }, 2000);
+      }, 1000);
     }
   }
 
@@ -139,7 +139,11 @@ const mount: EmbedMount = (root, { reducedMotion }) => {
     const fraction = Math.max(0, Math.min(1, (event.clientX - bounds.left) / bounds.width));
     select(Math.round(fraction * (examples.length - 1)));
   }, { signal });
-  cycle.addEventListener('click', () => { rotating = !rotating; schedule(); }, { signal });
+  cycle.addEventListener('click', () => {
+    rotating = !rotating;
+    if (rotating) hovering = false;
+    schedule();
+  }, { signal });
   root.addEventListener('pointerenter', event => {
     if (event.pointerType === 'mouse' && hoverCapable.matches) { hovering = true; schedule(); }
   }, { signal });

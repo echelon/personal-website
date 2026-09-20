@@ -91,7 +91,7 @@ Watermarks remain easy for the user to spot and are typically not nefarious.
 
 Sometimes watermarks deter counterfeiting:
 
-<figure style="max-width: 708px; margin-inline: auto;">
+<figure style="max-width: 708px; margin-inline: 0 auto;">
   <img src="media/twenty-dollar-watermark.png" alt="A $20 bill with a circular close-up of its faint portrait watermark." width="708" height="274" loading="lazy" decoding="async">
 </figure>
 
@@ -111,7 +111,7 @@ And sometimes they're just annoying:
 
 But these watermarks don't track you.
 
-[Printer tracking dots](https://en.wikipedia.org/wiki/Printer_tracking_dots), on the other hand, are spymarks from the 1980's that perhaps never imagined being so sneaky:
+[Printer tracking dots](https://en.wikipedia.org/wiki/Printer_tracking_dots), on the other hand, are spymarks from the 1980's that perhaps never imagined such a sneaky scheme:
 
 <figure style="max-width: 512px; margin-inline: 0 auto;">
   <a href="https://commons.wikimedia.org/wiki/File:Machine_Identification_Code_von_Druckern.png"><img src="media/printer-tracking-dots.webp" alt="Diagram of printer tracking dots annotated to show encoded time, date, and printer serial number." width="512" height="384" loading="lazy" decoding="async"></a>
@@ -135,17 +135,17 @@ You can strip standard metadata tags out of your files. Unfortunately, a spymark
 
 Furthermore, whereas tags are helpful for maintaining information such as song titles or a photo's exposure settings, spymarks encode user-tracking identifiers entirely opaque and useless to you. Spymarks serve only to identify the spread of your content, and they are permanently burned into your files so that when your family, friends, and customers share your files, your fingerprints remain all over them for firms to continue tracking you forever.
 
-## Keeping the future free
+## Keeping our files free of spying
 
 It's hard to imagine the future where we can't even trust our own files. And the sad thing is that this has already started.
 
 Spymarks are certainly not great for whistleblowers or anyone who doesn't want to be persecuted for their words or affiliations. No matter where you stand on whatever issues, spymarks can be used against you and those you care about.
 
-Imagine a future where every device is attested and every social media post carries an account-linked spymark. Where every file or post served has spymarks embedded within. It would be dangerously easy to hunt down anyone from a JPEG or a tweet.
+Imagine a future where every device is attested and every social media post carries an account-linked spymark. Where every file or post served to you for sharing has spymarks embedded within, to track who you share them with. In this world, it would be dangerously easy to hunt down anyone from a JPEG or a tweet. Or track the web of humans through which "dangerous ideas" flow.
 
 That future lies halfway between now and *1984*. So let's stay off that timeline, shall we?
 
-Call a spymark what it is. A *spy* tool used to spy on you.
+Call a spymark what it is. A *spy* tool used to spy on you and everyone you interact with.
 
 &mdash; Brandon Thomas
 

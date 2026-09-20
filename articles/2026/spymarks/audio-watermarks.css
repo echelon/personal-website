@@ -21,10 +21,10 @@
 .aw-range::-webkit-slider-thumb { appearance: none; -webkit-appearance: none; width: 16px; height: 16px; margin-top: -6.5px; border: 2px solid var(--paper); border-radius: 50%; background: var(--ink); box-shadow: 0 0 0 1px var(--ink); }
 .aw-range::-moz-range-track { height: 3px; background: var(--line); border-radius: 3px; }
 .aw-range::-moz-range-thumb { box-sizing: border-box; width: 16px; height: 16px; border: 2px solid var(--paper); border-radius: 50%; background: var(--ink); box-shadow: 0 0 0 1px var(--ink); }
+.audio-watermarks .aw-method-note { margin: 0 0 .4rem; font-size: .75rem; line-height: 1.6; color: var(--muted); }
 .aw-controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .25rem .6rem; margin-top: .5rem; font-size: .8rem; color: var(--muted); }
 .aw-highlight-toggle { display: inline-flex; align-items: center; gap: .45rem; min-height: 44px; cursor: pointer; color: var(--ink); touch-action: manipulation; }
 .aw-highlight-toggle input { width: 17px; height: 17px; margin: 0; accent-color: var(--accent); cursor: pointer; }
-.audio-watermarks .aw-hint { margin: .3rem 0 0; font-size: .75rem; color: var(--muted); }
 .aw-cycle { min-height: 44px; flex-shrink: 0; padding: .4rem .65rem; border: 1px solid var(--line); border-radius: 4px; background: var(--paper); color: var(--ink); font-size: .8rem; }
 .aw-cycle:hover { border-color: var(--ink); }
 @media (max-width: 700px) {

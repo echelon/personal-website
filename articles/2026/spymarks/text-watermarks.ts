@@ -1,5 +1,5 @@
 import type { EmbedMount } from '@brand/embeds';
-import { watermarkRecords as samples } from './watermark-records';
+import { textWatermarkRecords as samples } from './watermark-records';
 import './text-watermarks.css';
 
 // A deliberately simple, one-bit-per-choice illustration, NOT a SynthID decoder.
@@ -35,7 +35,8 @@ const mount: EmbedMount = (root, { reducedMotion }) => {
     <div class="tw-record">
       <div class="tw-record-heading">Example database <span class="tw-record-status">Awaiting key</span></div>
       <dl><div><dt>Database ID</dt><dd data-field="id">—</dd></div><div><dt>Author name</dt><dd data-field="author">—</dd></div>
-        <div><dt>Date</dt><dd data-field="date">—</dd></div><div><dt>Time</dt><dd data-field="time">—</dd></div></dl>
+        <div><dt>Date</dt><dd data-field="date">—</dd></div><div><dt>Time</dt><dd data-field="time">—</dd></div>
+        <div><dt>Political Affiliation</dt><dd data-field="politicalAffiliation">—</dd></div><div><dt>Interests</dt><dd data-field="interests">—</dd></div></dl>
     </div>
     <div class="tw-controls">
       <label class="tw-scrubber"><span class="tw-step-labels" aria-hidden="true"><span>Words</span><span>Bits</span><span>ID</span><span>Record</span></span>
@@ -43,7 +44,7 @@ const mount: EmbedMount = (root, { reducedMotion }) => {
       </label>
       <button class="tw-play" type="button">Pause</button>
     </div>
-    <p class="tw-note">One bit per chosen word in this demo. The author and timestamp come from the fictional database record. This is just a toy, okay?</p>
+    <p class="tw-note">Toy example: the text sample is fixed to show how small alterations can encode data, such as a database user IDs.</p>
     <span class="tw-announcement sr-only" role="status"></span>`;
 
   const find = <T extends Element>(selector: string) => root.querySelector<T>(selector)!;
@@ -59,7 +60,7 @@ const mount: EmbedMount = (root, { reducedMotion }) => {
   const progress = find<HTMLInputElement>('.tw-progress');
   const play = find<HTMLButtonElement>('.tw-play');
   const announcement = find<HTMLElement>('.tw-announcement');
-  const fields = ['id', 'author', 'date', 'time'] as const;
+  const fields = ['id', 'author', 'date', 'time', 'politicalAffiliation', 'interests'] as const;
   const values = fields.map(field => find<HTMLElement>(`[data-field="${field}"]`));
   let sampleIndex = 0;
   let step = reducedMotion.matches ? 3 : 0;
@@ -154,7 +155,7 @@ const mount: EmbedMount = (root, { reducedMotion }) => {
   function announce() {
     const entry = samples[sampleIndex];
     announcement.textContent = step === 3
-      ? `Record ${entry.id}: ${entry.author}, ${entry.date}, ${entry.time}. Fictional example.`
+      ? `Record ${entry.id}: ${entry.author}, ${entry.date}, ${entry.time}. Political Affiliation: ${entry.politicalAffiliation}. Interests: ${entry.interests}. Fictional example.`
       : `${stages[step]}${step >= 1 ? `: ${binary()}` : ''}${step === 2 ? `, database key ${entry.id}` : ''}.`;
   }
 
