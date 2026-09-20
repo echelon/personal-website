@@ -3,6 +3,9 @@ slug = "spymarks"
 title = "Spymarks, not Watermarks"
 description = "Watermarks that spy on users are not watermarks"
 tags = ["Privacy", "AI", "Technology"]
+created_at = 2026-09-20
+published_at = 2026-09-20
+updated_at = 2026-09-20
 draft = true
 nofollow_external_links = true
 +++
