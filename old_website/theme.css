@@ -1,0 +1,289 @@
+/* 
+Copied from Google's font CDN. 
+Hopefully they don't change the internal URIs.
+*/
+@font-face {
+	font-family: 'Ubuntu';
+	font-style: italic;
+	font-weight: 400;
+	src: 
+		local('Ubuntu Italic'), 
+		local('Ubuntu-Italic'), 
+		url(http://themes.googleusercontent.com/static/fonts/ubuntu/v4/kbP_6ONYVgE-bLa9ZRbvvvesZW2xOQ-xsNqO47m55DA.woff) format('woff');
+}
+
+@font-face {
+	font-family: 'Ubuntu';
+	font-style: normal;
+	font-weight: 400;
+	src: 
+		local('Ubuntu'), 
+		url(http://themes.googleusercontent.com/static/fonts/ubuntu/v4/_xyN3apAT_yRRDeqB3sPRg.woff) format('woff');
+}
+
+@font-face {
+	font-family: 'Ubuntu';
+	font-style: normal;
+	font-weight: 300;
+	src: 
+		local('Ubuntu Light'), 
+		local('Ubuntu-Light'), 
+		url(http://themes.googleusercontent.com/static/fonts/ubuntu/v4/_aijTyevf54tkVDLy-dlnD8E0i7KZn-EPnyo3HZu7kw.woff) format('woff');
+}
+
+@font-face {
+	font-family: 'Ubuntu';
+	font-style: normal;
+	font-weight: 500;
+	src: 
+		local('Ubuntu Medium'), 
+		local('Ubuntu-Medium'), 
+		url(http://themes.googleusercontent.com/static/fonts/ubuntu/v4/OsJ2DjdpjqFRVUSto6IffD8E0i7KZn-EPnyo3HZu7kw.woff) format('woff');
+}
+
+@font-face {
+	font-family: "neuropol_x";
+	src: url('font/neuropol_x.ttf');
+}
+
+@font-face {
+	font-family: "Quantum Round";
+	src: url('font/quantrnd.ttf');
+}
+
+body {
+	margin: 0px;
+	padding: 0px;
+	overflow-x: hidden;
+	background-color: #111;
+	color: #eee;
+	background-image: url('img/subtle_carbon.png');
+}
+
+#main {
+	margin: auto;
+	max-width: 580px;
+}
+
+#content {
+	margin: -26px 0px 0px 0px;
+	padding: 20px 20px 20px 20px;
+	font-family: "Ubuntu", arial;
+	text-align: justify;
+	color: #eee;
+	background-color: rgba(0, 0, 0, 0.90);
+	-webkit-border-radius: 25px;
+	-moz-border-radius: 25px;
+	border-radius: 25px;
+	box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.55);
+}
+
+#logo {
+	z-index: 5;
+	text-align: center;
+	width: 100%;
+	padding: 0px;
+	margin: 5px;
+	font-family: "Quantum Round", arial;
+	color: rgba(0,0,0,0); 
+	font-size: 4em;
+	text-shadow: 
+		0px 0px 1px #fff,
+		9px 9px 11px #000
+}
+
+#logo a {
+	color: inherit;
+	text-decoration: none;
+}
+
+#sidelink {
+	display: none;
+	position: fixed;
+	top: 100px;
+	left: 50%;
+	margin-left: 280px;
+	width: 70px;
+	right: 0px;
+	color: #fff;
+	font-size: 3em;
+	padding: 0px;
+	z-index: 100;
+}
+
+#canvas {
+	position: fixed;
+	width: 800px;
+	height: 600px;
+	top: 0;
+	z-index: -50;
+}
+
+canvas {
+	position: fixed;
+	overflow: hidden;
+}
+
+#name {
+	z-index: 5;
+	margin: 4px 0px 4px 0px;
+	padding: 0px;
+	text-align: center;
+	width: 100%;
+	bottom: 0px;
+	font-family: "neuropol_x", arial;
+	color: rgba(0,0,0,0); 
+	font-size: 2.0em;
+	text-shadow: 
+		0px 0px 1px #e5e5e5,
+		3px 3px 7px #000
+}
+
+/**
+ * Items
+ */
+.item {
+	clear: both;
+	text-align: left;
+	margin-bottom: 10px;
+}
+
+.itemimg {
+	float: left;
+	margin: 7px 7px 7px 0px;
+}
+
+.itemimg img {
+	width: 75px;
+	height: 75px;
+
+	border-radius: 18px;
+	-webkit-border-radius: 18px;
+	-moz-border-radius: 18px;
+
+	-webkit-box-shadow: inset 0 -1px 0 rgba(0,0,0,.5);
+	-moz-box-shadow: inset 0 -1px 0 rgba(0,0,0,.5);
+	box-shadow: inset 0 -1px 0 rgba(0,0,0,.5);
+}
+
+.itemimg:before {
+	position: absolute;
+	z-index: 50;
+	content: '';
+	width: 75px;
+	height: 35px;
+
+	border-radius: 18px 18px 0px 0px;
+	-webkit-border-radius: 18px 18px 0px 0px;
+	-moz-border-radius: 18px 18px 0px 0px;
+
+	background: linear-gradient(top, rgba(255,255,255,0.4) 0%,
+		rgba(255,255,255,.0) 100%);
+	background: -moz-linear-gradient(top, 
+		rgba(255,255,255,0.4) 0%, rgba(255,255,255,.0) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, 
+		color-stop(0%,rgba(255,255,255,0.4)), 
+		color-stop(100%,rgba(255,255,255,.0)));
+}
+
+.itemdesc a {
+	font-family: "Ubuntu", arial;
+	font-style: normal;
+	font-weight: 500;
+}
+
+.itemdesc {
+	display: table-cell;
+}
+
+.itemdate:before {
+	content: '(';
+}
+.itemdate:after {
+	content: ')';
+}
+
+/**
+ * Video Gallery
+ */
+#videos {
+	padding: 10px;
+	margin: auto;
+	text-align: center;
+}
+
+#videos img {
+	margin: 5px 5px;
+	padding: 0px;
+
+	-webkit-box-shadow: 0 0 10px rgba(255,255,255,.6), 
+		inset 0 0 1px rgba(255,255,255,1);
+	-moz-box-shadow: 0 0 10px rgba(255,255,255,.6), 
+		inset 0 0 1px rgba(255,255,255,1);
+	box-shadow: 0 0 10px rgba(255,255,255,.6), 
+		inset 0 0 1px rgba(255,255,255,1);
+}
+
+#videos img.hover {
+	-webkit-box-shadow: 0 0 10px rgba(238,16,33,.6), 
+		inset 0 0 1px rgba(238,16,33,1);
+	-moz-box-shadow: 0 0 10px rgba(238,16,33,.6), 
+		inset 0 0 1px rgba(238,16,33,1);
+	box-shadow: 0 0 15px rgba(238,16,33,.6), 
+		inset 0 0 1px rgba(238,16,33,1);
+}
+
+a {
+	color: #ee1021;
+	text-decoration: underline;
+}
+
+p {
+	margin: 0px 0px 0.6em 0px;
+	padding: 0px;
+}
+
+h1, h2, h3, h4, h5 {
+	font-family: "Ubuntu", arial;
+	font-weight: 300;
+	padding: 10px 0px 10px 0px;
+	margin: 0px;
+}
+
+#content h1, #content h2, #content h3 {
+	padding-left: 20px;
+	text-align: left;
+}
+
+h1 { font-size: 4em; }
+h2 { 
+	font-size: 3em;
+	clear: both;
+}
+h3 { 
+	font-size: 2em; 
+	padding: 0px 0px 0px 0px;
+}
+
+ul {
+	margin: -7px 0px 0px 0px;
+}
+
+#portrait {
+	float: right;
+	margin: 5px 15px;
+}
+
+#portrait img {
+	border-radius: 18px;
+	-webkit-border-radius: 18px;
+	-moz-border-radius: 18px;
+}
+
+#contact ul {
+	list-style-type: none;	
+}
+#contact li {
+	font-size: 1.7em;
+	font-weight: 300;
+}
