@@ -80,6 +80,8 @@ fallback = "Compare spectrograms of the same LJ Speech excerpt unwatermarked and
 
 These schemes are engineered to be robust. They can often survive compression or re-encoding.
 
+These tools are already proliferating, and in fact they predated generative AI and the push to watermark generative media. The open source spymarking tool [audiowmark](https://github.com/swesterfeld/audiowmark) originated in 2018 and can hide 128-bit payloads in audio and protect them with a secret AES key, preventing users without the key from decoding them.
+
 You can even encode personal information invisibly into text! [SynthID steers word choices](https://deepmind.google/blog/watermarking-ai-generated-text-and-video-with-synthid/) to create a detectable statistical pattern that can encode a tracking payload:
 
 ```embed
