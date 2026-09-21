@@ -31,7 +31,9 @@ A **spymark** is a hidden signal that makes your work traceable without your kno
 
 **[Google SynthID](https://deepmind.google/models/synthid/)** is a spymark that embeds secret hidden signals "imperceptible to humans" (Google's own words) into images, audio, text, and video. This signal can encode database identifiers that map to your identity. Your user records, full name, IP addresses, date of birth, physical addresses, political party affiliation, and more.
 
-SynthID was not the first spymark system designed, and it's hardly the only one under active development. [OpenAI](https://help.openai.com/en/articles/8912793-provenance-signals-content-credentials-synthid-in-openai-generated-content) and many other tech companies are developing these systems at scale. These companies claim spymarking can help identify AI-generated content, yet they've built tracking mechanisms. Social media, content production tools, and smartphones may soon find themselves filled with spymarking algorithms that sneak these signals into everything you publish.
+Google's [SynthID-Image paper](https://arxiv.org/abs/2510.09263) reports that its SynthID-O variant can encode a 136-bit payload in a 512x512-pixel image. That is enough room for a 64-bit database identifier, with 72 bits left for error correction.
+
+SynthID was not the first spymark system designed, and it's hardly the only one under active development. [OpenAI](https://help.openai.com/en/articles/8912793-provenance-signals-content-credentials-synthid-in-openai-generated-content) and many other tech companies are developing these systems at scale. These companies claim spymarking can help identify AI-generated content, yet they've gone beyond simple watermarking and built in robust tracking mechanisms. Social media, content production tools, and smartphones may soon find themselves filled with spymarking algorithms that sneak these signals into everything you publish.
 
 For example, images can be invisibly altered in their frequency domain to carry tracking information such as database IDs linked to users:
 
