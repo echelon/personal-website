@@ -4,9 +4,9 @@ title = "Spymarks, not Watermarks"
 description = "Watermarks that spy on users are no mere watermarks"
 tags = ["Privacy", "AI", "Technology"]
 created_at = 2026-09-16
-published_at = 2026-09-20
+published_at = 2026-09-21
 #updated_at = 2026-09-20
-draft = true
+draft = false
 nofollow_external_links = true
 +++
 
