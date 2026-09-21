@@ -1,0 +1,43 @@
+# Spectrogram sources
+
+The carousel uses `clean/`. The annotated images in this directory are preserved unchanged. The unwatermarked reference was already clean and is copied unchanged into both sets.
+
+All six watermarked images in `clean/` are unmodified files from the authors’ repository, before the red rectangles were added. Each downloaded file was verified byte-for-byte against the original PNG embedded in the corresponding annotated image’s diagrams.net (`mxfile`) metadata. No inpainting, interpolation, rescaling, or pixels from another sample were used. All images remain 775 × 308 pixels.
+
+- [Original spectrogram commit (2024-12-06)](https://github.com/SoKAudioWM/sokaudiowm.github.io/commit/84dc70e96e48d4f75f265f2d463f671389f7a73b)
+- [Commit adding red boxes (2025-01-25)](https://github.com/SoKAudioWM/sokaudiowm.github.io/commit/edb9b45ff1efde44c1964ef2cb28dbdc3953693e)
+- [Paper](https://arxiv.org/abs/2503.19176) and [sample page](https://sokaudiowm.github.io/)
+
+Original files are at `audio_samples/wm/lj/{name}.png` in the December commit; `norm-space.png` is named `norm_space.png` upstream. The unwatermarked reference comes from `audio_samples/og/lj.png` in repository commit `e375e24734042ae871779edd6abaa31e9102970e`.
+
+## Optional signal highlights
+
+The applet draws translucent SVG regions over the clean images. The rectangle
+coordinates below were extracted from the red rectangle cells in each original
+PNG's `mxfile` text chunk (diagrams.net metadata), subtracting the embedded image's
+canvas origin. Coordinates are `[x, y, width, height]` in the 775 × 308 image grid.
+The original rounded rectangles use a radius of 20% of the shorter side.
+
+- Unwatermarked: none
+- Timbre: [7.5, 42, 760, 190]
+- AudioSeal: [7.5, 184, 760, 40]
+- WavMark: [250, 12, 60, 290], [470, 152, 60, 150], [80, 122, 60, 150]
+- FSVC: [3, 130, 760, 40]
+- Patchwork: [10, 62, 760, 110]
+- Norm-Space: [460, 3, 50, 100], [250, 192, 60, 110]
+
+These reproduce the authors' illustrative regions, not a decoded payload map.
+The overlay uses a 12% amber fill, an amber outline and a thin dark outer edge.
+Both original image sets remain unchanged.
+
+## Verification (2026-09-16)
+
+| File | Clean SHA-256 | Preserved annotated/reference SHA-256 |
+| --- | --- | --- |
+| `audioseal.png` | `37a2253c8e1c4943cca745feca01f2039c44ae288928bf7fa580870a82cb5eb6` | `c741238a277042b00dd991e631797882a604eb0f9575de8bc090f9b90bcc32ee` |
+| `fsvc.png` | `17b018936855f6645b98465a14e9e3d78efb5c823458bbddca8e8605d73c2fd5` | `3e719463e27f7574db0508604814dd40bb9b6417e234737c3a324d887bafdac3` |
+| `norm-space.png` | `e3a7f1ed656aa6e894259867dfcdc4a0072e8c8915670dd8769064de8b1e94c5` | `72a6797dcb6ed765b1f2e34bb04c31100b2d9d487de1d608b0e55640eafc7b86` |
+| `patchwork.png` | `664908826fa54daae3cee622990c17008049dd50b00c4597ac961334e5fe396e` | `610a108d783b40f1f76b3b155565c950cac6c2c3dbc89c450b60944496c0e739` |
+| `timbre.png` | `d4b6435d6330f563a38f4213fe0ebd82991053f0b5e5a58f1fd8873872734791` | `ac53041d0e43779a2c316b6e9fc64179d0422f38c3857ef3a95fbdf3e911f62f` |
+| `unwatermarked.png` | `d1787fcd15d434bd077137ca5e6217ef9ffbaf5c84d9ea0bc0c99677d7e75bfc` | `d1787fcd15d434bd077137ca5e6217ef9ffbaf5c84d9ea0bc0c99677d7e75bfc` |
+| `wavmark.png` | `d0fb109b5ac655fe0744dd4645eb5ea16ec5c5029bb6d33d2c7761924a62fd86` | `b5e0e0eb28993278e65795e511f78c9d8eb5e59e9244dff045553568593c9c07` |

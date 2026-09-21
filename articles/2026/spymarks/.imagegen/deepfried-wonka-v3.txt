@@ -1,0 +1,10 @@
+Generated with the built-in image_gen tool.
+Input: media/deepfried-wonka-v2.webp
+Output: media/deepfried-wonka-v3.webp (640 × 640, WebP quality 82, metadata stripped with cwebp)
+
+Use case: precise-object-edit.
+Edit target: the attached current Willy Wonka meme. Make ONLY these two watermark changes:
+1. Reduce the bottom-left "imgflip.com" to the classic normal small watermark size, about 13–15% of the image width, with plain white lowercase text and a subtle black outline. Keep it tucked into the bottom-left corner.
+2. REMOVE the existing bottom-right iFunny stamp from that corner and relocate that SAME single "ifunny.co" stamp into the middle of the image, running horizontally across the image's central band with a gentle counterclockwise tilt of about 10 degrees. Keep the lettering horizontal/readable, not vertically stacked. Keep its black rectangular backing, small yellow smiley at left and exact white lowercase "ifunny.co". Position it across the upper torso just below the face, between the TOP TEXT and BOTTOM TEXT captions, like an annoying slanted repost stamp. Approximately 38–42% of image width; do not cover the eyes or mouth.
+Preserve the large "www.9gag.com" watermark at the top-right exactly as it is. There must still be EXACTLY THREE watermarks total, one of each, with no duplicate iFunny stamp left in the bottom-right.
+Preserve the current mild, mostly natural colors and photo detail: do not increase the deep-fried effect. Preserve the exact TOP TEXT / BOTTOM TEXT captions, person, face, pose, costume, composition and square framing. No other changes.

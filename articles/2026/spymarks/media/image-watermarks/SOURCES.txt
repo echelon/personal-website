@@ -1,0 +1,81 @@
+Mochi: a real, CPU-only image watermark demonstration
+
+Photo: mochi.jpg, supplied by the blog author. The supplied JPEG was left untouched.
+Source SHA-256: fd585fa328d836b0e1865654b719305b95d34a6bd7c417eaf7962aea0ef41a8c
+Resized once, before watermarking, to 360 x 478 using Pillow's Lanczos filter.
+Both comparison PNGs use those same resized pixels as their starting point.
+All three PNGs contain only IHDR, IDAT and IEND chunks. No EXIF/GPS, camera IDs,
+text, timestamps, color profiles, or other ancillary metadata are retained.
+
+Visual inspiration:
+Alosh, "How to Reverse SynthID (legally)", March 5, 2026:
+https://medium.com/@aloshdenny/how-to-reverse-synthid-legally-feafb1d85da2
+The amplified-signal idea inspired this view. No code, assets, proprietary
+encoder, or claimed SynthID detection/removal results were reused.
+
+Our own toy algorithm (not SynthID):
+- Split the green channel into 8 x 8 blocks; ignore partial edge blocks.
+- Select 320 blocks evenly across the image in raster order.
+- Encode a 64-bit packet five times: ASCII SM (16 bits), unsigned ID in network
+  byte order (32 bits), CRC-16/CCITT with polynomial 0x1021 and initial 0xffff
+  over the preceding six bytes (16 bits). This checksum is not authentication.
+- Adjust the orthonormal DCT coefficient at row frequency 2 / column frequency 3
+  to the nearest even (bit 0) or odd (bit 1) multiple of 24.
+- Round and clamp pixels to 8-bit values, then save losslessly as PNG.
+- Decode by projecting each block onto that same basis, rounding, majority
+  voting across the five copies, then checking the signature and checksum.
+- Decoder requires this public format and the marked image at its original
+  dimensions. It does not use the original image, filename, metadata, or an
+  expected ID. It does not prove who created or distributed an image.
+
+This photo encodes ID 173. The browser then looks up Shaggy Rogers and a sample
+timestamp in the image example's fictional record list. The text example keeps
+its Lord of the Rings names. Neither the name nor the timestamp is embedded in
+the image.
+
+Difference visualization:
+For each pixel: gray = clamp(128 + 32 * (marked_green - original_green), 0, 255).
+Neutral gray is unchanged; lighter is an increase; darker is a decrease.
+At 32x, changes of more than 3-4 levels saturate to black or white. The difference
+image is an explanatory visualization; it is not an input to the decoder.
+
+Interactive reveal:
+The browser also reads both comparison PNGs and computes original + gain *
+(marked - original), clamped to 0..255. The gain control runs from 1x to 128x.
+"Show photo" off instead uses 128 + gain * green-channel difference as grayscale.
+The default is 64x on the photo. A six-second opacity loop blends the original
+and the amplified frame. Pixels are computed once when opening the reveal and
+when changing a control, not on every animation frame. Pause freezes opacity
+and cancels the animation; offscreen/hidden-page/reduced-motion states suspend it.
+The previous static 32x difference PNG remains as a canvas-unavailable fallback.
+The decoder always reads the original or marked PNG, never an amplified frame.
+
+Measured on this image with Python 3.14.7, Pillow 12.3.0, NumPy 2.5.3:
+- PNG: ID 173 recovered; signature and checksum valid; all 320 votes agree.
+- Original PNG: no valid demo mark detected.
+- 9,714 of 172,080 pixels changed; red and blue channels are completely intact.
+- Largest change: 5 out of 255 in the green channel. RGB PSNR: 58.40 dB.
+- Resize, encode, write all three PNGs and verify saved output: about 0.10 s
+  in one local CPU run. Not a general performance guarantee.
+- Pillow JPEG quality 100, 95, 90: recovered ID 173 with both 4:4:4 and 4:2:0.
+- Pillow JPEG quality 80: failed signature/checksum, with both subsamplings.
+- Resize to 324 x 430 using Lanczos: failed signature/checksum.
+- Crop eight pixels from top and left: failed signature/checksum.
+These are measurements of one photo, not general robustness claims.
+
+Reproduce locally using the article's image-watermark.py and the PNGs:
+  python -m pip install Pillow numpy
+  python image-watermark.py decode mochi-spymarked.png
+  python image-watermark.py encode mochi-original.png reproduced.png --id 173
+
+Or create a new example from your own photo:
+  python image-watermark.py encode photo.jpg marked.png --id 173 --width 360 \
+      --original original.png --difference difference.png
+
+The script remains article-local source and is excluded from the published site.
+There is no Python dependency in the website's build or browser runtime.
+
+Generated PNG SHA-256:
+mochi-original.png   03c7e4a822989c8f9e2a4defa6f1e4766de23dcde96cb75235de861276509cc4
+mochi-spymarked.png  1a486cb9b783a6db4a13aeb9417dbeea83d313dbac307085a787204de748a3ef
+mochi-difference.png 607f9885ab8a9c7bbde52b230348e838a27110a08bf31e6443ffe8317ce0e359

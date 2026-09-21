@@ -1,0 +1,13 @@
+Generated with the built-in image_gen tool.
+Source: https://cdn-v2.meme.com/memes/bottom-text/bottom-text-willy-wonka-top-bottom-labels.webp
+Output: media/deepfried-wonka-v2.webp (640 × 640, WebP quality 82, metadata stripped with cwebp)
+
+Edit the provided Willy Wonka meme for the same blog illustration.
+Image 1 is the original source photo/meme: preserve its face, pose, hat, purple costume, framing, and exact "TOP TEXT" and "BOTTOM TEXT" captions.
+Image 2 is the previous edited version: use it only for the three watermark identities and corner placements.
+Make the image MUCH LESS deepfried than image 2. Return close to the natural colors and visible skin detail of image 1, with only a modest increase in saturation/contrast and a little authentic repost JPEG crunch. No neon colors, solarization, blown-out white/yellow skin, heavy halos, or extreme pixelation. The face should look photographic and readable.
+Make all THREE website watermarks roughly TWICE as large as in image 2, especially their lettering, and conspicuously annoying. Each should span about 35–40% of the image width, readable even on mobile:
+- BOTTOM LEFT: exact lowercase "imgflip.com", classic bold white lettering with a strong black outline.
+- TOP RIGHT: exact "www.9gag.com", large bold off-white lettering on a dark semitransparent rectangular backing.
+- BOTTOM RIGHT: exact lowercase "ifunny.co", large white lettering on a black rectangular backing with a small yellow smiley to its left.
+EXACTLY three watermark stamps total; one of each, each in its own corner, all fully inside the frame. The bottom two must remain separate. Preserve the meme captions as much as possible and keep the face unobstructed. Do not invent or duplicate any branding. No other edits. Single square still image, without external borders.

@@ -1,0 +1,126 @@
+/* Keep the static fallback in the same space before the embed mounts. */
+.spymark-intro .interactive {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  margin: 1.4rem 0 2rem;
+}
+.spymark-intro .interactive > figcaption { display: none; }
+.spymark-intro .embed-root {
+  position: relative;
+  min-height: 0;
+  padding: 0 0 44px;
+  aspect-ratio: 700 / 360;
+  box-sizing: content-box;
+  color: var(--ink);
+}
+.spymark-intro .embed-fallback {
+  position: absolute;
+  inset: 0 0 44px;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  color: var(--ink);
+  font: italic clamp(3rem, 12vw, 7.5rem)/1 Georgia, "Times New Roman", serif;
+  letter-spacing: -.065em;
+}
+.sm-art { display: block; width: 100%; height: auto; overflow: hidden; }
+.sm-lettering {
+  font-family: "Bodoni 72", Didot, "Times New Roman", serif;
+  font-size: 152px;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -7px;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.sm-word { fill: currentColor; }
+.sm-echo, .sm-contour { fill: none; stroke: currentColor; stroke-width: .65; }
+.sm-echo { opacity: 0; }
+.sm-contour { opacity: .17; transform: translate(-2px, -3px); }
+.sm-tendrils { opacity: .27; }
+.sm-tower-crown { opacity: .88; }
+.sm-tower-plane { fill: var(--paper); opacity: .13; }
+.sm-tower-ribs { opacity: .45; }
+.sm-eye { transform-box: fill-box; transform-origin: center; }
+.sm-fire-halo { fill: var(--accent); opacity: .2; }
+.sm-fire-edge { fill: var(--paper); stroke: var(--accent); stroke-width: 1.7; }
+.sm-fire-threads { stroke: var(--accent); stroke-width: 1.2; opacity: .8; }
+.sm-iris { fill: var(--accent); fill-opacity: .22; stroke: var(--accent); stroke-width: .8; }
+.sm-pupil { fill: var(--accent); }
+.sm-pupil-core { fill: currentColor; }
+.sm-playing .sm-gaze { transition: transform 140ms ease-out; }
+.sm-quotes { font: italic 58px Georgia, "Times New Roman", serif; opacity: .4; }
+.sm-toggle {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .4rem;
+  min-width: 76px;
+  min-height: 44px;
+  touch-action: manipulation;
+  padding: .4rem .2rem .4rem .6rem;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: .7rem;
+  letter-spacing: .04em;
+}
+.sm-toggle:hover { color: var(--ink); }
+.sm-pause-icon, .sm-playing .sm-resume-icon { display: none; }
+.sm-playing .sm-pause-icon { display: initial; }
+
+/* Seamless, slow breathing. Removing sm-playing removes every animation and
+   transition; the mount function supplies a frozen frame as inline styles. */
+@media (prefers-reduced-motion: no-preference) {
+  .sm-playing .sm-word { animation: spymark-drift 12s ease-in-out infinite; }
+  .sm-playing .sm-echo-above { animation: spymark-haunt-above 12s ease-in-out infinite; }
+  .sm-playing .sm-echo-below { animation: spymark-haunt-below 12s ease-in-out infinite; }
+  .sm-playing .sm-eye { animation: spymark-watch 12s ease-in-out infinite; }
+  .sm-playing .sm-tendrils { animation: spymark-reach 12s ease-in-out infinite; }
+  .sm-playing :is(.sm-word, .sm-echo-above, .sm-echo-below, .sm-eye, .sm-tendrils) {
+    animation-delay: var(--sm-phase, 0ms);
+  }
+}
+@keyframes spymark-drift {
+  0%, 100% { opacity: .94; transform: translateY(0) skewX(0); }
+  50% { opacity: 1; transform: translateY(-1px) skewX(.5deg); }
+}
+@keyframes spymark-haunt-above {
+  0%, 100% { opacity: .08; transform: translate(2px, -5px) skewX(-1deg) scaleY(1.01); }
+  28% { opacity: .24; transform: translate(6px, -12px) skewX(-4deg) scaleY(1.05); }
+  65% { opacity: .1; transform: translate(-4px, -3px) skewX(2deg) scaleY(1); }
+}
+@keyframes spymark-haunt-below {
+  0%, 100% { opacity: .05; transform: translate(-1px, 3px) skewX(0) scaleY(1); }
+  40% { opacity: .17; transform: translate(-6px, 11px) skewX(3deg) scaleY(.97); }
+  72% { opacity: .08; transform: translate(3px, 4px) skewX(0) scaleY(1); }
+}
+@keyframes spymark-watch {
+  0%, 100% { opacity: .92; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.035, 1.045); }
+}
+@keyframes spymark-reach {
+  0%, 100% { opacity: .27; transform: translateY(0); }
+  55% { opacity: .4; transform: translateY(2px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sm-toggle { display: none; }
+  .sm-gaze { transition: none !important; transform: none !important; }
+}
+@media (forced-colors: active) {
+  .spymark-intro .embed-root { color: CanvasText; }
+  .sm-echo, .sm-contour, .sm-tendrils { display: none; }
+  .sm-word, .sm-eye { animation: none !important; opacity: 1; }
+  .sm-fire-edge, .sm-fire-threads, .sm-iris { stroke: CanvasText; }
+  .sm-pupil, .sm-pupil-core { fill: CanvasText; }
+  .sm-gaze { transition: none !important; }
+  .sm-toggle { display: none; }
+}
+@media print {
+  .sm-word, .sm-eye, .sm-tendrils { animation: none !important; }
+  .sm-echo, .sm-contour, .sm-toggle { display: none; }
+}

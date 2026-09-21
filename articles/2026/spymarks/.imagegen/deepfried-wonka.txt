@@ -1,0 +1,14 @@
+Generated with the built-in image_gen tool.
+Source: https://cdn-v2.meme.com/memes/bottom-text/bottom-text-willy-wonka-top-bottom-labels.webp
+Output: media/deepfried-wonka.webp (640 × 640, WebP quality 82, metadata stripped with cwebp)
+
+Use case: style-transfer and compositing.
+Asset type: a static illustrative meme in a blog article about annoying visible watermarks.
+Input image: /tmp/spymarks-willy-wonka-source.webp is the edit target, not merely a reference. Edit this exact classic Willy Wonka meme, preserving the recognizable face, pose, hat, costume, square-ish framing and the existing captions exactly: "TOP TEXT" at the top and "BOTTOM TEXT" at the bottom.
+Primary request: make a convincingly "deepfried" repeatedly reposted internet meme: heavily exaggerated saturation and contrast, warm blown-out highlights, purple/crimson shadows, crunchy oversharpened outlines, visible blocky JPEG artifacts and mild color fringing. It should look hilariously degraded, not like a new illustration. Keep the person and both captions readable.
+Add EXACTLY THREE annoying site watermarks, one from each website, all in different corners:
+1. Bottom LEFT: classic small white outlined lowercase "imgflip.com" text, plainly legible.
+2. TOP RIGHT: "www.9gag.com" in a conspicuous off-white/gray bold sans-serif stamp on a semitransparent dark rectangular backing, plainly legible.
+3. Bottom RIGHT: a black iFunny-style rectangular stamp with a small yellow smiley and exact white "ifunny.co" text, plainly legible.
+Each watermark appears only once. They should compete visually and look like accumulated repost stamps, close to the outer edges but fully inside the frame. Keep all three separate. Preserve the full existing captions and do not cover the eyes or mouth. Watermarks must be large enough to read when the image is displayed about 500 pixels wide.
+Constraints: same image composition and near-square aspect ratio; no extra people, caption rewrites, new meme words, fourth watermark, signatures, or invented websites. Single still image; no borders outside the image.
